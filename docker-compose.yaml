@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+
+  consumer:
+    build:
+      context: .
+      dockerfile: dockerfile-consumer
+    container_name: bap-protocol-consumer
+    depends_on:
+      - elasticsearch
+      - rabbitmq
+      - mongo
+    environment:
+      ENV: dev
+      MONGO_DATABASE_URL: "mongodb://mongo:27017"
+      RABBITMQ_HOST: "rabbitmq"
+      ELASTIC_SEARCH_URL: "http://elasticsearch:9200"
+
+  rabbitmq:
+    image: rabbitmq:3.10-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - "./data:/data/db"
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+#  kibana:
+#    image: kibana:8.12.2
+#    container_name: kibana
+#    ports:
+#      - "5601:5601"
+#    environment:
+#      ELASTICSEARCH_URL: http://elasticsearch:9200

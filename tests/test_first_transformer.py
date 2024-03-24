@@ -3,7 +3,7 @@ import json
 import os
 from funcy import empty
 
-from transformers.first import flatten_on_search_payload_to_provider_map
+from transformers.first import flatten_full_on_search_payload_to_provider_map
 
 
 class TestFirst(unittest.TestCase):
@@ -16,7 +16,7 @@ class TestFirst(unittest.TestCase):
         filepath = os.path.join(current_path, "resources/simple_on_search.json")
         with open(filepath) as f:
             json_payload = json.load(f)
-            provider_map = flatten_on_search_payload_to_provider_map(json_payload)
+            provider_map = flatten_full_on_search_payload_to_provider_map(json_payload)
             items = provider_map["545016d9-ed19-4c02-833d-f4270436ffc0"]["items"]
             categories = provider_map["545016d9-ed19-4c02-833d-f4270436ffc0"]["categories"]
             serviceabilities = provider_map["545016d9-ed19-4c02-833d-f4270436ffc0"]["serviceabilities"]
@@ -38,7 +38,7 @@ class TestFirst(unittest.TestCase):
         filepath = os.path.join(current_path, "resources/on_search_with_attributes.json")
         with open(filepath) as f:
             json_payload = json.load(f)
-            provider_map = flatten_on_search_payload_to_provider_map(json_payload)
+            provider_map = flatten_full_on_search_payload_to_provider_map(json_payload)
             items = provider_map["P1"]["items"]
             categories = provider_map["P1"]["categories"]
             serviceabilities = provider_map["P1"]["serviceabilities"]

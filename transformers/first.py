@@ -57,9 +57,9 @@ def enrich_created_at_timestamp_in_item(item):
     return item
 
 
-def enrich_unique_id_in_item(item):
+def enrich_unique_id_in_item(item, bpp_id, provider_id):
     item["local_id"] = item['item_details']['id']
-    item["id"] = f"{item['bpp_details']['bpp_id']}_{item['provider_details']['id']}_{item['item_details']['id']}"
+    item["id"] = f"{bpp_id}_{provider_id}_{item['item_details']['id']}"
     return item
 
 
@@ -134,7 +134,7 @@ def get_provider_serviceabilities(provider_details):
     return serviceabilities
 
 
-def flatten_on_search_payload_to_provider_map(payload):
+def flatten_full_on_search_payload_to_provider_map(payload):
     provider_map = {}
     context = get_in(payload, ["context"])
     catalog = get_in(payload, ["message", "catalog"], {})
@@ -159,7 +159,8 @@ def flatten_on_search_payload_to_provider_map(payload):
             [flatten_item_attributes(i) for i in provider_items]
             [enrich_item_type(i) for i in provider_items]
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
-            [enrich_unique_id_in_item(i) for i in provider_items]
+            [enrich_unique_id_in_item(i, i['bpp_details']['bpp_id'], i['provider_details']['id'])
+             for i in provider_items]
             provider_serviceabilities = get_provider_serviceabilities(p)
 
             provider_value = {
@@ -170,3 +171,54 @@ def flatten_on_search_payload_to_provider_map(payload):
             provider_map[get_in(p, ["id"])] = provider_value
 
     return provider_map
+
+
+def flatten_incr_on_search_payload_to_provider_map_for_items(payload):
+    provider_map = {}
+    context = get_in(payload, ["context"])
+    catalog = get_in(payload, ["message", "catalog"], {})
+
+    bpp_id = get_in(context, ["bpp_id"])
+    if bpp_id:
+        bpp_providers = get_in(catalog, ["bpp/providers"])
+
+        for p in bpp_providers:
+            provider_items = p.get("items", [])
+            provider_items = [{"item_details": i} for i in provider_items]
+            [cast_price_and_rating_to_float(i) for i in provider_items]
+            [flatten_item_attributes(i) for i in provider_items]
+            [enrich_item_type(i) for i in provider_items]
+            [enrich_created_at_timestamp_in_item(i) for i in provider_items]
+            [enrich_unique_id_in_item(i, bpp_id, p["id"]) for i in provider_items]
+
+            provider_map[get_in(p, ["id"])] = provider_items
+
+    return provider_map
+
+
+def flatten_incr_on_search_payload_to_provider_map_for_locations(payload):
+    provider_map = {}
+    context = get_in(payload, ["context"])
+    catalog = get_in(payload, ["message", "catalog"], {})
+
+    bpp_id = get_in(context, ["bpp_id"])
+    if bpp_id:
+        bpp_providers = get_in(catalog, ["bpp/providers"])
+
+        for p in bpp_providers:
+            provider_locations = p.get("locations", [])
+
+            provider_map[get_in(p, ["id"])] = provider_locations
+
+    return provider_map
+
+
+def flatten_incr_on_search_payload_to_providers(payload):
+    context = get_in(payload, ["context"])
+    catalog = get_in(payload, ["message", "catalog"], {})
+
+    bpp_id = get_in(context, ["bpp_id"])
+    if bpp_id:
+        return get_in(catalog, ["bpp/providers"])
+
+    return []

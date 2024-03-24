@@ -8,7 +8,8 @@ from retry import retry
 from config import get_config_by_name
 from logger.custom_logging import log, log_error
 from services.mongo_service import update_on_search_dump_status
-from transformers.final import transform_on_search_payload_into_final_items
+from transformers.full_catalog import transform_full_on_search_payload_into_final_items
+from transformers.incr_catalog import transform_incr_on_search_payload_into_final_items
 from utils.elasticsearch_utils import add_documents_to_index
 from utils.mongo_utils import get_mongo_collection, collection_find_one, init_database
 from utils.rabbitmq_utils import create_channel, declare_queue, consume_message, open_connection
@@ -32,14 +33,14 @@ def consume_fn(message_string):
                 # else:
                 #     log_error(f"No search request found for given {on_search_payload['context']}")
                 #     update_on_search_dump_status(doc_id, "IN-PROGRESS")
-                items = transform_on_search_payload_into_final_items(on_search_payload)
-                print(items)
+                items = transform_full_on_search_payload_into_final_items(on_search_payload)
                 add_documents_to_index("items", items)
                 update_on_search_dump_status(doc_id, "FINISHED")
-            # elif payload["request_type"] == "inc":
-            #     update_on_search_dump_status(doc_id, "IN-PROGRESS")
-            #     add_incremental_search_catalogues(on_search_payload)
-            #     update_on_search_dump_status(doc_id, "FINISHED")
+            elif payload["request_type"] == "inc":
+                update_on_search_dump_status(doc_id, "IN-PROGRESS")
+                items = transform_incr_on_search_payload_into_final_items(on_search_payload)
+                add_documents_to_index("items", items)
+                update_on_search_dump_status(doc_id, "FINISHED")
         else:
             log_error(f"On search payload was not found for {doc_id}!")
     except Exception as e:

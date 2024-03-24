@@ -108,6 +108,18 @@ def search_products_for_unique_provider(size=10):
 
 
 if __name__ == '__main__':
-    resp = search_documents("items", {})
+    resp = search_documents("items", {
+        "query": {
+            "bool": {
+                "must": [
+                    {
+                        "term": {
+                            "item_details.parent_item_id.keyword": "V1"
+                        }
+                    }
+                ]
+            }
+        }
+    })
     resp_items = resp["hits"]["hits"]
     [print(i["_source"]) for i in resp_items]

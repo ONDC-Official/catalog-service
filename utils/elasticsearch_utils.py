@@ -19,9 +19,9 @@ def get_all_indexes():
     return client.indices
 
 
-# def get_task_status(task_id):
-#     client = get_elasticsearch_client()
-#     return client.get_task(task_id)
+def get_index_mapping(index_name):
+    client = get_elasticsearch_client()
+    return client.indices.get_mapping(index=index_name)
 
 
 # Define a generator function to yield Elasticsearch index operations for each document

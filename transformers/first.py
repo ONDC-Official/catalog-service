@@ -12,6 +12,8 @@ def enrich_provider_details_into_items(provider, item):
 def enrich_location_details_into_items(locations, item):
     try:
         location = next(i for i in locations if i["id"] == get_in(item, ["item_details", "location_id"]))
+        location["local_id"] = location["id"]
+        location["id"] = f"{item['provider_details']['id']}_{location['local_id']}"
     except:
         location = {}
     item["location_details"] = location
@@ -57,9 +59,9 @@ def enrich_created_at_timestamp_in_item(item):
     return item
 
 
-def enrich_unique_id_in_item(item, bpp_id, provider_id):
+def enrich_unique_id_in_item(item, provider_id):
     item["local_id"] = item['item_details']['id']
-    item["id"] = f"{bpp_id}_{provider_id}_{item['item_details']['id']}"
+    item["id"] = f"{provider_id}_{item['item_details']['id']}"
     return item
 
 
@@ -146,6 +148,8 @@ def flatten_full_on_search_payload_to_provider_map(payload):
         bpp_providers = get_in(catalog, ["bpp/providers"])
 
         for p in bpp_providers:
+            p["local_id"] = p.get('id')
+            p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
             provider_locations = p.get("locations", [])
             provider_categories = p.get("categories", [])
             provider_items = p.get("items", [])
@@ -159,8 +163,7 @@ def flatten_full_on_search_payload_to_provider_map(payload):
             [flatten_item_attributes(i) for i in provider_items]
             [enrich_item_type(i) for i in provider_items]
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
-            [enrich_unique_id_in_item(i, i['bpp_details']['bpp_id'], i['provider_details']['id'])
-             for i in provider_items]
+            [enrich_unique_id_in_item(i, p['id']) for i in provider_items]
             provider_serviceabilities = get_provider_serviceabilities(p)
 
             provider_value = {
@@ -183,13 +186,15 @@ def flatten_incr_on_search_payload_to_provider_map_for_items(payload):
         bpp_providers = get_in(catalog, ["bpp/providers"])
 
         for p in bpp_providers:
+            p["local_id"] = p.get('id')
+            p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
             provider_items = p.get("items", [])
             provider_items = [{"item_details": i} for i in provider_items]
             [cast_price_and_rating_to_float(i) for i in provider_items]
             [flatten_item_attributes(i) for i in provider_items]
             [enrich_item_type(i) for i in provider_items]
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
-            [enrich_unique_id_in_item(i, bpp_id, p["id"]) for i in provider_items]
+            [enrich_unique_id_in_item(i, p["id"]) for i in provider_items]
 
             provider_map[get_in(p, ["id"])] = provider_items
 
@@ -206,6 +211,8 @@ def flatten_incr_on_search_payload_to_provider_map_for_locations(payload):
         bpp_providers = get_in(catalog, ["bpp/providers"])
 
         for p in bpp_providers:
+            p["local_id"] = p.get('id')
+            p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
             provider_locations = p.get("locations", [])
 
             provider_map[get_in(p, ["id"])] = provider_locations
@@ -219,6 +226,11 @@ def flatten_incr_on_search_payload_to_providers(payload):
 
     bpp_id = get_in(context, ["bpp_id"])
     if bpp_id:
-        return get_in(catalog, ["bpp/providers"])
+        bpp_providers = get_in(catalog, ["bpp/providers"])
+
+        for p in bpp_providers:
+            p["local_id"] = p.get('id')
+            p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
+        return bpp_providers
 
     return []

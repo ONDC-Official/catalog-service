@@ -1,7 +1,7 @@
 {
   "context":
   {
-    "domain":"ONDC:RET10",
+    "domain":"ONDC:RET12",
     "action":"on_search",
     "country":"IND",
     "city":"*",

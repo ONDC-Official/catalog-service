@@ -48,7 +48,7 @@ def transform_item_categories(categories):
 
 def enrich_serviceability_in_item(item, serviceability_map):
     item_location = item.get("location_details", {})
-    serviceabilities = serviceability_map.get(item_location.get("id"), [])
+    serviceabilities = serviceability_map.get(item_location.get("local_id"), [])
     if len(serviceabilities) > 0:
         serviceability = serviceabilities[0]
         try:
@@ -88,6 +88,8 @@ def enrich_serviceability_in_item(item, serviceability_map):
 def enrich_variant_group_in_item(item, variant_groups):
     try:
         variant_group = next(v for v in variant_groups if v["id"] == get_in(item, ["item_details", "parent_item_id"]))
+        variant_group["local_id"] = variant_group["id"]
+        variant_group["id"] = f"{item['provider_details']['id']}_{variant_group['local_id']}"
     except:
         variant_group = {}
     item["variant_group"] = variant_group
@@ -134,6 +136,8 @@ def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
     for cg_id in new_cg_ids:
         try:
             custom_group = next(c for c in customisation_groups if c["id"] == cg_id)
+            custom_group["local_id"] = custom_group["id"]
+            custom_group["id"] = f"{item['provider_details']['id']}_{custom_group['local_id']}"
         except:
             custom_group = {}
         item_cust_groups.append(custom_group)
@@ -154,6 +158,8 @@ def enrich_custom_menu_in_item(item, custom_menus):
     for cm in custom_menu_new_list:
         try:
             custom_menu = next(c for c in custom_menus if c["id"] == cm["id"])
+            custom_menu["local_id"] = custom_menu["id"]
+            custom_menu["id"] = f"{item['provider_details']['id']}_{custom_menu['local_id']}"
         except:
             custom_menu = {}
         item_config_menus.append(custom_menu)

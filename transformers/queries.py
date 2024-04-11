@@ -110,8 +110,7 @@ def get_providers(lat, lng, size=10):
 
 
 if __name__ == '__main__':
-    # print(get_item_with_given_id("sellerNPFashion.com_P1_I9"))
+    # print(get_item_with_given_id("sellerNPFashion.com_P1_I1"))
     # print(json.dumps(dict(es_utils.get_index_mapping("items"))))
     [print(json.dumps(s)) for s in search_items(13.0520609, 77.7948985, "allen")]
     # [print(p) for p in get_providers(13.0520609, 77.7948985, 30)]
-    # [print(p) for p in get_items_for_given_details("sellerNPFashion.com", "P1")]

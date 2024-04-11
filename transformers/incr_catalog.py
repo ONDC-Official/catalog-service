@@ -29,7 +29,7 @@ def get_item_objects_for_item_update(payload):
                     bpp_id=bpp_id,
                     provider_id=provider_id,
                     item_type=i["type"],
-                    variant_group_id=item_details.get("parent_item_id"),
+                    variant_group_id=f'{provider_id}_{item_details.get("parent_item_id")}',
                 )[0]
             db_item.update(project(i, ["id", "local_id", "type", "attributes", "item_details", "created_at"]))
             item_objects.append(db_item)
@@ -45,7 +45,7 @@ def get_item_objects_for_location_update(payload):
             db_items = queries.get_items_for_given_details(
                 bpp_id=bpp_id,
                 provider_id=provider_id,
-                location_id=lo.get("id"),
+                location_id=f'{provider_id}_{lo.get("id")}',
             )
             for i in db_items:
                 i["location_details"]["time"] = lo["time"]
@@ -63,6 +63,7 @@ def get_item_objects_for_provider_update(payload):
             provider_id=p["id"],
         )
         for i in db_items:
+            print(p["time"])
             i["provider_details"]["time"] = p["time"]
         item_objects.extend(db_items)
     return item_objects

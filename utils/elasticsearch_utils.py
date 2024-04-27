@@ -1,3 +1,6 @@
+import json
+import os
+
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk, BulkIndexError
 
@@ -22,6 +25,26 @@ def get_all_indexes():
 def get_index_mapping(index_name):
     client = get_elasticsearch_client()
     return client.indices.get_mapping(index=index_name)
+
+
+def init_elastic_search():
+    client = get_elasticsearch_client()
+    index_name = "items"
+    if client.indices.exists(index=index_name):
+        log(f"Index '{index_name}' already exists.")
+    else:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        mapping_json_path = os.path.join(current_dir, '../mappings/items_mappings.json')
+        with open(mapping_json_path, 'r') as json_file:
+            mapping_json = json.load(json_file)
+
+        response = client.indices.create(index=index_name, body=mapping_json)
+
+        # Check if the index creation was successful
+        if response['acknowledged']:
+            print(f"Index '{index_name}' created successfully with mapping.")
+        else:
+            print(f"Failed to create index '{index_name}'.")
 
 
 # Define a generator function to yield Elasticsearch index operations for each document

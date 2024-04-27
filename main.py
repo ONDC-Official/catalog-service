@@ -10,8 +10,8 @@ from logger.custom_logging import log, log_error
 from services.mongo_service import update_on_search_dump_status
 from transformers.full_catalog import transform_full_on_search_payload_into_final_items
 from transformers.incr_catalog import transform_incr_on_search_payload_into_final_items
-from utils.elasticsearch_utils import add_documents_to_index
-from utils.mongo_utils import get_mongo_collection, collection_find_one, init_database
+from utils.elasticsearch_utils import add_documents_to_index, init_elastic_search
+from utils.mongo_utils import get_mongo_collection, collection_find_one, init_mongo_database
 from utils.rabbitmq_utils import create_channel, declare_queue, consume_message, open_connection
 
 
@@ -49,8 +49,9 @@ def consume_fn(message_string):
 
 @retry(AMQPConnectionError, delay=5, jitter=(1, 3))
 def run_consumer():
-    init_database()
-    queue_name = get_config_by_name('RABBITMQ_QUEUE_NAME')
+    init_mongo_database()
+    init_elastic_search()
+    queue_name = get_config_by_name('ELASTIC_SEARCH_QUEUE_NAME')
     connection = open_connection()
     channel = create_channel(connection)
     declare_queue(channel, queue_name)

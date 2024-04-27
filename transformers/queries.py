@@ -47,16 +47,23 @@ def search_items(lat, lng, search_str=None):
                         "item_details.descriptor.name": search_str
                     }
                 },
-                "filter": {
-                    "geo_shape": {
-                        "location_details.polygons": {
-                            "shape": {
-                                "type": "point",
-                                "coordinates": [lat, lng]
+                "should": [
+                    {
+                        "match": {
+                            "location_details.type.keyword": "pan"
+                        }
+                    },
+                    {
+                        "geo_shape": {
+                            "location_details.polygons": {
+                                "shape": {
+                                    "type": "point",
+                                    "coordinates": [lat, lng]
+                                }
                             }
                         }
                     }
-                }
+                ]
             }
         }
     }
@@ -110,7 +117,7 @@ def get_providers(lat, lng, size=10):
 
 
 if __name__ == '__main__':
-    # print(get_item_with_given_id("sellerNPFashion.com_P1_I1"))
+    # print(get_item_with_given_id("sellerNPFashion.com_ONDC:RET12_P1_I1"))
     # print(json.dumps(dict(es_utils.get_index_mapping("items"))))
-    [print(json.dumps(s)) for s in search_items(13.0520609, 77.7948985, "allen")]
+    [print(json.dumps(s)) for s in search_items(12.967555, 77.749666, "allen1")]
     # [print(p) for p in get_providers(13.0520609, 77.7948985, 30)]

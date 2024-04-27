@@ -16,14 +16,14 @@ def publish_message(file_path, request_type):
             "request_type": request_type,
         }
         rabbitmq_connection, rabbitmq_channel = open_connection_and_channel_if_not_already_open(None, None)
-        queue_name = get_config_by_name('RABBITMQ_QUEUE_NAME')
+        queue_name = get_config_by_name('ELASTIC_SEARCH_QUEUE_NAME')
         declare_queue(rabbitmq_channel, queue_name)
         log(f"Sending message with payload : {json_payload} to {queue_name}")
         publish_message_to_queue(rabbitmq_channel, exchange='', routing_key=queue_name, body=json.dumps(message))
 
 
 if __name__ == '__main__':
-    local_filepath = "/Users/aditya/Projects/ondc-sdk/catalog-service/resources/incr_on_search_item_add.json"
-    req_type = "inc"
+    local_filepath = "/Users/aditya/Projects/ondc-sdk/catalog-service/resources/on_search_with_attributes.json"
+    req_type = "full"
     publish_message(local_filepath, req_type)
 

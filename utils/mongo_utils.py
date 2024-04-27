@@ -8,7 +8,7 @@ mongo_client = None
 mongo_db = None
 
 
-def init_database():
+def init_mongo_database():
     global mongo_client, mongo_db
     if mongo_client is not None and mongo_db is not None:
         return
@@ -23,7 +23,7 @@ def get_mongo_collection(collection_name):
     # check if database is initialized
     global mongo_client, mongo_db
     if mongo_client is None or mongo_db is None:
-        init_database()
+        init_mongo_database()
     return mongo_db[collection_name]
 
 

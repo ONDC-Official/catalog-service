@@ -9,7 +9,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious_secret_key')
-    RABBITMQ_QUEUE_NAME = os.getenv("RABBITMQ_QUEUE_NAME", "bpp_protocol")
+    ELASTIC_SEARCH_QUEUE_NAME = os.getenv("ELASTIC_SEARCH_QUEUE_NAME", "catalog_indexing")
     RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
     QUEUE_ENABLE = os.getenv("QUEUE_ENABLE", "False") == "True"
     API_TOKEN = os.getenv("API_TOKEN", "testing_random_123")

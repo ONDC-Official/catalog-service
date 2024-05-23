@@ -1,4 +1,5 @@
 import json
+import os
 
 from utils import elasticsearch_utils as es_utils
 
@@ -13,8 +14,8 @@ def make_query_object_must_statements(must_statements):
     }
 
 
-def get_item_with_given_id(item_id):
-    must_statements = [{"term": {"_id": item_id}}]
+def get_item_with_given_id(item_id, langauge='en'):
+    must_statements = [{"term": {"id": item_id}}, {"term": {"language": langauge}}]
     resp = es_utils.search_documents("items", make_query_object_must_statements(must_statements))
     resp_items = resp["hits"]["hits"]
     if len(resp_items) > 0:
@@ -88,9 +89,7 @@ def get_providers(lat, lng, size=10):
                     }
                 }
             }
-        }
-    }
-    query_obj.update({
+        },
         "aggs": {
             "unique_providers": {
                 "terms": {
@@ -106,7 +105,7 @@ def get_providers(lat, lng, size=10):
                 }
             }
         }
-    })
+    }
     resp = es_utils.search_documents("items", query_obj)
     unique_providers = []
     for bucket in resp['aggregations']['unique_providers']['buckets']:
@@ -117,7 +116,8 @@ def get_providers(lat, lng, size=10):
 
 
 if __name__ == '__main__':
-    # print(get_item_with_given_id("sellerNPFashion.com_ONDC:RET12_P1_I1"))
+    os.environ["ENV"] = "dev"
+    print(get_item_with_given_id("sellerNPFashion.com_ONDC:RET12_P1_I1", 'hi'))
     # print(json.dumps(dict(es_utils.get_index_mapping("items"))))
-    [print(json.dumps(s)) for s in search_items(12.967555, 77.749666, "allen1")]
+    # [print(json.dumps(s)) for s in search_items(12.967555, 77.749666, "allen1")]
     # [print(p) for p in get_providers(13.0520609, 77.7948985, 30)]

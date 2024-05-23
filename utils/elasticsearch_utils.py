@@ -52,7 +52,7 @@ def generate_actions(index_name, documents):
     for doc in documents:
         yield {
             "_index": index_name,
-            "_id": doc["id"],  # Use the document ID as the Elasticsearch document ID
+            "_id": f"{doc['id']}_{doc['language']}",  # Use the document ID + language as the Elasticsearch document ID
             "_source": doc
         }
 

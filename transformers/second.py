@@ -167,6 +167,11 @@ def enrich_custom_menu_in_item(item, custom_menus):
     return item
 
 
+def enrich_default_language_in_item(item):
+    item["language"] = "en"
+    return item
+
+
 def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
     variant_groups, custom_menus, customisation_groups = transform_item_categories(categories)
 
@@ -175,4 +180,5 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
     [enrich_variant_group_in_item(i, variant_groups) for i in items]
     [enrich_customisation_group_in_item(i, customisation_groups, cust_items) for i in items]
     [enrich_custom_menu_in_item(i, custom_menus) for i in items]
+    [enrich_default_language_in_item(i) for i in items]
     return items

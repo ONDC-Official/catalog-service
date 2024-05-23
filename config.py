@@ -17,6 +17,12 @@ class Config:
     CONSUMER_MAX_WORKERS = int(os.getenv("CONSUMER_MAX_WORKERS", "100"))
     MONGO_DATABASE_URL = os.getenv("MONGO_DATABASE_URL", "mongodb://localhost:27017")
     ELASTIC_SEARCH_URL = os.getenv("ELASTIC_SEARCH_URL", "http://localhost:9200")
+    REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+    REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
+    REDIS_DB = int(os.getenv("REDIS_DB", "0"))
+    BHASHINI_USERID = os.getenv("BHASHINI_USERID", "userid")
+    BHASHINI_ULCA_API_KEY = os.getenv("BHASHINI_ULCA_API_KEY", "apikey")
+    LANGUAGE_LIST = [lang.strip() for lang in os.getenv("LANGUAGE_LIST", "hi").split(",")]
     IS_TEST = os.getenv("IS_TEST", "False") == "True"
 
 
@@ -30,7 +36,8 @@ class LocalConfig(Config):
     MONGO_DATABASE_HOST = "localhost"
     MONGO_DATABASE_PORT = 27017
     MONGO_DATABASE_NAME = "sandbox_bap"
-    CLIENT_WEBHOOK_ENDPOINT = os.getenv("CLIENT_WEBHOOK_ENDPOINT", "https://616e-2409-4042-4d8d-a7b7-c127-cb03-c9c2-ecae.in.ngrok.io/clientApis/response")
+    CLIENT_WEBHOOK_ENDPOINT = os.getenv("CLIENT_WEBHOOK_ENDPOINT",
+                                        "https://616e-2409-4042-4d8d-a7b7-c127-cb03-c9c2-ecae.in.ngrok.io/clientApis/response")
 
 
 class DevelopmentConfig(Config):
@@ -43,7 +50,8 @@ class DevelopmentConfig(Config):
     MONGO_DATABASE_HOST = "localhost"
     MONGO_DATABASE_PORT = 27017
     MONGO_DATABASE_NAME = "sandbox_bap"
-    CLIENT_WEBHOOK_ENDPOINT = os.getenv("CLIENT_WEBHOOK_ENDPOINT", "https://616e-2409-4042-4d8d-a7b7-c127-cb03-c9c2-ecae.in.ngrok.io/clientApis/response")
+    CLIENT_WEBHOOK_ENDPOINT = os.getenv("CLIENT_WEBHOOK_ENDPOINT",
+                                        "https://616e-2409-4042-4d8d-a7b7-c127-cb03-c9c2-ecae.in.ngrok.io/clientApis/response")
 
 
 class ProductionConfig(Config):

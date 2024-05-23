@@ -1,7 +1,10 @@
+from config import get_config_by_name
 from transformers.first import flatten_incr_on_search_payload_to_provider_map_for_items, \
     flatten_incr_on_search_payload_to_provider_map_for_locations, flatten_incr_on_search_payload_to_providers
 from transformers import queries
 from funcy import project
+
+from transformers.translation import translate_items_into_configured_languages
 
 
 def transform_incr_on_search_payload_into_final_items(payload):
@@ -16,7 +19,7 @@ def transform_incr_on_search_payload_into_final_items(payload):
         return get_item_objects_for_provider_update(payload)
 
 
-def get_item_objects_for_item_update(payload):
+def get_item_objects_for_item_update_for_default_language(payload):
     item_objects = []
     bpp_id = payload["context"]["bpp_id"]
     provider_map = flatten_incr_on_search_payload_to_provider_map_for_items(payload)
@@ -33,7 +36,18 @@ def get_item_objects_for_item_update(payload):
                 )[0]
             db_item.update(project(i, ["id", "local_id", "type", "attributes", "item_details", "created_at"]))
             item_objects.append(db_item)
+
     return item_objects
+
+
+def get_item_objects_for_item_update(payload):
+    final_items = []
+    default_lang_items = get_item_objects_for_item_update_for_default_language(payload)
+    final_items.extend(default_lang_items)
+    configured_language_list = get_config_by_name("LANGUAGE_LIST")
+    for lang in configured_language_list:
+        final_items.extend(translate_items_into_configured_languages(default_lang_items, lang))
+    return final_items
 
 
 def get_item_objects_for_location_update(payload):
@@ -63,7 +77,6 @@ def get_item_objects_for_provider_update(payload):
             provider_id=p["id"],
         )
         for i in db_items:
-            print(p["time"])
             i["provider_details"]["time"] = p["time"]
         item_objects.extend(db_items)
     return item_objects

@@ -1,6 +1,7 @@
 {
   "mappings": {
     "properties": {
+      "language": {"type": "keyword"},
       "item_details": {
         "properties": {
           "id": {"type": "keyword"},

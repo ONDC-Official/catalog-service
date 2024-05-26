@@ -115,9 +115,40 @@ def get_providers(lat, lng, size=10):
     return unique_providers
 
 
+def get_attributes(domain):
+    query_obj = {
+        "_source": ["attributes"],
+        "size": 1000,
+        "query": {
+            "term": {
+                "context.domain": domain
+            }
+        }
+    }
+    resp = es_utils.search_documents_with_scroll("items", query_obj)
+
+    scroll_id = resp["_scroll_id"]
+    distinct_keys = set()
+
+    # Scroll through all documents
+    while len(resp["hits"]["hits"]):
+        for hit in resp["hits"]["hits"]:
+            attributes = hit["_source"].get("attributes", {})
+            distinct_keys.update(attributes.keys())
+
+        # Get the next batch of documents
+        resp = es_utils.get_scroll_documents(scroll_id)
+
+    # Clear the scroll context
+    es_utils.clear_scroll(scroll_id)
+
+    return list(distinct_keys)
+
+
 if __name__ == '__main__':
     os.environ["ENV"] = "dev"
-    print(get_item_with_given_id("sellerNPFashion.com_ONDC:RET12_P1_I1", 'hi'))
+    print(get_attributes("ONDC:RET12"))
+    # print(get_item_with_given_id("sellerNPFashion.com_ONDC:RET12_P1_I1", 'hi'))
     # print(json.dumps(dict(es_utils.get_index_mapping("items"))))
     # [print(json.dumps(s)) for s in search_items(12.967555, 77.749666, "allen1")]
     # [print(p) for p in get_providers(13.0520609, 77.7948985, 30)]

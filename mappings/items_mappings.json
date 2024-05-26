@@ -2,6 +2,22 @@
   "mappings": {
     "properties": {
       "language": {"type": "keyword"},
+      "context": {
+        "properties": {
+          "domain": {"type": "keyword"},
+          "country": {"type": "keyword"},
+          "city": {"type": "keyword"},
+          "action": {"type": "keyword"},
+          "core_version": {"type": "keyword"},
+          "bap_id": {"type": "keyword"},
+          "bap_uri": {"type": "text"},
+          "bpp_id": {"type": "keyword"},
+          "bpp_uri": {"type": "text"},
+          "transaction_id": {"type": "keyword"},
+          "message_id": {"type": "keyword"},
+          "timestamp": {"type": "text"}
+        }
+      },
       "item_details": {
         "properties": {
           "id": {"type": "keyword"},

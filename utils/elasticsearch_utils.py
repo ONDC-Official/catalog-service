@@ -96,6 +96,33 @@ def search_documents(index_name, search_query):
         print("Error:", e)
 
 
+def search_documents_with_scroll(index_name, search_query, scroll="2m"):
+    client = get_elasticsearch_client()
+    try:
+        response = client.search(index=index_name, body=search_query, scroll=scroll)
+        return response
+    except Exception as e:
+        print("Error:", e)
+
+
+def get_scroll_documents(scroll_id, scroll="2m"):
+    client = get_elasticsearch_client()
+    try:
+        response = client.scroll(scroll_id=scroll_id, scroll=scroll)
+        return response
+    except Exception as e:
+        print("Error:", e)
+
+
+def clear_scroll(scroll_id):
+    client = get_elasticsearch_client()
+    try:
+        response = client.clear_scroll(scroll_id=scroll_id)
+        return response
+    except Exception as e:
+        print("Error:", e)
+
+
 def search_products_for_unique_provider(size=10):
     client = get_elasticsearch_client()
     aggregation_query = {

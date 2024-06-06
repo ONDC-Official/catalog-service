@@ -122,26 +122,45 @@ def update_item_customisation_group_ids_with_children(existing_ids, cust_items, 
     return new_ids
 
 
-def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
-    new_cg_ids = []
-    for t in get_in(item, ["item_details", "tags"]):
-        if t["code"] == "custom_group":
-            custom_group_list = t["list"]
-            item_cg_ids = [c['value'] for c in custom_group_list]
-            new_cg_ids.extend(update_item_customisation_group_ids_with_children(item_cg_ids, cust_items, item_cg_ids))
+def get_self_and_nested_customisation_group_id(item):
+    customisation_group_id, customisation_nested_group_id = None, None
+    tags = item["item_details"]["tags"]
+    provider_id = item['provider_details']['id']
+    for t in tags:
         if t["code"] == "parent":
-            new_cg_ids = [t["list"][0]["value"]]
+            customisation_group_id = f'{provider_id}_{t["list"][0]["value"]}'
+        if t["code"] == "child":
+            customisation_nested_group_id = f'{provider_id}_{t["list"][0]["value"]}'
 
-    item_cust_groups = []
-    for cg_id in new_cg_ids:
-        try:
-            custom_group = next(c for c in customisation_groups if c["id"] == cg_id)
-            custom_group["local_id"] = custom_group["id"]
-            custom_group["id"] = f"{item['provider_details']['id']}_{custom_group['local_id']}"
-        except:
-            custom_group = {}
-        item_cust_groups.append(custom_group)
-    item["customisation_groups"] = item_cust_groups
+    return customisation_group_id, customisation_nested_group_id
+
+
+def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
+    if item.get("type") == "item":
+        new_cg_ids = []
+        for t in get_in(item, ["item_details", "tags"]):
+            if t["code"] == "custom_group":
+                custom_group_list = t["list"]
+                item_cg_ids = [c['value'] for c in custom_group_list]
+                new_cg_ids.extend(item_cg_ids)
+                new_cg_ids.extend(update_item_customisation_group_ids_with_children(item_cg_ids, cust_items, item_cg_ids))
+            if t["code"] == "parent":
+                new_cg_ids = [t["list"][0]["value"]]
+
+        item_cust_groups = []
+        for cg_id in new_cg_ids:
+            try:
+                custom_group = next(c for c in customisation_groups if c["id"] == cg_id)
+                custom_group["local_id"] = custom_group["id"]
+                custom_group["id"] = f"{item['provider_details']['id']}_{custom_group['local_id']}"
+                item_cust_groups.append(custom_group)
+            except Exception as e:
+                print(e)
+
+        item["customisation_groups"] = item_cust_groups
+    else:
+        item["customisation_group_id"], item["customisation_nested_group_id"] = \
+            get_self_and_nested_customisation_group_id(item)
     return item
 
 
@@ -160,9 +179,9 @@ def enrich_custom_menu_in_item(item, custom_menus):
             custom_menu = next(c for c in custom_menus if c["id"] == cm["id"])
             custom_menu["local_id"] = custom_menu["id"]
             custom_menu["id"] = f"{item['provider_details']['id']}_{custom_menu['local_id']}"
-        except:
-            custom_menu = {}
-        item_config_menus.append(custom_menu)
+            item_config_menus.append(custom_menu)
+        except Exception as e:
+            print(e)
     item["customisation_menus"] = item_config_menus
     return item
 

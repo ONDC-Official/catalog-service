@@ -1,0 +1,205 @@
+{
+  "took": 64,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 1,
+      "relation": "eq"
+    },
+    "max_score": 1.0,
+    "hits": [
+      {
+        "_index": "offers",
+        "_id": "sellerNPFashion.com_P1_L1_DISCP60",
+        "_score": 1.0,
+        "_source": {
+          "provider_details": {
+            "id": "P1",
+            "time": {
+              "label": "enable",
+              "timestamp": "2023-06-03T08:00:30.000Z"
+            },
+            "descriptor": {
+              "name": "Store 1",
+              "symbol": "https://sellerNP.com/images/store1.png",
+              "short_desc": "Store 1",
+              "long_desc": "Store 1",
+              "images": [
+                "https://sellerNP.com/images/store1.png"
+              ]
+            },
+            "ttl": "P1D",
+            "tags": [
+              {
+                "code": "serviceability",
+                "list": [
+                  {
+                    "code": "location",
+                    "value": "L1"
+                  },
+                  {
+                    "code": "category",
+                    "value": "Men's Topwear"
+                  },
+                  {
+                    "code": "type",
+                    "value": "12"
+                  },
+                  {
+                    "code": "val",
+                    "value": "IND"
+                  },
+                  {
+                    "code": "unit",
+                    "value": "country"
+                  }
+                ]
+              }
+            ]
+          },
+          "location_details": {
+            "id": "L1",
+            "time": {
+              "label": "enable",
+              "timestamp": "2023-06-03T07:30:30.000Z",
+              "days": "1,2,3,4,5,6,7",
+              "schedule": {
+                "holidays": [
+                  "2023-08-15"
+                ],
+                "frequency": "PT4H",
+                "times": [
+                  "1100",
+                  "1900"
+                ]
+              },
+              "range": {
+                "start": "1100",
+                "end": "2100"
+              }
+            },
+            "gps": "12.967555,77.749666",
+            "address": {
+              "locality": "Jayanagar",
+              "street": "Jayanagar 4th Block",
+              "city": "Bengaluru",
+              "area_code": "560076",
+              "state": "KA"
+            },
+            "circle": {
+              "gps": "12.967555,77.749666",
+              "radius": {
+                "unit": "km",
+                "value": "3"
+              }
+            },
+            "type": "pan"
+          },
+          "context": {
+            "domain": "ONDC:RET12",
+            "country": "IND",
+            "city": "std:080",
+            "action": "on_search",
+            "core_version": "1.2.0",
+            "bap_id": "buyerNP.com",
+            "bap_uri": "https://buyerNP.com/ondc",
+            "bpp_id": "sellerNPFashion.com",
+            "bpp_uri": "https://sellerNP.com/ondc",
+            "transaction_id": "T1",
+            "message_id": "M1",
+            "timestamp": "2023-06-03T08:00:30.000Z"
+          },
+          "bpp_details": {
+            "name": "Seller NP",
+            "symbol": "https://sellerNP.com/images/np.png",
+            "short_desc": "Seller Marketplace",
+            "long_desc": "Seller Marketplace",
+            "images": [
+              "https://sellerNP.com/images/np.png"
+            ],
+            "bpp_id": "sellerNPFashion.com"
+          },
+          "created_at": "2024-03-24T05:57:53.290543",
+          "local_id": "DISCP60",
+          "id":"sellerNPFashion.com_P1_L1_DISCP60",
+          "descriptor":
+          {
+            "code":"discount",
+            "images":
+            [
+              "https://sellerNP.com/images/offer2-banner.png"
+            ]
+          },
+          "location_ids":
+          [
+            "L1"
+          ],
+          "item_ids":
+          [
+            "I1"
+          ],
+          "time":
+          {
+            "label":"valid",
+            "range":
+            {
+              "start":"2023-06-21T16:00:00.000Z",
+              "end":"2023-06-21T23:00:00.000Z"
+            }
+          },
+          "tags":
+          [
+            {
+              "code":"qualifier",
+              "list":
+              [
+                {
+                  "code":"min_value",
+                  "value":"159"
+                }
+              ]
+            },
+            {
+              "code":"benefit",
+              "list":
+              [
+                {
+                  "code":"value_type",
+                  "value":"percent"
+                },
+                {
+                  "code":"value",
+                  "value":"-60.00"
+                },
+                {
+                  "code":"value_cap",
+                  "value":"-120.00"
+                }
+              ]
+            },
+            {
+              "code":"meta",
+              "list":
+              [
+                {
+                  "code":"additive",
+                  "value":"no"
+                },
+                {
+                  "code":"auto",
+                  "value":"yes"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

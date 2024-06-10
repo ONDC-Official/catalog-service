@@ -34,13 +34,15 @@ def consume_fn(message_string):
                 # else:
                 #     log_error(f"No search request found for given {on_search_payload['context']}")
                 #     update_on_search_dump_status(doc_id, "IN-PROGRESS")
-                items = transform_full_on_search_payload_into_final_items(on_search_payload)
+                items, offers = transform_full_on_search_payload_into_final_items(on_search_payload)
                 add_documents_to_index("items", items)
+                add_documents_to_index("offers", offers)
                 update_on_search_dump_status(doc_id, "FINISHED")
             elif payload["request_type"] == "inc":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS")
-                items = transform_incr_on_search_payload_into_final_items(on_search_payload)
+                items, offers = transform_incr_on_search_payload_into_final_items(on_search_payload)
                 add_documents_to_index("items", items)
+                add_documents_to_index("offers", offers)
                 update_on_search_dump_status(doc_id, "FINISHED")
         else:
             log_error(f"On search payload was not found for {doc_id}!")

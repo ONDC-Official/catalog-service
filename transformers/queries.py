@@ -24,6 +24,16 @@ def get_item_with_given_id(item_id, langauge='en'):
         return None
 
 
+def get_offer_with_given_id(offer_id, langauge='en'):
+    must_statements = [{"term": {"id": offer_id}}, {"term": {"language": langauge}}]
+    resp = es_utils.search_documents("offers", make_query_object_must_statements(must_statements))
+    resp_items = resp["hits"]["hits"]
+    if len(resp_items) > 0:
+        return resp_items[0]["_source"]
+    else:
+        return None
+
+
 def get_items_for_given_details(bpp_id, provider_id, location_id=None, item_type="item", variant_group_id=None, customisation_group_id=None):
     must_statements = [
         {"term": {"bpp_details.bpp_id": bpp_id}},
@@ -35,6 +45,18 @@ def get_items_for_given_details(bpp_id, provider_id, location_id=None, item_type
     must_statements.append({"term": {"customisation_group.id": customisation_group_id}}) if customisation_group_id else None
 
     resp = es_utils.search_documents("items", make_query_object_must_statements(must_statements))
+    resp_items = resp["hits"]["hits"]
+    return [i["_source"] for i in resp_items]
+
+
+def get_offers_for_given_details(bpp_id, provider_id, location_id):
+    must_statements = [
+        {"term": {"bpp_details.bpp_id": bpp_id}},
+        {"term": {"provider_details.id": provider_id}},
+        {"term": {"location_details.id": location_id}},
+    ]
+
+    resp = es_utils.search_documents("offers", make_query_object_must_statements(must_statements))
     resp_items = resp["hits"]["hits"]
     return [i["_source"] for i in resp_items]
 

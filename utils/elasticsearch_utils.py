@@ -29,16 +29,20 @@ def get_index_mapping(index_name):
 
 def init_elastic_search():
     client = get_elasticsearch_client()
-    index_name = "items"
+    init_es_index(client, "items")
+    init_es_index(client, "offers")
+
+
+def init_es_index(client, index_name):
     if client.indices.exists(index=index_name):
         log(f"Index '{index_name}' already exists.")
     else:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        mapping_json_path = os.path.join(current_dir, '../mappings/items_mappings.json')
-        with open(mapping_json_path, 'r') as json_file:
-            mapping_json = json.load(json_file)
+        items_mapping_json_path = os.path.join(current_dir, f'../mappings/{index_name}_mappings.json')
+        with open(items_mapping_json_path, 'r') as json_file:
+            items_mapping_json = json.load(json_file)
 
-        response = client.indices.create(index=index_name, body=mapping_json)
+        response = client.indices.create(index=index_name, body=items_mapping_json)
 
         # Check if the index creation was successful
         if response['acknowledged']:

@@ -1,15 +1,16 @@
+import copy
 from datetime import datetime
 
 from funcy import get_in, omit
 
 
-def enrich_provider_details_into_items(provider, item):
+def enrich_provider_details(provider, item):
     provider_details = provider
-    item["provider_details"] = omit(provider_details, ["locations", "items", "categories", "fulfillments"])
+    item["provider_details"] = omit(provider_details, ["locations", "items", "categories", "fulfillments", "offers"])
     return item
 
 
-def enrich_location_details_into_items(locations, item):
+def enrich_location_details_into_item(locations, item):
     try:
         location = next(i for i in locations if i["id"] == get_in(item, ["item_details", "location_id"]))
         location["local_id"] = location["id"]
@@ -18,6 +19,15 @@ def enrich_location_details_into_items(locations, item):
         location = {}
     item["location_details"] = location
     return item
+
+
+def enrich_location_details_into_offer(locations, offer, location_id):
+    try:
+        location = next(i for i in locations if i["id"] == f"{offer['provider_details']['id']}_{location_id}")
+    except:
+        location = {}
+    offer["location_details"] = location
+    return offer
 
 
 def enrich_category_details_into_items(categories, item):
@@ -29,7 +39,7 @@ def enrich_category_details_into_items(categories, item):
     return item
 
 
-def enrich_fulfillment_details_into_items(fulfillments, item):
+def enrich_fulfillment_details(fulfillments, item):
     try:
         fulfillment = next(i for i in fulfillments if i["id"] == get_in(item, ["item_details", "fulfillment_id"]))
     except:
@@ -38,7 +48,7 @@ def enrich_fulfillment_details_into_items(fulfillments, item):
     return item
 
 
-def enrich_context_bpp_id_and_descriptor_into_items(context, bpp_id, bpp_descriptor, item):
+def enrich_context_bpp_id_and_descriptor(context, bpp_id, bpp_descriptor, item):
     item["context"] = context
     item["bpp_details"] = bpp_descriptor
     item["bpp_details"]["bpp_id"] = bpp_id
@@ -59,10 +69,16 @@ def enrich_created_at_timestamp_in_item(item):
     return item
 
 
-def enrich_unique_id_in_item(item, provider_id):
+def enrich_unique_id_into_item(item, provider_id):
     item["local_id"] = item['item_details']['id']
     item["id"] = f"{provider_id}_{item['item_details']['id']}"
     return item
+
+
+def enrich_unique_id_into_offer(offer, location_id):
+    offer["local_id"] = offer['id']
+    offer["id"] = f"{offer['provider_details']['id']}_{location_id}_{offer['id']}"
+    return offer
 
 
 def flatten_item_attributes(item):
@@ -114,7 +130,7 @@ def enrich_is_first_flag_for_items(items):
 
 def get_provider_serviceabilities(provider_details):
     serviceabilities = dict()
-    for t in provider_details["tags"]:
+    for t in provider_details.get("tags", []):
         if t["code"] == "serviceability":
             values = t["list"]
             serviceability = {}
@@ -150,26 +166,43 @@ def flatten_full_on_search_payload_to_provider_map(payload):
         for p in bpp_providers:
             p["local_id"] = p.get('id')
             p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
+
+            # Enrich Items
+            provider_items = p.get("items", [])
             provider_locations = p.get("locations", [])
             provider_categories = p.get("categories", [])
-            provider_items = p.get("items", [])
             provider_items = [{"item_details": i} for i in provider_items]
-            [enrich_provider_details_into_items(p, i) for i in provider_items]
-            [enrich_location_details_into_items(provider_locations, i) for i in provider_items]
-            [enrich_fulfillment_details_into_items(bpp_fulfillments, i) for i in provider_items]
-            [enrich_context_bpp_id_and_descriptor_into_items(context, bpp_id, bpp_descriptor, i)
-             for i in provider_items]
+            [enrich_provider_details(p, i) for i in provider_items]
+            [enrich_location_details_into_item(provider_locations, i) for i in provider_items]
+            [enrich_fulfillment_details(bpp_fulfillments, i) for i in provider_items]
+            [enrich_context_bpp_id_and_descriptor(context, bpp_id, bpp_descriptor, i) for i in provider_items]
             [cast_price_and_rating_to_float(i) for i in provider_items]
             [flatten_item_attributes(i) for i in provider_items]
             [enrich_item_type(i) for i in provider_items]
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
-            [enrich_unique_id_in_item(i, p['id']) for i in provider_items]
-            provider_serviceabilities = get_provider_serviceabilities(p)
+            [enrich_unique_id_into_item(i, p['id']) for i in provider_items]
 
+            # Enrich Offers
+            provider_offers = p.get("offers", [])
+            [enrich_provider_details(p, o) for o in provider_offers]
+            [enrich_context_bpp_id_and_descriptor(context, bpp_id, bpp_descriptor, o) for o in provider_offers]
+
+            location_offers = []
+            for po in provider_offers:
+                for loc_id in po["location_ids"]:
+                    new_offer = copy.deepcopy(po)
+                    enrich_location_details_into_offer(provider_locations, new_offer, loc_id)
+                    enrich_unique_id_into_offer(new_offer, loc_id)
+                    new_offer.pop("location_ids")
+                    new_offer["item_local_ids"] = new_offer.pop("item_ids")
+                    location_offers.append(new_offer)
+
+            provider_serviceabilities = get_provider_serviceabilities(p)
             provider_value = {
                 "items": provider_items,
                 "categories": provider_categories,
-                "serviceabilities": provider_serviceabilities
+                "serviceabilities": provider_serviceabilities,
+                "location_offers": location_offers
             }
             provider_map[get_in(p, ["id"])] = provider_value
 
@@ -194,9 +227,42 @@ def flatten_incr_on_search_payload_to_provider_map_for_items(payload):
             [flatten_item_attributes(i) for i in provider_items]
             [enrich_item_type(i) for i in provider_items]
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
-            [enrich_unique_id_in_item(i, p["id"]) for i in provider_items]
+            [enrich_unique_id_into_item(i, p["id"]) for i in provider_items]
 
             provider_map[get_in(p, ["id"])] = provider_items
+
+    return provider_map
+
+
+def flatten_incr_on_search_payload_to_provider_map_for_offers(payload):
+    provider_map = {}
+    context = get_in(payload, ["context"])
+    catalog = get_in(payload, ["message", "catalog"], {})
+
+    bpp_id = get_in(context, ["bpp_id"])
+    if bpp_id:
+        bpp_descriptor = get_in(catalog, ["bpp/descriptor"], {})
+        bpp_providers = get_in(catalog, ["bpp/providers"])
+
+        for p in bpp_providers:
+            p["local_id"] = p.get('id')
+            p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
+            provider_locations = p.get("locations", [])
+
+            # Enrich Offers
+            provider_offers = p.get("offers", [])
+            [enrich_provider_details(p, o) for o in provider_offers]
+            [enrich_context_bpp_id_and_descriptor(context, bpp_id, bpp_descriptor, o) for o in provider_offers]
+
+            location_offers = []
+            for po in provider_offers:
+                for loc_id in po["location_ids"]:
+                    new_offer = copy.deepcopy(po)
+                    new_offer["location_id"] = loc_id
+                    enrich_unique_id_into_offer(new_offer, loc_id)
+                    location_offers.append(new_offer)
+
+            provider_map[get_in(p, ["id"])] = location_offers
 
     return provider_map
 

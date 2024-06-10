@@ -16,13 +16,19 @@ def translate_items_into_configured_languages(items, target_lang):
 
 def translate_item_descriptor(item_descriptor, target_lang):
     item_descriptor["name"] = ts.get_translated_text(item_descriptor["name"], target_lang=target_lang)
-    item_descriptor["short_desc"] = ts.get_translated_text(item_descriptor["short_desc"], target_lang=target_lang)
-    item_descriptor["long_desc"] = ts.get_translated_text(item_descriptor["long_desc"], target_lang=target_lang)
+    if "short_desc" in item_descriptor:
+        item_descriptor["short_desc"] = ts.get_translated_text(item_descriptor["short_desc"], target_lang=target_lang)
+    if "long_desc" in item_descriptor:
+        item_descriptor["long_desc"] = ts.get_translated_text(item_descriptor["long_desc"], target_lang=target_lang)
     return item_descriptor
 
 
 def translate_provider_descriptor(provider_descriptor, target_lang):
     provider_descriptor["name"] = ts.get_translated_text(provider_descriptor["name"], target_lang=target_lang)
-    provider_descriptor["short_desc"] = ts.get_translated_text(provider_descriptor["short_desc"], target_lang=target_lang)
-    provider_descriptor["long_desc"] = ts.get_translated_text(provider_descriptor["long_desc"], target_lang=target_lang)
+    if "short_desc" in provider_descriptor:
+        provider_descriptor["short_desc"] = ts.get_translated_text(provider_descriptor["short_desc"],
+                                                                   target_lang=target_lang)
+    if "long_desc" in provider_descriptor:
+        provider_descriptor["long_desc"] = ts.get_translated_text(provider_descriptor["long_desc"],
+                                                                  target_lang=target_lang)
     return provider_descriptor

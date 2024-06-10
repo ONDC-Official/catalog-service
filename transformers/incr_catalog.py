@@ -1,6 +1,7 @@
 from config import get_config_by_name
 from transformers.first import flatten_incr_on_search_payload_to_provider_map_for_items, \
-    flatten_incr_on_search_payload_to_provider_map_for_locations, flatten_incr_on_search_payload_to_providers
+    flatten_incr_on_search_payload_to_provider_map_for_locations, flatten_incr_on_search_payload_to_providers, \
+    flatten_incr_on_search_payload_to_provider_map_for_offers
 from transformers import queries
 from funcy import project
 
@@ -12,11 +13,13 @@ def transform_incr_on_search_payload_into_final_items(payload):
     bpp_providers = catalog.get("bpp/providers", [])
     bpp_provider_first = bpp_providers[0]
     if "items" in bpp_provider_first:
-        return get_item_objects_for_item_update(payload)
+        return get_item_objects_for_item_update(payload), []
     elif "locations" in bpp_provider_first:
-        return get_item_objects_for_location_update(payload)
+        return get_item_objects_for_location_update(payload), []
+    elif "offers" in bpp_provider_first:
+        return [], get_offer_objects_for_offers_update(payload)
     else:
-        return get_item_objects_for_provider_update(payload)
+        return get_item_objects_for_provider_update(payload), []
 
 
 def get_item_objects_for_item_update_for_default_language(payload):
@@ -65,6 +68,23 @@ def get_item_objects_for_location_update(payload):
                 i["location_details"]["time"] = lo["time"]
             item_objects.extend(db_items)
     return item_objects
+
+
+def get_offer_objects_for_offers_update(payload):
+    offer_objects = []
+    bpp_id = payload["context"]["bpp_id"]
+    provider_map = flatten_incr_on_search_payload_to_provider_map_for_offers(payload)
+    for provider_id, location_offers in provider_map.items():
+        for i in location_offers:
+            db_offer = queries.get_offers_for_given_details(
+                bpp_id=bpp_id,
+                provider_id=provider_id,
+                location_id=f'{provider_id}_{i["location_id"]}',
+            )[0]
+            db_offer.update(project(i, ["id", "local_id", "descriptor", "time", "tags", "created_at"]))
+            offer_objects.append(db_offer)
+
+    return offer_objects
 
 
 def get_item_objects_for_provider_update(payload):

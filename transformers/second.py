@@ -201,3 +201,9 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
     [enrich_custom_menu_in_item(i, custom_menus) for i in items]
     [enrich_default_language_in_item(i) for i in items]
     return items
+
+
+def enrich_offers_using_serviceabilities(offers, serviceabilities):
+    [enrich_serviceability_in_item(i, serviceabilities) for i in offers]
+    [enrich_default_language_in_item(i) for i in offers]
+    return offers

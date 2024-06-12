@@ -212,8 +212,106 @@
           "attribute_codes": {"type": "keyword"}
         }
       },
-      "customisation_groups": {"type": "nested"},
-      "customisation_menus": {"type": "nested"}
+      "customisation_groups": {
+        "type": "nested",
+        "properties": {
+          "descriptor": {
+            "properties": {
+              "name": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword"
+          },
+          "tags": {
+            "type": "nested",
+            "properties": {
+              "code": {"type": "keyword"},
+              "list": {
+                "type": "nested",
+                "properties": {
+                  "code": {"type": "keyword"},
+                  "value": {"type": "text"}
+                }
+              }
+            }
+          }
+        }
+      },
+      "customisation_menus": {
+        "type": "nested",
+        "properties": {
+          "descriptor": {
+            "properties": {
+              "images": {
+                "type": "keyword"
+              },
+              "long_desc": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "name": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "short_desc": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              }
+            }
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword"
+          },
+          "parent_category_id": {
+            "type": "keyword"
+          },
+          "tags": {
+            "type": "nested",
+            "properties": {
+              "code": {"type": "keyword"},
+              "list": {
+                "type": "nested",
+                "properties": {
+                  "code": {"type": "keyword"},
+                  "value": {"type": "text"}
+                }
+              }
+            }
+          }
+        }
+      },
+      "customisation_group_id": {"type": "keyword"},
+      "customisation_nested_group_id": {"type": "keyword"}
     }
   }
 }

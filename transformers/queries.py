@@ -167,6 +167,24 @@ def get_attributes(domain):
     return list(distinct_keys)
 
 
+def get_customisation_items_from_customisation_groups(customisation_group_ids):
+    query_obj = {
+        "query": {
+            "bool": {
+                "must": {
+                    "terms": {
+                        "customisation_group_id": customisation_group_ids
+                    }
+                }
+            }
+        }
+    }
+
+    resp = es_utils.search_documents("items", query_obj)
+    resp_items = resp["hits"]["hits"]
+    return [i["_source"] for i in resp_items]
+
+
 if __name__ == '__main__':
     os.environ["ENV"] = "dev"
     print(get_attributes("ONDC:RET12"))

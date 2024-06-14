@@ -85,6 +85,42 @@ def enrich_serviceability_in_item(item, serviceability_map):
     return item
 
 
+def enrich_provider_categories_and_location_categories(items):
+    provider_categories, location_categories_map = set(), {}
+    for i in items:
+        category = i["item_details"]["category_id"]
+        location_id = i["location_details"]["id"]
+        provider_categories.add(category)
+
+        if location_id in location_categories_map:
+            location_categories_map[location_id].add(category)
+        else:
+            location_categories_map[location_id] = {category}
+
+    [i["provider_details"].update({"categories": list(provider_categories)}) for i in items]
+    [i["location_details"].update({"categories": list(location_categories_map.get(i["location_details"]["id"], []))})
+     for i in items]
+
+
+def enrich_is_first_flag_for_items(items, categories):
+    variant_groups = set()
+    for i in items:
+        variant_group_local_id, variants = None, []
+        for c in categories:
+            if i["item_details"].get("parent_item_id") == c["id"]:
+                variant_group_local_id = c["id"]
+                tags = c["tags"]
+                for t in tags:
+                    if t["code"] == "attr":
+                        variants.append(t["list"])
+        if len(variants) == 0:
+            i["is_first"] = True
+        else:
+            i["is_first"] = variant_group_local_id not in variant_groups
+        variant_groups.add(variant_group_local_id)
+    return items
+
+
 def enrich_variant_group_in_item(item, variant_groups):
     try:
         variant_group = next(v for v in variant_groups if v["id"] == get_in(item, ["item_details", "parent_item_id"]))
@@ -195,6 +231,8 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
     variant_groups, custom_menus, customisation_groups = transform_item_categories(categories)
 
     cust_items = [i["item_details"] for i in items if i["type"] == "customization"].copy()
+    enrich_provider_categories_and_location_categories(items)
+    enrich_is_first_flag_for_items(items, categories)
     [enrich_serviceability_in_item(i, serviceabilities) for i in items]
     [enrich_variant_group_in_item(i, variant_groups) for i in items]
     [enrich_customisation_group_in_item(i, customisation_groups, cust_items) for i in items]

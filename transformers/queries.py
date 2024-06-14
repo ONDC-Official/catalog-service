@@ -100,16 +100,23 @@ def get_providers(lat, lng, size=10):
     query_obj = {
         "query": {
             "bool": {
-                "filter": {
-                    "geo_shape": {
-                        "location_details.polygons": {
-                            "shape": {
-                                "type": "point",
-                                "coordinates": [lat, lng]
+                "should": [
+                    {
+                        "match": {
+                            "location_details.type.keyword": "pan"
+                        }
+                    },
+                    {
+                        "geo_shape": {
+                            "location_details.polygons": {
+                                "shape": {
+                                    "type": "point",
+                                    "coordinates": [lat, lng]
+                                }
                             }
                         }
                     }
-                }
+                ]
             }
         },
         "aggs": {

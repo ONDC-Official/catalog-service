@@ -311,7 +311,8 @@
         }
       },
       "customisation_group_id": {"type": "keyword"},
-      "customisation_nested_group_id": {"type": "keyword"}
+      "customisation_nested_group_id": {"type": "keyword"},
+      "is_first": {"type": "boolean"}
     }
   }
 }

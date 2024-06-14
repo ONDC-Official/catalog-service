@@ -13,11 +13,12 @@ def enrich_provider_details(provider, item):
 def enrich_location_details_into_item(locations, item):
     try:
         location = next(i for i in locations if i["id"] == get_in(item, ["item_details", "location_id"]))
-        location["local_id"] = location["id"]
-        location["id"] = f"{item['provider_details']['id']}_{location['local_id']}"
-    except:
-        location = {}
-    item["location_details"] = location
+        new_loc = copy.deepcopy(location)
+        new_loc["local_id"] = new_loc["id"]
+        new_loc["id"] = f"{item['provider_details']['id']}_{new_loc['local_id']}"
+    except Exception as e:
+        new_loc = {}
+    item["location_details"] = new_loc
     return item
 
 

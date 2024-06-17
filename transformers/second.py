@@ -46,6 +46,11 @@ def transform_item_categories(categories):
     return variant_groups, custom_menus, customisation_groups
 
 
+def enrich_categories_in_item(item, categories):
+    item.update({"categories": categories})
+    return item
+
+
 def enrich_serviceability_in_item(item, serviceability_map):
     item_location = item.get("location_details", {})
     serviceabilities = serviceability_map.get(item_location.get("local_id"), [])
@@ -233,6 +238,7 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
     cust_items = [i["item_details"] for i in items if i["type"] == "customization"].copy()
     enrich_provider_categories_and_location_categories(items)
     enrich_is_first_flag_for_items(items, categories)
+    [enrich_categories_in_item(i, categories) for i in items]
     [enrich_serviceability_in_item(i, serviceabilities) for i in items]
     [enrich_variant_group_in_item(i, variant_groups) for i in items]
     [enrich_customisation_group_in_item(i, customisation_groups, cust_items) for i in items]

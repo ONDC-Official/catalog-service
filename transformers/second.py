@@ -137,6 +137,14 @@ def enrich_variant_group_in_item(item, variant_groups):
     return item
 
 
+def filter_out_items_with_incorrect_parent_item_id(item):
+    parent_item_id = get_in(item, ["item_details", "parent_item_id"])
+    if parent_item_id is not None and len(item["variant_group"]) == 0:
+        return False
+    else:
+        return True
+
+
 def update_item_customisation_group_ids_with_children(existing_ids, cust_items, all_ids=[]):
     new_ids = []
     for cid in existing_ids:
@@ -243,6 +251,11 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
     [enrich_variant_group_in_item(i, variant_groups) for i in items]
     [enrich_customisation_group_in_item(i, customisation_groups, cust_items) for i in items]
     [enrich_custom_menu_in_item(i, custom_menus) for i in items]
+
+    # Filter out the elements with incorrect parent item id
+    # TODO - log rejected items
+    items = list(filter(lambda x: filter_out_items_with_incorrect_parent_item_id, items))
+
     [enrich_default_language_in_item(i) for i in items]
     return items
 

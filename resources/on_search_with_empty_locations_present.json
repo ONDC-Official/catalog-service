@@ -1,0 +1,2119 @@
+{
+  "context": {
+    "domain": "ONDC:RET12",
+    "country": "IND",
+    "city": "std:0124",
+    "core_version": "1.2.0",
+    "action": "on_search",
+    "bap_id": "buyer-app-preprod-v2.ondc.org",
+    "bap_uri": "https://buyer-app.ondc.org/protocol/v1",
+    "bpp_id": "beta.mystore.in",
+    "bpp_uri": "https://beta.mystore.in/ondc/1.0/",
+    "transaction_id": "cd205bac-9342-4c9b-814f-2cf8e9e7d335",
+    "message_id": "dad663df-cef0-4938-960d-45c39347fc38",
+    "timestamp": "2024-06-17T08:44:24.051Z",
+    "ttl": "PT30S"
+  },
+  "message": {
+    "catalog": {
+      "bpp/descriptor": {
+        "name": "Mystore",
+        "symbol": "https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/636c8d9521cd491a8c9a4723/webp/mystore-logo-blue-480x480.png",
+        "short_desc": "Mystore",
+        "long_desc": "Mystore",
+        "images": [
+          "https://www.mystore.in/s/62ea2c599d1398fa16dbae0a/636c8d9521cd491a8c9a4723/webp/mystore-logo-blue-480x480.png"
+        ],
+        "tags": [
+          {
+            "code": "bpp_terms",
+            "list": [
+              {
+                "code": "np_type",
+                "value": "MSN"
+              }
+            ]
+          }
+        ]
+      },
+      "bpp/fulfillments": [
+        {
+          "id": "1",
+          "type": "Delivery"
+        }
+      ],
+      "bpp/providers": [
+        {
+          "id": "659e7cea5da96cff0167bed2",
+          "descriptor": {
+            "name": "Witslab Test Seller",
+            "short_desc": "Witslab Test Seller",
+            "long_desc": "Witslab Test Seller",
+            "images": [
+              "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/659e7d806633bdfecf4988e3/header-logo-29455862-1024x1024.png"
+            ],
+            "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/659e7d806633bdfecf4988e3/header-logo-29455862-1024x1024.png"
+          },
+          "ttl": "P1D",
+          "locations": [
+            {
+              "id": "659e7cea5da96cff0167bed2-l",
+              "gps": "28.404125,77.045256",
+              "address": {
+                "name": "Witslab Test Seller",
+                "street": "1254 tower",
+                "city": "gurgaon",
+                "area_code": "122018",
+                "state": "Haryana",
+                "locality": "1254 tower"
+              },
+              "time": {
+                "days": "1,2,3,4,5,6,7",
+                "range": {
+                  "start": "0000",
+                  "end": "2359"
+                },
+                "schedule": {
+                  "holidays": []
+                },
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "circle": {
+                "gps": "28.404125,77.045256",
+                "radius": {
+                  "unit": "km",
+                  "value": "500"
+                }
+              }
+            }
+          ],
+          "time": {
+            "label": "enable",
+            "timestamp": "2024-01-10T11:18:02.225Z"
+          },
+          "items": [
+            {
+              "id": "sku-SKU-3HJDMHIV8DTP",
+              "parent_item_id": "65aa1a05dd6c921748f099c6",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "659e7cea5da96cff0167bed2-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "tshirt 1",
+                "long_desc": "tshirt party wear",
+                "short_desc": "tshirt 1 sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+                ],
+                "code": "4:71129920",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "240",
+                "maximum_value": "280"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "90"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "L"
+                    },
+                    {
+                      "code": "colour",
+                      "value": "#BB3385"
+                    },
+                    {
+                      "code": "fabric",
+                      "value": "cotton"
+                    },
+                    {
+                      "code": "brand",
+                      "value": "levis"
+                    },
+                    {
+                      "code": "gender",
+                      "value": "male"
+                    },
+                    {
+                      "code": "size_chart",
+                      "value": "https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": false,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "320DK893989",
+              "@ondc/org/contact_details_consumer_care": "Witslab Test Seller, witslab@mystore.in, 9123456789",
+              "category_id": "T Shirts",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Witslab manufacturer",
+                "manufacturer_or_packer_address": "Gurugram",
+                "common_or_generic_name_of_commodity": "Wits accessories",
+                "month_year_of_manufacture_packing_import": "2020",
+                "importer_name": "Witslab importer",
+                "importer_address": "Gurugram"
+              }
+            },
+            {
+              "id": "sku-SKU-3KKO2FJOM1HM",
+              "parent_item_id": "65aa1a05dd6c921748f099c6",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "659e7cea5da96cff0167bed2-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "tshirt 1",
+                "long_desc": "tshirt party wear",
+                "short_desc": "tshirt 1 sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+                ],
+                "code": "4:71129920",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "230",
+                "maximum_value": "270"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "90"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "L"
+                    },
+                    {
+                      "code": "colour",
+                      "value": "#000000"
+                    },
+                    {
+                      "code": "fabric",
+                      "value": "cotton"
+                    },
+                    {
+                      "code": "brand",
+                      "value": "levis"
+                    },
+                    {
+                      "code": "gender",
+                      "value": "male"
+                    },
+                    {
+                      "code": "size_chart",
+                      "value": "https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": false,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "320DK893989",
+              "@ondc/org/contact_details_consumer_care": "Witslab Test Seller, witslab@mystore.in, 9123456789",
+              "category_id": "T Shirts",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Witslab manufacturer",
+                "manufacturer_or_packer_address": "Gurugram",
+                "common_or_generic_name_of_commodity": "Wits accessories",
+                "month_year_of_manufacture_packing_import": "2020",
+                "importer_name": "Witslab importer",
+                "importer_address": "Gurugram"
+              }
+            },
+            {
+              "id": "sku-SKU-SDZOMKVRULHK",
+              "parent_item_id": "65aa1a05dd6c921748f099c6",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "659e7cea5da96cff0167bed2-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "tshirt 1",
+                "long_desc": "tshirt party wear",
+                "short_desc": "tshirt 1 sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+                ],
+                "code": "4:71129920",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "290",
+                "maximum_value": "330"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "90"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "XXL"
+                    },
+                    {
+                      "code": "colour",
+                      "value": "#BB3385"
+                    },
+                    {
+                      "code": "fabric",
+                      "value": "cotton"
+                    },
+                    {
+                      "code": "brand",
+                      "value": "levis"
+                    },
+                    {
+                      "code": "gender",
+                      "value": "male"
+                    },
+                    {
+                      "code": "size_chart",
+                      "value": "https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": false,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "320DK893989",
+              "@ondc/org/contact_details_consumer_care": "Witslab Test Seller, witslab@mystore.in, 9123456789",
+              "category_id": "T Shirts",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Witslab manufacturer",
+                "manufacturer_or_packer_address": "Gurugram",
+                "common_or_generic_name_of_commodity": "Wits accessories",
+                "month_year_of_manufacture_packing_import": "2020",
+                "importer_name": "Witslab importer",
+                "importer_address": "Gurugram"
+              }
+            },
+            {
+              "id": "sku-SKU--RTIN1L_K4-M",
+              "parent_item_id": "65aa1a05dd6c921748f099c6",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "659e7cea5da96cff0167bed2-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "tshirt 1",
+                "long_desc": "tshirt party wear",
+                "short_desc": "tshirt 1 sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+                ],
+                "code": "4:71129920",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "290",
+                "maximum_value": "330"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "90"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "XXL"
+                    },
+                    {
+                      "code": "colour",
+                      "value": "#000000"
+                    },
+                    {
+                      "code": "fabric",
+                      "value": "cotton"
+                    },
+                    {
+                      "code": "brand",
+                      "value": "levis"
+                    },
+                    {
+                      "code": "gender",
+                      "value": "male"
+                    },
+                    {
+                      "code": "size_chart",
+                      "value": "https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": false,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "320DK893989",
+              "@ondc/org/contact_details_consumer_care": "Witslab Test Seller, witslab@mystore.in, 9123456789",
+              "category_id": "T Shirts",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Witslab manufacturer",
+                "manufacturer_or_packer_address": "Gurugram",
+                "common_or_generic_name_of_commodity": "Wits accessories",
+                "month_year_of_manufacture_packing_import": "2020",
+                "importer_name": "Witslab importer",
+                "importer_address": "Gurugram"
+              }
+            }
+          ],
+          "fulfillments": [
+            {
+              "contact": {
+                "phone": "9123456789",
+                "email": "witslab@mystore.in"
+              },
+              "id": "1",
+              "type": "Delivery"
+            }
+          ],
+          "tags": [
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "659e7cea5da96cff0167bed2-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Jeans"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "659e7cea5da96cff0167bed2-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Shirts"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "659e7cea5da96cff0167bed2-l"
+                },
+                {
+                  "code": "category",
+                  "value": "T Shirts"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "timing",
+              "list": [
+                {
+                  "code": "type",
+                  "value": "All"
+                },
+                {
+                  "code": "location",
+                  "value": "659e7cea5da96cff0167bed2-l"
+                },
+                {
+                  "code": "day_from",
+                  "value": "1"
+                },
+                {
+                  "code": "day_to",
+                  "value": "7"
+                },
+                {
+                  "code": "time_from",
+                  "value": "0000"
+                },
+                {
+                  "code": "time_to",
+                  "value": "2359"
+                }
+              ]
+            }
+          ],
+          "@ondc/org/fssai_license_no": "320DK893989",
+          "categories": [
+            {
+              "id": "65aa1a05dd6c921748f099c6",
+              "descriptor": {
+                "name": "tshirt 1"
+              },
+              "tags": [
+                {
+                  "code": "type",
+                  "list": [
+                    {
+                      "code": "type",
+                      "value": "variant_group"
+                    }
+                  ]
+                },
+                {
+                  "code": "attr",
+                  "list": [
+                    {
+                      "code": "name",
+                      "value": "item.tags.attribute.size"
+                    },
+                    {
+                      "code": "seq",
+                      "value": "1"
+                    }
+                  ]
+                },
+                {
+                  "code": "attr",
+                  "list": [
+                    {
+                      "code": "name",
+                      "value": "item.tags.attribute.colour"
+                    },
+                    {
+                      "code": "seq",
+                      "value": "2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "62733ab9f1f53df939f25300",
+          "descriptor": {
+            "name": "Mystore S",
+            "short_desc": "Mystore S",
+            "long_desc": "Mystore S",
+            "images": [
+              "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/6597a29931eabf223107e4fe/logo-dummy-1024x1024.png"
+            ],
+            "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/6597a29931eabf223107e4fe/logo-dummy-1024x1024.png"
+          },
+          "ttl": "P1D",
+          "locations": [
+            {
+              "id": "62733ab9f1f53df939f25300-l",
+              "gps": "28.412296,77.041741",
+              "address": {
+                "name": "Mystore S",
+                "street": "Bangalore",
+                "city": "Bangalore",
+                "area_code": "122003",
+                "state": "Karnataka",
+                "locality": "Bangalore"
+              },
+              "time": {
+                "days": "1,2,3,4,5,6,7",
+                "range": {
+                  "start": "0000",
+                  "end": "2359"
+                },
+                "schedule": {
+                  "holidays": []
+                },
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "circle": {
+                "gps": "28.412296,77.041741",
+                "radius": {
+                  "unit": "km",
+                  "value": "500"
+                }
+              }
+            }
+          ],
+          "time": {
+            "label": "enable",
+            "timestamp": "2022-05-05T02:47:21.337Z"
+          },
+          "items": [
+            {
+              "id": "sku-SKU-3HJDMHIV8DTP",
+              "parent_item_id": "65aa1a05dd6c921748f099c6",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "659e7cea5da96cff0167bed2-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "tshirt 1",
+                "long_desc": "tshirt party wear",
+                "short_desc": "tshirt 1 sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+                ],
+                "code": "4:71129920",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "240",
+                "maximum_value": "280"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "90"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "L"
+                    },
+                    {
+                      "code": "colour",
+                      "value": "#BB3385"
+                    },
+                    {
+                      "code": "fabric",
+                      "value": "cotton"
+                    },
+                    {
+                      "code": "brand",
+                      "value": "levis"
+                    },
+                    {
+                      "code": "gender",
+                      "value": "male"
+                    },
+                    {
+                      "code": "size_chart",
+                      "value": "https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": false,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "320DK893989",
+              "@ondc/org/contact_details_consumer_care": "Witslab Test Seller, witslab@mystore.in, 9123456789",
+              "category_id": "T Shirts",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Witslab manufacturer",
+                "manufacturer_or_packer_address": "Gurugram",
+                "common_or_generic_name_of_commodity": "Wits accessories",
+                "month_year_of_manufacture_packing_import": "2020",
+                "importer_name": "Witslab importer",
+                "importer_address": "Gurugram"
+              }
+            },
+            {
+              "id": "sku-SKU-3KKO2FJOM1HM",
+              "parent_item_id": "65aa1a05dd6c921748f099c6",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "659e7cea5da96cff0167bed2-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "tshirt 1",
+                "long_desc": "tshirt party wear",
+                "short_desc": "tshirt 1 sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+                ],
+                "code": "4:71129920",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "230",
+                "maximum_value": "270"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "90"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "L"
+                    },
+                    {
+                      "code": "colour",
+                      "value": "#000000"
+                    },
+                    {
+                      "code": "fabric",
+                      "value": "cotton"
+                    },
+                    {
+                      "code": "brand",
+                      "value": "levis"
+                    },
+                    {
+                      "code": "gender",
+                      "value": "male"
+                    },
+                    {
+                      "code": "size_chart",
+                      "value": "https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": false,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "320DK893989",
+              "@ondc/org/contact_details_consumer_care": "Witslab Test Seller, witslab@mystore.in, 9123456789",
+              "category_id": "T Shirts",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Witslab manufacturer",
+                "manufacturer_or_packer_address": "Gurugram",
+                "common_or_generic_name_of_commodity": "Wits accessories",
+                "month_year_of_manufacture_packing_import": "2020",
+                "importer_name": "Witslab importer",
+                "importer_address": "Gurugram"
+              }
+            },
+            {
+              "id": "sku-SKU-SDZOMKVRULHK",
+              "parent_item_id": "65aa1a05dd6c921748f099c6",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "659e7cea5da96cff0167bed2-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "tshirt 1",
+                "long_desc": "tshirt party wear",
+                "short_desc": "tshirt 1 sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+                ],
+                "code": "4:71129920",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "290",
+                "maximum_value": "330"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "90"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "XXL"
+                    },
+                    {
+                      "code": "colour",
+                      "value": "#BB3385"
+                    },
+                    {
+                      "code": "fabric",
+                      "value": "cotton"
+                    },
+                    {
+                      "code": "brand",
+                      "value": "levis"
+                    },
+                    {
+                      "code": "gender",
+                      "value": "male"
+                    },
+                    {
+                      "code": "size_chart",
+                      "value": "https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": false,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "320DK893989",
+              "@ondc/org/contact_details_consumer_care": "Witslab Test Seller, witslab@mystore.in, 9123456789",
+              "category_id": "T Shirts",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Witslab manufacturer",
+                "manufacturer_or_packer_address": "Gurugram",
+                "common_or_generic_name_of_commodity": "Wits accessories",
+                "month_year_of_manufacture_packing_import": "2020",
+                "importer_name": "Witslab importer",
+                "importer_address": "Gurugram"
+              }
+            },
+            {
+              "id": "sku-SKU--RTIN1L_K4-M",
+              "parent_item_id": "65aa1a05dd6c921748f099c6",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "659e7cea5da96cff0167bed2-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "tshirt 1",
+                "long_desc": "tshirt party wear",
+                "short_desc": "tshirt 1 sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+                ],
+                "code": "4:71129920",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65aa1990861951179e407ff8/mens-collection-01-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "290",
+                "maximum_value": "330"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "90"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "XXL"
+                    },
+                    {
+                      "code": "colour",
+                      "value": "#000000"
+                    },
+                    {
+                      "code": "fabric",
+                      "value": "cotton"
+                    },
+                    {
+                      "code": "brand",
+                      "value": "levis"
+                    },
+                    {
+                      "code": "gender",
+                      "value": "male"
+                    },
+                    {
+                      "code": "size_chart",
+                      "value": "https://unsplash.com/photos/white-crew-neck-t-shirt-acn5ERAeSb4"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": true,
+              "@ondc/org/cancellable": false,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "320DK893989",
+              "@ondc/org/contact_details_consumer_care": "Witslab Test Seller, witslab@mystore.in, 9123456789",
+              "category_id": "T Shirts",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Witslab manufacturer",
+                "manufacturer_or_packer_address": "Gurugram",
+                "common_or_generic_name_of_commodity": "Wits accessories",
+                "month_year_of_manufacture_packing_import": "2020",
+                "importer_name": "Witslab importer",
+                "importer_address": "Gurugram"
+              }
+            },
+            {
+              "id": "sku-SKU-DJIXYM8M05HL-",
+              "parent_item_id": "657bf8aee5f6c9eb6ed8ffca",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "62733ab9f1f53df939f25300-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "product c",
+                "long_desc": "12",
+                "short_desc": "product c sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65b89d1aaeb186eacc338bf5/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65b89d1baeb186eacc338bf6/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65b89d1baeb186eacc338bf8/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65b89d1baeb186eacc338bf7/71rw-5xkel-_sy741_-1024x1024.jpg"
+                ],
+                "code": "4:64029990",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65b89d1aaeb186eacc338bf5/71rw-5xkel-_sy741_-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "649",
+                "maximum_value": "1299"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "99"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "2"
+                    },
+                    {
+                      "code": "color",
+                      "value": "Black"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": false,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": false,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "13321010001016",
+              "@ondc/org/contact_details_consumer_care": "8899888890",
+              "category_id": "Packaged Foods",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Paragon",
+                "manufacturer_or_packer_address": "IN",
+                "common_or_generic_name_of_commodity": "Casual shoes",
+                "month_year_of_manufacture_packing_import": "2023"
+              }
+            },
+            {
+              "id": "sku-SKU-ENZUKSBILNYB_",
+              "parent_item_id": "657bf8aee5f6c9eb6ed8ffca",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "62733ab9f1f53df939f25300-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "product c",
+                "long_desc": "12",
+                "short_desc": "product c sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea2236d0769143af955/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af95d/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af963/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af95c/71rw-5xkel-_sy741_-1024x1024.jpg"
+                ],
+                "code": "4:64029990",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea2236d0769143af955/71rw-5xkel-_sy741_-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "649",
+                "maximum_value": "1299"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "99"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "3"
+                    },
+                    {
+                      "code": "color",
+                      "value": "blue"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": false,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": false,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "13321010001016",
+              "@ondc/org/contact_details_consumer_care": "8899888890",
+              "category_id": "Packaged Foods",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Paragon",
+                "manufacturer_or_packer_address": "IN",
+                "common_or_generic_name_of_commodity": "Casual shoes",
+                "month_year_of_manufacture_packing_import": "2023"
+              }
+            },
+            {
+              "id": "sku-SKU-LUDSTG_MWJRHS",
+              "parent_item_id": "657bf8aee5f6c9eb6ed8ffca",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "62733ab9f1f53df939f25300-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "product c",
+                "long_desc": "12",
+                "short_desc": "product c sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea2236d0769143af956/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af960/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af95f/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af958/71rw-5xkel-_sy741_-1024x1024.jpg"
+                ],
+                "code": "4:64029990",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea2236d0769143af956/71rw-5xkel-_sy741_-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "649",
+                "maximum_value": "1299"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "99"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "4"
+                    },
+                    {
+                      "code": "color",
+                      "value": "white"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": false,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": false,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "13321010001016",
+              "@ondc/org/contact_details_consumer_care": "8899888890",
+              "category_id": "Packaged Foods",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Paragon",
+                "manufacturer_or_packer_address": "IN",
+                "common_or_generic_name_of_commodity": "Casual shoes",
+                "month_year_of_manufacture_packing_import": "2023"
+              }
+            },
+            {
+              "id": "sku-SKU-46ARHBTNTS3NG",
+              "parent_item_id": "657bf8aee5f6c9eb6ed8ffca",
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-06-17T08:44:24.051Z"
+              },
+              "location_id": "62733ab9f1f53df939f25300-l",
+              "fulfillment_id": "1",
+              "descriptor": {
+                "name": "product c",
+                "long_desc": "12",
+                "short_desc": "product c sku",
+                "images": [
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af95b/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af959/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af962/71rw-5xkel-_sy741_-1024x1024.jpg",
+                  "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af957/71rw-5xkel-_sy741_-1024x1024.jpg"
+                ],
+                "code": "4:64029990",
+                "symbol": "https://beta.mystore.in/s/632dcf060c84820019e5c3eb/65a68ea3236d0769143af95b/71rw-5xkel-_sy741_-1024x1024.jpg"
+              },
+              "price": {
+                "currency": "INR",
+                "value": "649",
+                "maximum_value": "1299"
+              },
+              "quantity": {
+                "unitized": {
+                  "measure": {
+                    "unit": "unit",
+                    "value": "1"
+                  }
+                },
+                "available": {
+                  "count": "99"
+                },
+                "maximum": {
+                  "count": "99"
+                }
+              },
+              "tags": [
+                {
+                  "code": "origin",
+                  "list": [
+                    {
+                      "code": "country",
+                      "value": "IND"
+                    }
+                  ]
+                },
+                {
+                  "code": "attribute",
+                  "list": [
+                    {
+                      "code": "size",
+                      "value": "5"
+                    },
+                    {
+                      "code": "color",
+                      "value": "green"
+                    }
+                  ]
+                }
+              ],
+              "@ondc/org/returnable": false,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/available_on_cod": false,
+              "@ondc/org/seller_pickup_return": false,
+              "@ondc/org/return_window": "P7D",
+              "@ondc/org/time_to_ship": "P2D",
+              "@ondc/org/fssai_license_no": "13321010001016",
+              "@ondc/org/contact_details_consumer_care": "8899888890",
+              "category_id": "Packaged Foods",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "Paragon",
+                "manufacturer_or_packer_address": "IN",
+                "common_or_generic_name_of_commodity": "Casual shoes",
+                "month_year_of_manufacture_packing_import": "2023"
+              }
+            }
+          ],
+          "fulfillments": [
+            {
+              "contact": {
+                "phone": "7428701303",
+                "email": "reachus@mystore.in"
+              },
+              "id": "1",
+              "type": "Delivery"
+            }
+          ],
+          "tags": [
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Masala & Seasoning"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Feminine Care"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Electric Chimney"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Electronics"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Fruits and Vegetables"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Packaged Foods"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Gift Card"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Agriculture"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Speaker"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "F&B"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Oil & Ghee"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Home & Decor"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Packaged Commodities"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Shirts"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Headset"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Grocery"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Bakery, Cakes & Dairy"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Dairy and Cheese"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Chocolates and Biscuits"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Dishwasher Accessories"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Cookware"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Fragrance"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Gaskets"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Biometrics"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "serviceability",
+              "list": [
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "category",
+                  "value": "Home Decor"
+                },
+                {
+                  "code": "type",
+                  "value": "12"
+                },
+                {
+                  "code": "val",
+                  "value": "IND"
+                },
+                {
+                  "code": "unit",
+                  "value": "country"
+                }
+              ]
+            },
+            {
+              "code": "timing",
+              "list": [
+                {
+                  "code": "type",
+                  "value": "All"
+                },
+                {
+                  "code": "location",
+                  "value": "62733ab9f1f53df939f25300-l"
+                },
+                {
+                  "code": "day_from",
+                  "value": "1"
+                },
+                {
+                  "code": "day_to",
+                  "value": "7"
+                },
+                {
+                  "code": "time_from",
+                  "value": "0000"
+                },
+                {
+                  "code": "time_to",
+                  "value": "2359"
+                }
+              ]
+            }
+          ],
+          "@ondc/org/fssai_license_no": "13321010001016",
+          "categories": [
+            {
+              "id": "657bf8aee5f6c9eb6ed8ffca",
+              "descriptor": {
+                "name": "product c"
+              },
+              "tags": [
+                {
+                  "code": "type",
+                  "list": [
+                    {
+                      "code": "type",
+                      "value": "variant_group"
+                    }
+                  ]
+                },
+                {
+                  "code": "attr",
+                  "list": [
+                    {
+                      "code": "name",
+                      "value": "item.tags.attribute.size"
+                    },
+                    {
+                      "code": "seq",
+                      "value": "1"
+                    }
+                  ]
+                },
+                {
+                  "code": "attr",
+                  "list": [
+                    {
+                      "code": "name",
+                      "value": "item.tags.attribute.color"
+                    },
+                    {
+                      "code": "seq",
+                      "value": "2"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

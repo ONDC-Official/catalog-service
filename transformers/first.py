@@ -183,6 +183,10 @@ def flatten_full_on_search_payload_to_provider_map(payload):
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
             [enrich_unique_id_into_item(i, p['id']) for i in provider_items]
 
+            # Filter out the elements with location empty
+            # TODO - log rejected items
+            provider_items = list(filter(lambda x: len(x["location_details"]) != 0, provider_items))
+
             # Enrich Offers
             provider_offers = p.get("offers", [])
             [enrich_provider_details(p, o) for o in provider_offers]
@@ -248,7 +252,6 @@ def flatten_incr_on_search_payload_to_provider_map_for_offers(payload):
         for p in bpp_providers:
             p["local_id"] = p.get('id')
             p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
-            provider_locations = p.get("locations", [])
 
             # Enrich Offers
             provider_offers = p.get("offers", [])

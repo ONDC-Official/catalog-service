@@ -1,3 +1,4 @@
+import copy
 import json
 from json import JSONDecodeError
 
@@ -128,7 +129,8 @@ def enrich_is_first_flag_for_items(items, categories):
 
 def enrich_variant_group_in_item(item, variant_groups):
     try:
-        variant_group = next(v for v in variant_groups if v["id"] == get_in(item, ["item_details", "parent_item_id"]))
+        old_variant_group = next(v for v in variant_groups if v["id"] == get_in(item, ["item_details", "parent_item_id"]))
+        variant_group = copy.deepcopy(old_variant_group)
         variant_group["local_id"] = variant_group["id"]
         variant_group["id"] = f"{item['provider_details']['id']}_{variant_group['local_id']}"
     except:
@@ -199,7 +201,8 @@ def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
         item_cust_groups = []
         for cg_id in new_cg_ids:
             try:
-                custom_group = next(c for c in customisation_groups if c["id"] == cg_id)
+                old_custom_group = next(c for c in customisation_groups if c["id"] == cg_id)
+                custom_group = copy.deepcopy(old_custom_group)
                 custom_group["local_id"] = custom_group["id"]
                 custom_group["id"] = f"{item['provider_details']['id']}_{custom_group['local_id']}"
                 item_cust_groups.append(custom_group)
@@ -214,6 +217,8 @@ def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
 
 
 def enrich_custom_menu_in_item(item, custom_menus):
+    if item["id"] == "ondc-seller-api.trafyn.site_ONDC:RET11_1730318_6225487_URBAN_PIPER":
+        print("here")
     custom_menu_configs = get_in(item, ["item_details", "category_ids"], [])
     custom_menu_new_list = []
     for c in custom_menu_configs:
@@ -225,7 +230,8 @@ def enrich_custom_menu_in_item(item, custom_menus):
     item_config_menus = []
     for cm in custom_menu_new_list:
         try:
-            custom_menu = next(c for c in custom_menus if c["id"] == cm["id"])
+            old_custom_menu = next(c for c in custom_menus if c["id"] == cm["id"])
+            custom_menu = copy.deepcopy(old_custom_menu)
             custom_menu["local_id"] = custom_menu["id"]
             custom_menu["id"] = f"{item['provider_details']['id']}_{custom_menu['local_id']}"
             item_config_menus.append(custom_menu)

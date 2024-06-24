@@ -24,7 +24,10 @@ def enrich_location_details_into_item(locations, item):
 
 def enrich_location_details_into_offer(locations, offer, location_id):
     try:
-        location = next(i for i in locations if i["id"] == f"{offer['provider_details']['id']}_{location_id}")
+        location = next(i for i in locations if i["id"] == location_id)
+        new_loc = copy.deepcopy(location)
+        new_loc["local_id"] = new_loc["id"]
+        new_loc["id"] = f"{offer['provider_details']['id']}_{new_loc['local_id']}"
     except:
         location = {}
     offer["location_details"] = location

@@ -192,9 +192,66 @@ def get_customisation_items_from_customisation_groups(customisation_group_ids):
     return [i["_source"] for i in resp_items]
 
 
+def get_customisation_menus_by_provider(provider_id, size=10):
+    query_obj = {
+        "query": {
+            "bool": {
+                "must": [
+                    {
+                        "term": {
+                            "provider_details.id.keyword": provider_id  # Filter by provider_id
+                        }
+                    }
+                ]
+            }
+        },
+        "aggs": {
+            "unique_menus": {
+                "nested": {
+                    "path": "customisation_menus"
+                },
+                "aggs": {
+                    "filtered_menus": {
+                        "terms": {
+                            "field": "customisation_menus.id",  # Assuming 'id' is the unique identifier for customisation_menus
+                            "size": size
+                        },
+                        "aggs": {
+                            "menu_details": {
+                                "top_hits": {
+                                    "size": 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #
+    # # Perform the search query
+    resp = es_utils.search_documents("items", query_obj)
+    # f = open('/Users/aditya/Projects/ondc-sdk/catalog-service/resources/test.json')
+    #
+    # # returns JSON object as
+    # # a dictionary
+    # resp = json.load(f)
+
+    # Extract the customisation menus details
+    customisation_menus = []
+    for bucket in resp['aggregations']['unique_menus']['filtered_menus']['buckets']:
+        menu_details = [i["_source"] for i in bucket['menu_details']['hits']['hits']][0]
+        customisation_menus.append(menu_details)
+
+    # Closing file
+    # f.close()
+
+    return customisation_menus
+
+
 if __name__ == '__main__':
     os.environ["ENV"] = "dev"
-    print(get_attributes("ONDC:RET12"))
+    [print(x) for x in get_customisation_menus_by_provider("a")]
     # print(get_item_with_given_id("sellerNPFashion.com_ONDC:RET12_P1_I1", 'hi'))
     # print(json.dumps(dict(es_utils.get_index_mapping("items"))))
     # [print(json.dumps(s)) for s in search_items(12.967555, 77.749666, "allen1")]

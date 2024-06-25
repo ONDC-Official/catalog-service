@@ -186,22 +186,6 @@
           "bpp_id": {"type": "keyword"}
         }
       },
-      "attributes": {
-        "properties": {
-          "brand": {"type": "text"},
-          "colour": {"type": "text"},
-          "size": {"type": "text"},
-          "gender": {"type": "text"},
-          "pattern": {"type": "text"},
-          "material": {"type": "text"},
-          "occasion": {"type": "text"},
-          "season": {"type": "text"},
-          "trend": {"type": "text"},
-          "features": {"type": "text"},
-          "material_finish": {"type": "text"},
-          "size_chart": {"type": "keyword"}
-        }
-      },
       "type": {"type": "keyword"},
       "created_at": {"type": "date"},
       "local_id": {"type": "keyword"},

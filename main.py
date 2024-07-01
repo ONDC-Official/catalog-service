@@ -17,6 +17,7 @@ from utils.rabbitmq_utils import create_channel, declare_queue, consume_message,
 
 
 def consume_fn(message_string):
+    doc_id = None
     try:
         payload = json.loads(message_string)
         log(f"Got the payload {payload}!")
@@ -46,8 +47,10 @@ def consume_fn(message_string):
                 update_on_search_dump_status(doc_id, "FINISHED")
         else:
             log_error(f"On search payload was not found for {doc_id}!")
+            update_on_search_dump_status(doc_id, "FAILED")
     except Exception as e:
         log_error(f"Something went wrong with consume function - {e}!")
+        update_on_search_dump_status(doc_id, "FAILED") if doc_id else None
 
 
 @retry(AMQPConnectionError, delay=5, jitter=(1, 3))

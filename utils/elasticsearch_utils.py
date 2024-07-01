@@ -4,6 +4,7 @@ import os
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk, BulkIndexError
 
+from utils.hash_utils import get_md5_hash
 from logger.custom_logging import log, log_error
 from config import get_config_by_name
 
@@ -56,7 +57,7 @@ def generate_actions(index_name, documents):
     for doc in documents:
         yield {
             "_index": index_name,
-            "_id": f"{doc['id']}_{doc['language']}",  # Use the document ID + language as the Elasticsearch document ID
+            "_id": get_md5_hash(f"{doc['id']}_{doc['language']}"),  # Use the document ID + language as the Elasticsearch document ID
             "_source": doc
         }
 

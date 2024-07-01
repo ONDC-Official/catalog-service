@@ -66,7 +66,8 @@ def add_documents_to_index(index_name, documents):
     client = get_elasticsearch_client()
     try:
         if documents is not None and len(documents) > 0:
-            success, _ = bulk(client, generate_actions(index_name, documents), chunk_size=100)
+            success, _ = bulk(client, generate_actions(index_name, documents),
+                              chunk_size=get_config_by_name("BULK_CHUNK_SIZE"))
             log(success)
             log("Documents added to index")
     except BulkIndexError as e:

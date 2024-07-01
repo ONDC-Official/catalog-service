@@ -22,7 +22,7 @@ class Config:
     REDIS_DB = int(os.getenv("REDIS_DB", "0"))
     BHASHINI_USERID = os.getenv("BHASHINI_USERID", "userid")
     BHASHINI_ULCA_API_KEY = os.getenv("BHASHINI_ULCA_API_KEY", "apikey")
-    LANGUAGE_LIST = [lang.strip() for lang in os.getenv("LANGUAGE_LIST", "hi").split(",")]
+    LANGUAGE_LIST = [lang.strip() for lang in os.getenv("LANGUAGE_LIST", "").split(",")]
     IS_TEST = os.getenv("IS_TEST", "False") == "True"
 
 

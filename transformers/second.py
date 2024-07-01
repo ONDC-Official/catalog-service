@@ -68,6 +68,7 @@ def enrich_serviceability_in_item(item, serviceability_map):
                 val = json.loads(serviceability["val"])
                 multi_coordinates = val["features"][0]["geometry"]["coordinates"]
                 coordinates = [x for xs in multi_coordinates for x in xs]
+                coordinates = [[[c[1], c[0]] for c in coordinates]]
             elif serviceability["unit"] == "coordinates":
                 val = json.loads(serviceability["val"])
                 coordinates = [[[v['lat'], v['lng']] for v in val]]

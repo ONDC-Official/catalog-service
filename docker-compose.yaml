@@ -43,6 +43,10 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx3g"  # Adjust as per your server resources
+      - "http.max_content_length=200mb"  # Adjust based on your payload size
+    volumes:
+      - "./es_data:/usr/share/elasticsearch/data"
 
   cache:
     image: redis:6.2-alpine

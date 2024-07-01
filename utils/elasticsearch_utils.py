@@ -14,7 +14,7 @@ elasticsearch_client = None
 def get_elasticsearch_client() -> Elasticsearch:
     global elasticsearch_client
     if elasticsearch_client is None:
-        elasticsearch_client = Elasticsearch(get_config_by_name("ELASTIC_SEARCH_URL"))
+        elasticsearch_client = Elasticsearch(get_config_by_name("ELASTIC_SEARCH_URL"), timeout=60)
     return elasticsearch_client
 
 

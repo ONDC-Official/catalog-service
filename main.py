@@ -19,6 +19,7 @@ from utils.rabbitmq_utils import create_channel, declare_queue, consume_message,
 def consume_fn(message_string):
     doc_id = None
     try:
+        time.sleep(2)
         payload = json.loads(message_string)
         log(f"Got the payload {payload}!")
 

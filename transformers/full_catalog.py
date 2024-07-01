@@ -26,5 +26,6 @@ def transform_full_on_search_payload_into_final_items(payload):
     final_items.extend(default_lang_items)
     configured_language_list = get_config_by_name("LANGUAGE_LIST")
     for lang in configured_language_list:
-        final_items.extend(translate_items_into_configured_languages(default_lang_items, lang))
+        if lang:
+            final_items.extend(translate_items_into_configured_languages(default_lang_items, lang))
     return final_items, offers

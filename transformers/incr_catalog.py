@@ -31,11 +31,13 @@ def get_item_objects_for_item_update_for_default_language(payload):
             db_item = queries.get_item_with_given_id(i['id'])
             if db_item is None:
                 item_details = i["item_details"]
+                variant_group_id = f'{provider_id}_{item_details.get("parent_item_id")}' \
+                    if "parent_item_id" in item_details else None
                 db_item = queries.get_items_for_given_details(
                     bpp_id=bpp_id,
                     provider_id=provider_id,
                     item_type=i["type"],
-                    variant_group_id=f'{provider_id}_{item_details.get("parent_item_id")}',
+                    variant_group_id=variant_group_id,
                 )[0]
             db_item.update(project(i, ["id", "local_id", "type", "attributes", "item_details", "created_at"]))
             item_objects.append(db_item)

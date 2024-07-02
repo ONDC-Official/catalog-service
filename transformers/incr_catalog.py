@@ -49,7 +49,8 @@ def get_item_objects_for_item_update(payload):
     final_items.extend(default_lang_items)
     configured_language_list = get_config_by_name("LANGUAGE_LIST")
     for lang in configured_language_list:
-        final_items.extend(translate_items_into_configured_languages(default_lang_items, lang))
+        if lang:
+            final_items.extend(translate_items_into_configured_languages(default_lang_items, lang))
     return final_items
 
 

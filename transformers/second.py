@@ -96,7 +96,7 @@ def enrich_provider_categories_and_location_categories(items):
     provider_categories, location_categories_map = set(), {}
     for i in items:
         category = i["item_details"]["category_id"]
-        location_id = i["location_details"]["id"]
+        location_id = i["location_details"].get("id")
         provider_categories.add(category)
 
         if location_id in location_categories_map:
@@ -105,7 +105,7 @@ def enrich_provider_categories_and_location_categories(items):
             location_categories_map[location_id] = {category}
 
     [i["provider_details"].update({"categories": list(provider_categories)}) for i in items]
-    [i["location_details"].update({"categories": list(location_categories_map.get(i["location_details"]["id"], []))})
+    [i["location_details"].update({"categories": list(location_categories_map.get(i["location_details"].get("id"), []))})
      for i in items]
 
 

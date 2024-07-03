@@ -1,8 +1,9 @@
 import json
 import os
+from collections import deque
 
 from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk, BulkIndexError
+from elasticsearch.helpers import bulk, BulkIndexError, parallel_bulk
 
 from utils.hash_utils import get_md5_hash
 from logger.custom_logging import log, log_error
@@ -66,9 +67,12 @@ def add_documents_to_index(index_name, documents):
     client = get_elasticsearch_client()
     try:
         if documents is not None and len(documents) > 0:
-            success, _ = bulk(client, generate_actions(index_name, documents),
-                              chunk_size=get_config_by_name("BULK_CHUNK_SIZE"))
-            log(success)
+            log(f"Adding {len(documents)} {index_name}")
+            deque(parallel_bulk(client, generate_actions(index_name, documents), thread_count=10,
+                                chunk_size=get_config_by_name("BULK_CHUNK_SIZE")))
+            # success, _ = bulk(client, generate_actions(index_name, documents),
+            #                   chunk_size=get_config_by_name("BULK_CHUNK_SIZE"))
+            # log(success)
             log("Documents added to index")
     except BulkIndexError as e:
         # Handle document write errors

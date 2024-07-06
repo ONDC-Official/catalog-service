@@ -3,15 +3,14 @@ import copy
 from services import translation_service as ts
 
 
-def translate_items_into_configured_languages(items, target_lang):
-    new_items = copy.deepcopy(items)
-    for i in new_items:
+def translate_items_into_target_language(items, target_lang):
+    for i in items:
         i["language"] = target_lang
         i["item_details"]["descriptor"] = translate_item_descriptor(i["item_details"]["descriptor"], target_lang)
         i["provider_details"]["descriptor"] = translate_item_descriptor(i["provider_details"]["descriptor"],
                                                                         target_lang)
 
-    return new_items
+    return items
 
 
 def translate_item_descriptor(item_descriptor, target_lang):

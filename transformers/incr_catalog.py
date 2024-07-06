@@ -1,3 +1,5 @@
+import copy
+
 from config import get_config_by_name
 from transformers.first import flatten_incr_on_search_payload_to_provider_map_for_items, \
     flatten_incr_on_search_payload_to_provider_map_for_locations, flatten_incr_on_search_payload_to_providers, \
@@ -5,7 +7,7 @@ from transformers.first import flatten_incr_on_search_payload_to_provider_map_fo
 from transformers import queries
 from funcy import project
 
-from transformers.translation import translate_items_into_configured_languages
+from transformers.translation import translate_items_into_target_language
 
 
 def transform_incr_on_search_payload_into_final_items(payload):
@@ -52,7 +54,8 @@ def get_item_objects_for_item_update(payload):
     configured_language_list = get_config_by_name("LANGUAGE_LIST")
     for lang in configured_language_list:
         if lang:
-            final_items.extend(translate_items_into_configured_languages(default_lang_items, lang))
+            new_items = copy.deepcopy(default_lang_items)
+            final_items.extend(translate_items_into_target_language(new_items, lang))
     return final_items
 
 

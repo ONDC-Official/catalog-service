@@ -1,7 +1,9 @@
+import copy
+
 from config import get_config_by_name
 from transformers.first import flatten_full_on_search_payload_to_provider_map
 from transformers.second import enrich_items_using_tags_and_categories, enrich_offers_using_serviceabilities
-from transformers.translation import translate_items_into_configured_languages
+from transformers.translation import translate_items_into_target_language
 
 
 def transform_full_on_search_payload_into_default_lang_items(payload):
@@ -27,5 +29,6 @@ def transform_full_on_search_payload_into_final_items(payload):
     configured_language_list = get_config_by_name("LANGUAGE_LIST")
     for lang in configured_language_list:
         if lang:
-            final_items.extend(translate_items_into_configured_languages(default_lang_items, lang))
+            new_items = copy.deepcopy(default_lang_items)
+            final_items.extend(translate_items_into_target_language(new_items, lang))
     return final_items, offers

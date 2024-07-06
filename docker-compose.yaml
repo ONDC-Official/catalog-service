@@ -6,6 +6,7 @@ services:
     build:
       dockerfile: Dockerfile
     container_name: catalog-service
+    restart: always
     depends_on:
       - elasticsearch
       - rabbitmq
@@ -37,6 +38,7 @@ services:
 
   elasticsearch:
     image: elasticsearch:8.8.0
+    restart: always
     ports:
       - 9200:9200
       - 9300:9300

@@ -70,7 +70,7 @@ class TestFirst(unittest.TestCase):
             location_offers = provider_map[new_provider_id]["location_offers"]
 
         # Verify that the document retrieval was successful
-        self.assertEqual(1, len(items))
+        self.assertEqual(4, len(items))
         self.assertEqual(4, len(categories))
         self.assertEqual(1, len(serviceabilities))
         self.assertEqual(4, len(location_offers))

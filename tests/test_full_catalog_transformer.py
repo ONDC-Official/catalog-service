@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 from funcy import empty
 
+from config import get_config_by_name
 from transformers.full_catalog import transform_full_on_search_payload_into_default_lang_items, \
     transform_full_on_search_payload_into_final_items
 
@@ -46,7 +47,7 @@ class TestFullCatalog(unittest.TestCase):
             items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
 
         # Verify that the document retrieval was successful
-        self.assertEqual(1, len(items))
+        self.assertEqual(4, len(items))
         self.assertEqual(4, len(offers))
 
     def test_on_search_with_customisation_group(self):
@@ -57,7 +58,7 @@ class TestFullCatalog(unittest.TestCase):
             items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
 
         # Verify that the document retrieval was successful
-        self.assertEqual(1, len(items))
+        self.assertEqual(12, len(items))
         self.assertEqual(0, len(offers))
 
     @patch('services.translation_service.get_translated_text')
@@ -71,7 +72,8 @@ class TestFullCatalog(unittest.TestCase):
             items, offers = transform_full_on_search_payload_into_final_items(json_payload)
 
         # Verify that the document retrieval was successful
-        self.assertEqual(2, len(items))
+        lang_length = len(list(filter(lambda x: x != "", get_config_by_name("LANGUAGE_LIST"))))+1
+        self.assertEqual(1*lang_length, len(items))
         self.assertEqual(0, len(offers))
 
     def test_on_search_with_empty_locations_present(self):

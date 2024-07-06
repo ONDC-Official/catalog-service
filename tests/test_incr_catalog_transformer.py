@@ -4,6 +4,7 @@ import os
 from unittest.mock import patch
 from funcy import empty
 
+from config import get_config_by_name
 from transformers.incr_catalog import transform_incr_on_search_payload_into_final_items, \
     get_item_objects_for_item_update_for_default_language, get_offer_objects_for_offers_update
 
@@ -108,7 +109,8 @@ class TestIncrCatalog(unittest.TestCase):
             items, offers = transform_incr_on_search_payload_into_final_items(json_payload)
 
         # Verify that the document retrieval was successful
-        self.assertEqual(2, len(items))
+        lang_length = len(list(filter(lambda x: x != "", get_config_by_name("LANGUAGE_LIST"))))+1
+        self.assertEqual(1*lang_length, len(items))
         self.assertEqual(0, len(offers))
 
     @patch('services.translation_service.get_translated_text')
@@ -124,5 +126,6 @@ class TestIncrCatalog(unittest.TestCase):
             items, offers = transform_incr_on_search_payload_into_final_items(json_payload)
 
         # Verify that the document retrieval was successful
-        self.assertEqual(2, len(items))
+        lang_length = len(list(filter(lambda x: x != "", get_config_by_name("LANGUAGE_LIST"))))+1
+        self.assertEqual(1*lang_length, len(items))
         self.assertEqual(0, len(offers))

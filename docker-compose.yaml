@@ -55,6 +55,10 @@ services:
     restart: always
     ports:
       - 6379:6379
+    volumes:
+      - redis_data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
 
 #  kibana:
 #    image: kibana:8.12.2
@@ -63,3 +67,7 @@ services:
 #      - "5601:5601"
 #    environment:
 #      ELASTICSEARCH_URL: http://elasticsearch:9200
+
+volumes:
+  redis_data:
+    driver: local

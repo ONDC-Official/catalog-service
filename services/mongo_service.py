@@ -19,3 +19,12 @@ def update_on_search_dump_status(object_id, status, error=None, response_time=No
     if response_time:
         value["response_time"] = response_time
     collection.update_one(filter_criteria, {'$set': value})
+
+
+def update_on_search_dump_language_status(object_id, language, status, error=None):
+    collection = get_mongo_collection('on_search_dump')
+    filter_criteria = {"_id": object_id}
+    value = {language: status}
+    if error:
+        value["error"] = error
+    collection.update_one(filter_criteria, {'$set': value})

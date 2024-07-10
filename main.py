@@ -8,7 +8,7 @@ from retry import retry
 
 from config import get_config_by_name
 from logger.custom_logging import log, log_error
-from services.mongo_service import update_on_search_dump_status
+from services.mongo_service import update_on_search_dump_status, update_on_search_dump_language_status
 from transformers.full_catalog import transform_full_on_search_payload_into_default_lang_items
 from transformers.incr_catalog import transform_incr_on_search_payload_into_final_items
 from transformers.translation import translate_items_into_target_language
@@ -37,12 +37,22 @@ def consume_fn(message_string):
                 items, offers = transform_full_on_search_payload_into_default_lang_items(on_search_payload)
                 add_documents_to_index("items", items)
                 add_documents_to_index("offers", offers)
+                update_on_search_dump_status(doc_id, "FINISHED")
 
                 for lang in get_config_by_name("LANGUAGE_LIST"):
                     if lang:
-                        translate_items_into_target_language(items, lang)
-                        add_documents_to_index("items", items)
-                update_on_search_dump_status(doc_id, "FINISHED")
+                        try:
+                            translate_items_into_target_language(items, lang)
+                            add_documents_to_index("items", items)
+                            update_on_search_dump_language_status(doc_id, lang, "FINISHED")
+                        except BulkIndexError as e:
+                            log_error(f"Got error while adding in elasticsearch for {lang}!")
+                            update_on_search_dump_language_status(doc_id, lang, "FAILED",
+                                                                  e.errors[0]['index']['error']['reason'])
+                        except Exception as e:
+                            log_error(f"Something went wrong with consume function - {e}!")
+                            update_on_search_dump_language_status(doc_id, lang, "FAILED", str(e)) if doc_id else None
+
             elif payload["request_type"] == "inc":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS")
                 items, offers = transform_incr_on_search_payload_into_final_items(on_search_payload)

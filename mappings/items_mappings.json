@@ -11,10 +11,10 @@
         }
       },
       {
-        "booleans_as_keywords": {
+        "booleans_as_booleans_without_index": {
           "match_mapping_type": "boolean",
           "mapping": {
-            "type": "keyword",
+            "type": "boolean",
             "index": false
           }
         }
@@ -135,7 +135,43 @@
       },
       "customisation_group_id": {"type": "keyword"},
       "customisation_nested_group_id": {"type": "keyword"},
-      "is_first": {"type": "boolean"}
+      "is_first": {"type": "boolean"},
+      "provider_flag": {"type": "boolean"},
+      "item_flag": {"type": "boolean"},
+      "seller_flag": {"type": "boolean"},
+      "provider_error_tags": {
+        "type": "nested",
+        "properties": {
+          "type": {
+            "type": "keyword"
+          },
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "item_error_tags": {
+        "type": "nested",
+        "properties": {
+          "type": {
+            "type": "keyword"
+          },
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "seller_error_tags": {
+        "type": "nested",
+        "properties": {
+          "type": {
+            "type": "keyword"
+          },
+          "code": {
+            "type": "keyword"
+          }
+        }
+      }
     }
   }
 }

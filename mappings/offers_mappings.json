@@ -6,8 +6,7 @@
           "match_mapping_type": "string",
           "mapping": {
             "type": "keyword",
-            "index": false,
-            "store": true
+            "index": false
           }
         }
       },
@@ -16,8 +15,7 @@
           "match_mapping_type": "boolean",
           "mapping": {
             "type": "keyword",
-            "index": false,
-            "store": true
+            "index": false
           }
         }
       },
@@ -26,8 +24,7 @@
           "match_mapping_type": "date",
           "mapping": {
             "type": "keyword",
-            "index": false,
-            "store": true
+            "index": false
           }
         }
       }

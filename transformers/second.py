@@ -4,6 +4,7 @@ from json import JSONDecodeError
 
 from funcy import get_in
 
+from utils.iso_time_utils import calculate_duration_in_seconds
 from utils.math_utils import create_simple_circle_polygon
 
 
@@ -248,9 +249,37 @@ def enrich_default_language_in_item(item):
     return item
 
 
+def get_location_time_to_ship_dict(items):
+    location_time_to_ship_dict = {}
+    for i in items:
+        item_tts_str = get_in(i, ["item_details", "@ondc/org/time_to_ship"])
+        item_tts = calculate_duration_in_seconds(item_tts_str) if item_tts_str else 0
+        location_id = get_in(i, ["location_details", "id"])
+        min_tts, max_tts = location_time_to_ship_dict.get(location_id, (float("inf"), 0))
+        if item_tts < min_tts:
+            min_tts = item_tts
+        if item_tts > max_tts:
+            max_tts = item_tts
+
+        location_time_to_ship_dict[location_id] = (min_tts, max_tts)
+
+    return location_time_to_ship_dict
+
+
+def enrich_min_max_time_to_ship_for_location(item, location_time_to_ship_dict):
+    location_id = get_in(item, ["location_details", "id"])
+    min_tts, max_tts = location_time_to_ship_dict.get(location_id, (float("inf"), 0))
+    item["location_details"]["min_time_to_ship"] = min_tts if min_tts != float("inf") else 0
+    item["location_details"]["max_time_to_ship"] = max_tts
+    return item
+
+
 def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
     variant_groups, custom_menus, customisation_groups = transform_item_categories(categories)
     cust_items = [i["item_details"] for i in items if i["type"] == "customization"].copy()
+
+    location_time_to_ship_dict = get_location_time_to_ship_dict(items)
+    [enrich_min_max_time_to_ship_for_location(i, location_time_to_ship_dict) for i in items]
 
     enrich_is_first_flag_for_items(items, categories)
 

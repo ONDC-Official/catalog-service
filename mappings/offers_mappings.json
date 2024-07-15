@@ -72,7 +72,9 @@
             }
           },
           "type": {"type": "keyword"},
-          "polygons": {"type": "geo_shape"}
+          "polygons": {"type": "geo_shape"},
+          "median_time_to_ship": {"type": "float"},
+          "average_time_to_ship": {"type": "float"}
         }
       },
       "bpp_details": {

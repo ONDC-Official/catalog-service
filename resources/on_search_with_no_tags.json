@@ -1,0 +1,158 @@
+{
+  "context": {
+    "action": "on_search",
+    "domain": "ONDC:RET10",
+    "city": "std:080",
+    "country": "IND",
+    "bap_id": "ondc.dpicorp.io",
+    "bap_uri": "https://dff3-2409-40f2-4a-29c4-119f-36fa-ec36-2e4a.ngrok-free.app/buyerAppl",
+    "bpp_id": "ondc.d2rtech.com",
+    "bpp_uri": "https://ondc.d2rtech.com/sellerAppl",
+    "core_version": "1.2.0",
+    "transaction_id": "6851c167-c967-4d6d-8770-26bf782568ba",
+    "message_id": "6ec8d4d5-4010-484c-b7d9-4324ed12fabb",
+    "timestamp": "2024-03-14T10:03:10.598Z"
+  },
+  "message": {
+    "catalog": {
+      "bpp/fulfillments": [
+        { "id": "1", "type": "Delivery" },
+        { "id": "2", "type": "Self-Pickup" },
+        { "id": "3", "type": "Delivery and Self-Pickup" }
+      ],
+      "bpp/descriptor": {
+        "name": "D2Rtech Store",
+        "symbol": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/b3fa428d-cc87-4035-b069-19f3dc282e2f/logo/imgonline-com-ua-shape-doGhSIiaJopa.png",
+        "short_desc": "D2Rtech Store",
+        "long_desc": "D2Rtech Store",
+        "images": [
+          "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/b3fa428d-cc87-4035-b069-19f3dc282e2f/logo/imgonline-com-ua-shape-doGhSIiaJopa.png"
+        ],
+        "tags": [
+          {
+            "code": "bpp_terms",
+            "list": [{ "code": "np_type", "value": "MSN" }]
+          }
+        ]
+      },
+      "bpp/providers": [
+        {
+          "id": "545016d9-ed19-4c02-833d-f4270436ffc0",
+          "descriptor": {
+            "name": "D2Rtech Store",
+            "symbol": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/b3fa428d-cc87-4035-b069-19f3dc282e2f/logo/imgonline-com-ua-shape-doGhSIiaJopa.png",
+            "short_desc": "D2Rtech Store",
+            "long_desc": "D2Rtech Store",
+            "images": [
+              "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/b3fa428d-cc87-4035-b069-19f3dc282e2f/logo/imgonline-com-ua-shape-doGhSIiaJopa.png"
+            ]
+          },
+          "time": {
+            "label": "enable",
+            "timestamp": "2024-03-14T05:39:09.246Z"
+          },
+          "locations": [
+            {
+              "id": "65408f51f1960f251e81774a",
+              "gps": "12.90936352753578,77.64333431484344",
+              "address": {
+                "city": "Bengaluru",
+                "state": "Karnataka",
+                "area_code": "560102",
+                "street": "HSR Layout",
+                "locality": "NA"
+              },
+              "time": {
+                "label": "enable",
+                "timestamp": "2024-03-14T05:39:09.246Z",
+                "days": "1,2,3,4,5,6,7",
+                "schedule": { "holidays": [] },
+                "range": { "start": "0000", "end": "2300" }
+              },
+              "circle": {
+                "gps": "12.90936352753578,77.64333431484344",
+                "radius": { "unit": "km", "value": "10" }
+              }
+            }
+          ],
+          "ttl": "PT24H",
+          "categories": [],
+          "items": [
+            {
+              "id": "3a870428-8b92-428b-9747-b4e92eeb132b",
+              "time": {
+                "label": "enable",
+                "timestamp": "2023-11-30T12:41:32.342Z"
+              },
+              "parent_item_id": "",
+              "descriptor": {
+                "name": "Oranges",
+                "symbol": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/4a0ea968-cabe-4623-85ec-34136d98fb66/product_image/orange_1.jpeg",
+                "short_desc": "Sourced fresh from farm",
+                "long_desc": "Sourced fresh from farm",
+                "images": [
+                  "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/4a0ea968-cabe-4623-85ec-34136d98fb66/product_image/orange_1.jpeg",
+                  "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/6251a95a-f289-4f4a-9a73-c5c501ede4a0/product_image/orange_2.jpeg",
+                  "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/110c03e8-10ee-4ef4-943f-9c86e088c107/product_image/orange_3.jpeg"
+                ]
+              },
+              "quantity": {
+                "unitized": { "measure": { "unit": "gram", "value": "500" } },
+                "available": { "count": "99" },
+                "maximum": { "count": "2" }
+              },
+              "price": {
+                "currency": "INR",
+                "value": "230",
+                "maximum_value": "230"
+              },
+              "category_ids": [],
+              "category_id": "Fruits and Vegetables",
+              "location_id": "65408f51f1960f251e81774a",
+              "fulfillment_id": "1",
+              "@ondc/org/returnable": false,
+              "@ondc/org/cancellable": true,
+              "@ondc/org/available_on_cod": true,
+              "@ondc/org/time_to_ship": "PT1H",
+              "@ondc/org/seller_pickup_return": true,
+              "@ondc/org/return_window": "PT1H",
+              "@ondc/org/contact_details_consumer_care": "D2Rtech Store,test.D2Rtech@gmail.com,8855663322",
+              "@ondc/org/statutory_reqs_packaged_commodities": {
+                "manufacturer_or_packer_name": "NA",
+                "manufacturer_or_packer_address": "NA",
+                "common_or_generic_name_of_commodity": "NA",
+                "month_year_of_manufacture_packing_import": "NA"
+              },
+              "@ondc/org/statutory_reqs_prepackaged_food": {
+                "nutritional_info": "NA",
+                "additives_info": "NA",
+                "brand_owner_FSSAI_license_no": "NA",
+                "other_FSSAI_license_no": "NA",
+                "importer_FSSAI_license_no": "NA"
+              }
+            }
+          ],
+          "fulfillments": [
+            {
+              "id": "1",
+              "type": "Delivery",
+              "contact": { "email": "D2Rtech@gmail.com", "phone": "8294743610" }
+            }
+          ],
+          "tags": [
+            {
+              "code": "serviceability",
+              "list": [
+                { "code": "location", "value": "65408f51f1960f251e81774a" },
+                { "code": "category", "value": "Fruits and Vegetables" },
+                { "code": "type", "value": "12" },
+                { "code": "unit", "value": "country" },
+                { "code": "value", "value": "IND" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

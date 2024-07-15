@@ -86,7 +86,7 @@ def enrich_unique_id_into_offer(offer, location_id):
 
 
 def flatten_item_attributes(item):
-    tags = item["item_details"]["tags"]
+    tags = item["item_details"].get("tags", [])
     attr_list = []
     attr_dict = {}
     for t in tags:
@@ -102,7 +102,7 @@ def flatten_item_attributes(item):
 
 def enrich_item_type(item):
     item_details = item["item_details"]
-    tags = item_details["tags"]
+    tags = item_details.get("tags", [])
     item_type = "item"
     for t in tags:
         if t["code"] == "type":
@@ -188,8 +188,8 @@ def flatten_full_on_search_payload_to_provider_map(payload):
 
             # Filter out the elements with location empty (for type as item)
             # TODO - log rejected items
-            provider_items = list(filter(lambda x: len(x["location_details"]) != 0 or x["type"] == "customization",
-                                         provider_items))
+            # provider_items = list(filter(lambda x: len(x["location_details"]) != 0 or x["type"] == "customization",
+            #                              provider_items))
 
             # Enrich Offers
             provider_offers = p.get("offers", [])

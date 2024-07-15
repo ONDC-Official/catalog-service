@@ -5,6 +5,7 @@ from statistics import median, mean
 
 from funcy import get_in
 
+from business_rule_validations.item import validate_item_level
 from utils.iso_time_utils import calculate_duration_in_seconds
 from utils.math_utils import create_simple_circle_polygon
 
@@ -193,7 +194,7 @@ def get_self_and_nested_customisation_group_id(item):
 def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
     if item.get("type") == "item":
         new_cg_ids = []
-        for t in get_in(item, ["item_details", "tags"]):
+        for t in get_in(item, ["item_details", "tags"], []):
             if t["code"] == "custom_group":
                 custom_group_list = t["list"]
                 item_cg_ids = [c['value'] for c in custom_group_list]
@@ -292,9 +293,15 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
 
     # Filter out the elements with incorrect parent item id
     # TODO - log rejected items
-    items = list(filter(lambda x: filter_out_items_with_incorrect_parent_item_id, items))
+    # items = list(filter(lambda x: filter_out_items_with_incorrect_parent_item_id, items))
 
     [enrich_default_language_in_item(i) for i in items]
+
+    # Add error flags
+    for i in items:
+        item_error_tags = validate_item_level(i)
+        i["item_flag"] = len(item_error_tags) > 0
+        i["item_error_tags"] = item_error_tags
     return items
 
 

@@ -82,8 +82,101 @@ class TestFullCatalog(unittest.TestCase):
         with open(filepath) as f:
             json_payload = json.load(f)
             items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
+            flagged_items = list(filter(lambda x: x["item_flag"], items))
 
         # Verify that the document retrieval was successful
-        self.assertEqual(8, len(items))
+        self.assertEqual(12, len(items))
+        self.assertEqual(4, len(flagged_items))
+        self.assertEqual(0, len(offers))
+
+    def test_on_search_with_incorrect_parent_id(self):
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(current_path, "resources/on_search_with_incorrect_parent_id.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
+            flagged_items = list(filter(lambda x: x["item_flag"], items))
+
+        # Verify that the document retrieval was successful
+        self.assertEqual(7, len(items))
+        self.assertEqual(1, len(flagged_items))
+        self.assertEqual(0, len(offers))
+
+    def test_on_search_with_invalid_geoshape(self):
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(current_path, "resources/on_search_with_invalid_geoshape.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
+            flagged_items = list(filter(lambda x: x["item_flag"], items))
+
+        # Verify that the document retrieval was successful
+        self.assertEqual(7, len(items))
+        self.assertEqual(7, len(flagged_items))
+        self.assertEqual(0, len(offers))
+
+    def test_on_search_with_incorrect_pincode(self):
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(current_path, "resources/on_search_with_incorrect_pincode.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
+            flagged_items = list(filter(lambda x: x["item_flag"], items))
+
+        # Verify that the document retrieval was successful
+        self.assertEqual(1, len(items))
+        self.assertEqual(1, len(flagged_items))
+        self.assertEqual(0, len(offers))
+
+    def test_on_search_with_price_greater_than_max(self):
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(current_path, "resources/on_search_with_price_greater_than_max.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
+            flagged_items = list(filter(lambda x: x["item_flag"], items))
+
+        # Verify that the document retrieval was successful
+        self.assertEqual(1, len(items))
+        self.assertEqual(1, len(flagged_items))
+        self.assertEqual(0, len(offers))
+
+    def test_on_search_with_empty_customisation_groups(self):
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(current_path, "resources/on_search_with_empty_customisation_groups.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
+            flagged_items = list(filter(lambda x: x["item_flag"], items))
+
+        # Verify that the document retrieval was successful
+        self.assertEqual(12, len(items))
+        self.assertEqual(12, len(flagged_items))
+        self.assertEqual(0, len(offers))
+
+    def test_on_search_with_no_tags(self):
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(current_path, "resources/on_search_with_no_tags.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
+            flagged_items = list(filter(lambda x: x["item_flag"], items))
+
+        # Verify that the document retrieval was successful
+        self.assertEqual(1, len(items))
+        self.assertEqual(1, len(flagged_items))
+        self.assertEqual(0, len(offers))
+
+    def test_on_search_with_no_origin_tag(self):
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(current_path, "resources/on_search_with_no_origin_tag.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers = transform_full_on_search_payload_into_default_lang_items(json_payload)
+            flagged_items = list(filter(lambda x: x["item_flag"], items))
+
+        # Verify that the document retrieval was successful
+        self.assertEqual(1, len(items))
+        self.assertEqual(1, len(flagged_items))
         self.assertEqual(0, len(offers))
 

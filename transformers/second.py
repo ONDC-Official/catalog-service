@@ -1,6 +1,7 @@
 import copy
 import json
 from json import JSONDecodeError
+from statistics import median, mean
 
 from funcy import get_in
 
@@ -255,22 +256,20 @@ def get_location_time_to_ship_dict(items):
         item_tts_str = get_in(i, ["item_details", "@ondc/org/time_to_ship"])
         item_tts = calculate_duration_in_seconds(item_tts_str) if item_tts_str else 0
         location_id = get_in(i, ["location_details", "id"])
-        min_tts, max_tts = location_time_to_ship_dict.get(location_id, (float("inf"), 0))
-        if item_tts < min_tts:
-            min_tts = item_tts
-        if item_tts > max_tts:
-            max_tts = item_tts
-
-        location_time_to_ship_dict[location_id] = (min_tts, max_tts)
+        tts_list = location_time_to_ship_dict.get(location_id, [])
+        tts_list.append(item_tts)
+        location_time_to_ship_dict[location_id] = tts_list
 
     return location_time_to_ship_dict
 
 
-def enrich_min_max_time_to_ship_for_location(item, location_time_to_ship_dict):
+def enrich_time_to_ship_fields_for_location(item, location_time_to_ship_dict):
     location_id = get_in(item, ["location_details", "id"])
-    min_tts, max_tts = location_time_to_ship_dict.get(location_id, (float("inf"), 0))
-    item["location_details"]["min_time_to_ship"] = min_tts if min_tts != float("inf") else 0
-    item["location_details"]["max_time_to_ship"] = max_tts
+    tts_list = location_time_to_ship_dict.get(location_id, [])
+    item["location_details"]["min_time_to_ship"] = min(tts_list) if len(tts_list) > 0 else 0
+    item["location_details"]["max_time_to_ship"] = max(tts_list) if len(tts_list) > 0 else 0
+    item["location_details"]["average_time_to_ship"] = mean(tts_list) if len(tts_list) > 0 else 0
+    item["location_details"]["median_time_to_ship"] = median(tts_list) if len(tts_list) > 0 else 0
     return item
 
 
@@ -279,7 +278,7 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
     cust_items = [i["item_details"] for i in items if i["type"] == "customization"].copy()
 
     location_time_to_ship_dict = get_location_time_to_ship_dict(items)
-    [enrich_min_max_time_to_ship_for_location(i, location_time_to_ship_dict) for i in items]
+    [enrich_time_to_ship_fields_for_location(i, location_time_to_ship_dict) for i in items]
 
     enrich_is_first_flag_for_items(items, categories)
 

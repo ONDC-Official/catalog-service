@@ -11,15 +11,6 @@
         }
       },
       {
-        "floats_as_floats_without_index": {
-          "match_mapping_type": "float",
-          "mapping": {
-            "type": "float",
-            "index": false
-          }
-        }
-      },
-      {
         "booleans_as_booleans_without_index": {
           "match_mapping_type": "boolean",
           "mapping": {
@@ -91,9 +82,7 @@
             }
           },
           "type": {"type": "keyword"},
-          "polygons": {"type": "geo_shape"},
-          "median_time_to_ship": {"type": "float"},
-          "average_time_to_ship": {"type": "float"}
+          "polygons": {"type": "geo_shape"}
         }
       },
       "bpp_details": {

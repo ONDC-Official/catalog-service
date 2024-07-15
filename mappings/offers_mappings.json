@@ -11,15 +11,6 @@
         }
       },
       {
-        "floats_as_floats_without_index": {
-          "match_mapping_type": "float",
-          "mapping": {
-            "type": "float",
-            "index": false
-          }
-        }
-      },
-      {
         "booleans_as_booleans_without_index": {
           "match_mapping_type": "boolean",
           "mapping": {

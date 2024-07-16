@@ -211,7 +211,9 @@ def flatten_full_on_search_payload_to_provider_map(payload):
                 "items": provider_items,
                 "categories": provider_categories,
                 "serviceabilities": provider_serviceabilities,
-                "location_offers": location_offers
+                "location_offers": location_offers,
+                "provider_error_tags": [],
+                "seller_error_tags": [],
             }
             provider_map[get_in(p, ["id"])] = provider_value
 

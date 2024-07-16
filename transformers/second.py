@@ -275,7 +275,7 @@ def enrich_time_to_ship_fields_for_location(item, location_time_to_ship_dict):
     return item
 
 
-def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
+def enrich_items_using_tags_and_categories(items, categories, serviceabilities, provider_error_tags, seller_error_tags):
     variant_groups, custom_menus, customisation_groups = transform_item_categories(categories)
     cust_items = [i["item_details"] for i in items if i["type"] == "customization"].copy()
 
@@ -303,6 +303,10 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
         item_error_tags = validate_item_level(i)
         i["item_flag"] = len(item_error_tags) > 0
         i["item_error_tags"] = item_error_tags
+        i["provider_flag"] = len(provider_error_tags) > 0
+        i["provider_error_tags"] = provider_error_tags
+        i["seller_flag"] = len(seller_error_tags) > 0
+        i["seller_error_tags"] = seller_error_tags
     return items
 
 

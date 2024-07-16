@@ -142,9 +142,6 @@
       "provider_error_tags": {
         "type": "nested",
         "properties": {
-          "type": {
-            "type": "keyword"
-          },
           "code": {
             "type": "keyword"
           }
@@ -153,9 +150,6 @@
       "item_error_tags": {
         "type": "nested",
         "properties": {
-          "type": {
-            "type": "keyword"
-          },
           "code": {
             "type": "keyword"
           }
@@ -164,9 +158,6 @@
       "seller_error_tags": {
         "type": "nested",
         "properties": {
-          "type": {
-            "type": "keyword"
-          },
           "code": {
             "type": "keyword"
           }

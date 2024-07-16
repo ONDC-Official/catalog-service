@@ -16,6 +16,8 @@ def transform_full_on_search_payload_into_default_lang_items(payload):
             v["items"],
             v["categories"],
             v["serviceabilities"],
+            v["provider_error_tags"],
+            v["seller_error_tags"],
         ))
         final_offers.extend(enrich_offers_using_serviceabilities(v["location_offers"], v["serviceabilities"]))
 

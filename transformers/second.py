@@ -79,6 +79,7 @@ def enrich_serviceability_in_item(item, serviceability_map):
             elif serviceability["unit"] == "km":
                 coordinates_str = item_location.get('gps', "0, 0").split(",")
                 lat_lng = [float(c) for c in coordinates_str]
+                item_location["radius"] = float(serviceability.get("val", 0))
                 coordinates = [create_simple_circle_polygon(lat_lng[0], lat_lng[1], float(serviceability["val"]))]
             else:
                 item["location_details"] = item_location

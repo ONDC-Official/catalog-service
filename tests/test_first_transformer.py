@@ -63,7 +63,7 @@ class TestFirst(unittest.TestCase):
         with open(filepath) as f:
             json_payload = json.load(f)
             provider_map = flatten_full_on_search_payload_to_provider_map(json_payload)
-            new_provider_id = "sellerNP.com_ONDC:RET12_P1"
+            new_provider_id = "sellerNP.com_ONDC:RET11_P1"
             items = provider_map[new_provider_id]["items"]
             categories = provider_map[new_provider_id]["categories"]
             serviceabilities = provider_map[new_provider_id]["serviceabilities"]

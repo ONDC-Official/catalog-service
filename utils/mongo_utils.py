@@ -1,4 +1,3 @@
-import json
 from pymongo import MongoClient
 
 from config import get_config_by_name

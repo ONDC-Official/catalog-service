@@ -1,0 +1,85 @@
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_keywords": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      {
+        "booleans_as_booleans_without_index": {
+          "match_mapping_type": "boolean",
+          "mapping": {
+            "type": "boolean",
+            "index": false
+          }
+        }
+      },
+      {
+        "dates_as_keywords": {
+          "match_mapping_type": "date",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      }
+    ],
+    "properties": {
+      "item_details": {
+        "properties": {
+          "id": {"type": "keyword"}
+        }
+      },
+      "provider_details": {
+        "properties": {
+          "id": {"type": "keyword"}
+        }
+      },
+      "location_details": {
+        "properties": {
+          "id": {"type": "keyword"}
+        }
+      },
+      "bpp_details": {
+        "properties": {
+          "bpp_id": {"type": "keyword"}
+        }
+      },
+      "created_at": {"type": "date"},
+      "local_id": {"type": "keyword"},
+      "id": {"type": "keyword"},
+      "manual_provider_flag": {"type": "boolean"},
+      "manual_item_flag": {"type": "boolean"},
+      "manual_seller_flag": {"type": "boolean"},
+      "provider_error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "item_error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "seller_error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}

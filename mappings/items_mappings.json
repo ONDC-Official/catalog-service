@@ -136,9 +136,19 @@
       "customisation_group_id": {"type": "keyword"},
       "customisation_nested_group_id": {"type": "keyword"},
       "is_first": {"type": "boolean"},
+
       "provider_flag": {"type": "boolean"},
       "item_flag": {"type": "boolean"},
       "seller_flag": {"type": "boolean"},
+
+      "manual_provider_flag": {"type": "boolean"},
+      "manual_item_flag": {"type": "boolean"},
+      "manual_seller_flag": {"type": "boolean"},
+
+      "auto_provider_flag": {"type": "boolean"},
+      "auto_item_flag": {"type": "boolean"},
+      "auto_seller_flag": {"type": "boolean"},
+
       "provider_error_tags": {
         "type": "nested",
         "properties": {

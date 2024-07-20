@@ -15,6 +15,7 @@ def validate_location_mapping(item):
 def validate_circle_radius_if_present(item):
     radius = get_in(item, ["location_details", "radius"])
     if radius and (radius < 0 or radius > 5):
+        item["location_details"].pop("polygons")
         return {
             "code": "90032"
         }

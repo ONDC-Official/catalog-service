@@ -30,11 +30,6 @@
       }
     ],
     "properties": {
-      "item_details": {
-        "properties": {
-          "id": {"type": "keyword"}
-        }
-      },
       "provider_details": {
         "properties": {
           "id": {"type": "keyword"}

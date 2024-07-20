@@ -3,6 +3,7 @@ import copy
 from config import get_config_by_name
 from transformers.first import flatten_full_on_search_payload_to_provider_map
 from transformers.second import enrich_items_using_tags_and_categories, enrich_offers_using_serviceabilities
+from transformers.third import update_provider_items_with_manual_flags
 from transformers.translation import translate_items_into_target_language
 
 
@@ -12,14 +13,18 @@ def transform_full_on_search_payload_into_default_lang_items(payload):
     final_offers = []
 
     for pid, v in provider_map.items():
-        final_items.extend(enrich_items_using_tags_and_categories(
+        items = enrich_items_using_tags_and_categories(
             v["items"],
             v["categories"],
             v["serviceabilities"],
             v["provider_error_tags"],
             v["seller_error_tags"],
-        ))
-        final_offers.extend(enrich_offers_using_serviceabilities(v["location_offers"], v["serviceabilities"]))
+        )
+        items = update_provider_items_with_manual_flags(pid, items)
+        offers = enrich_offers_using_serviceabilities(v["location_offers"], v["serviceabilities"])
+
+        final_items.extend(items)
+        final_offers.extend(offers)
 
     return final_items, final_offers
 

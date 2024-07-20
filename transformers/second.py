@@ -292,20 +292,16 @@ def enrich_items_using_tags_and_categories(items, categories, serviceabilities, 
     [enrich_customisation_group_in_item(i, customisation_groups, cust_items) for i in items]
     [enrich_custom_menu_in_item(i, custom_menus) for i in items]
 
-    # Filter out the elements with incorrect parent item id
-    # TODO - log rejected items
-    # items = list(filter(lambda x: filter_out_items_with_incorrect_parent_item_id, items))
-
     [enrich_default_language_in_item(i) for i in items]
 
     # Add error flags
     for i in items:
         item_error_tags = validate_item_level(i)
-        i["item_flag"] = len(item_error_tags) > 0
+        i["auto_item_flag"] = len(item_error_tags) > 0
         i["item_error_tags"] = item_error_tags
-        i["provider_flag"] = len(provider_error_tags) > 0
+        i["auto_provider_flag"] = len(provider_error_tags) > 0
         i["provider_error_tags"] = provider_error_tags
-        i["seller_flag"] = len(seller_error_tags) > 0
+        i["auto_seller_flag"] = len(seller_error_tags) > 0
         i["seller_error_tags"] = seller_error_tags
     return items
 

@@ -32,6 +32,7 @@ def init_elastic_search():
     client = get_elasticsearch_client()
     init_es_index(client, "items")
     init_es_index(client, "offers")
+    init_es_index(client, "manually_flagged_items")
 
 
 def init_es_index(client, index_name):
@@ -162,6 +163,53 @@ def search_products_for_unique_provider(size=10):
         return unique_providers
     except Exception as e:
         log_error("Error:", e)
+
+
+def get_all_manually_flagged_items_for_provider(provider_id):
+    items = []
+    # Define the query to match provider_details.id
+    query = {
+        "query": {
+            "term": {
+                "provider_details.id": provider_id  # Replace with the actual provider ID
+            }
+        }
+    }
+    es = get_elasticsearch_client()
+    # Initialize the scroll
+    response = es.search(
+        index="manually_flagged_items",
+        body=query,
+        scroll='2m',  # Scroll context will be kept alive for 2 minutes
+        size=1000     # Adjust the batch size as needed
+    )
+
+    # Extract the scroll ID and initial batch of results
+    scroll_id = response['_scroll_id']
+    hits = response['hits']['hits']
+
+    # Collect all results
+    all_hits = []
+    while hits:
+        all_hits.extend(hits)
+
+        # Make a request to fetch the next batch of results
+        response = es.scroll(
+            scroll_id=scroll_id,
+            scroll='2m'  # Scroll context will be kept alive for 2 minutes
+        )
+
+        # Update the scroll ID and hits
+        scroll_id = response['_scroll_id']
+        hits = response['hits']['hits']
+
+    # Optionally clear the scroll context to free resources
+    es.clear_scroll(scroll_id=scroll_id)
+
+    # Process the results
+    for hit in all_hits:
+        items.append(hit["_source"])
+    return items
 
 
 if __name__ == '__main__':

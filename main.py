@@ -38,19 +38,19 @@ def consume_fn(message_string):
                 add_documents_to_index("offers", offers)
                 update_on_search_dump_status(doc_id, "FINISHED")
 
-                for lang in get_config_by_name("LANGUAGE_LIST"):
-                    if lang:
-                        try:
-                            translate_items_into_target_language(items, lang)
-                            add_documents_to_index("items", items)
-                            update_on_search_dump_language_status(doc_id, lang, "FINISHED")
-                        except BulkIndexError as e:
-                            log_error(f"Got error while adding in elasticsearch for {lang}!")
-                            update_on_search_dump_language_status(doc_id, lang, "FAILED",
-                                                                  e.errors[0]['index']['error']['reason'])
-                        except Exception as e:
-                            log_error(f"Something went wrong with consume function - {e}!")
-                            update_on_search_dump_language_status(doc_id, lang, "FAILED", str(e)) if doc_id else None
+                # for lang in get_config_by_name("LANGUAGE_LIST"):
+                #     if lang:
+                #         try:
+                #             translate_items_into_target_language(items, lang)
+                #             add_documents_to_index("items", items)
+                #             update_on_search_dump_language_status(doc_id, lang, "FINISHED")
+                #         except BulkIndexError as e:
+                #             log_error(f"Got error while adding in elasticsearch for {lang}!")
+                #             update_on_search_dump_language_status(doc_id, lang, "FAILED",
+                #                                                   e.errors[0]['index']['error']['reason'])
+                #         except Exception as e:
+                #             log_error(f"Something went wrong with consume function - {e}!")
+                #             update_on_search_dump_language_status(doc_id, lang, "FAILED", str(e)) if doc_id else None
 
             elif payload["request_type"] == "inc":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS")

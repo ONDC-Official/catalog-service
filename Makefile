@@ -5,6 +5,8 @@ export ENV=dev
 
 # Set up the virtual environment and install dependencies
 setup:
+    sudo apt install make
+    sudo apt-get install python3-venv
 	python3 -m venv cron-venv
 	. cron-venv/bin/activate && pip install elasticsearch
 

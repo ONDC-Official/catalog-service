@@ -2,7 +2,7 @@
   "context": {
     "action": "on_search",
     "domain": "ONDC:RET10",
-    "city": "std:080",
+    "city": "std:0124",
     "country": "IND",
     "bap_id": "ondc.dpicorp.io",
     "bap_uri": "https://dff3-2409-40f2-4a-29c4-119f-36fa-ec36-2e4a.ngrok-free.app/buyerAppl",
@@ -84,6 +84,7 @@
                 "label": "enable",
                 "timestamp": "2023-11-30T12:41:32.342Z"
               },
+              "parent_item_id": "",
               "descriptor": {
                 "name": "Oranges",
                 "symbol": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/4a0ea968-cabe-4623-85ec-34136d98fb66/product_image/orange_1.jpeg",

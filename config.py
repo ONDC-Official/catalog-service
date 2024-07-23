@@ -15,6 +15,7 @@ class Config:
     API_TOKEN = os.getenv("API_TOKEN", "testing_random_123")
     MAX_CONSUME_MESSAGE_TIME = int(os.getenv("MAX_CONSUME_MESSAGE_TIME", "30"))
     CONSUMER_MAX_WORKERS = int(os.getenv("CONSUMER_MAX_WORKERS", "100"))
+    BULK_CHUNK_SIZE = int(os.getenv("BULK_CHUNK_SIZE", "500"))
     MONGO_DATABASE_URL = os.getenv("MONGO_DATABASE_URL", "mongodb://localhost:27017")
     ELASTIC_SEARCH_URL = os.getenv("ELASTIC_SEARCH_URL", "http://localhost:9200")
     REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
@@ -22,7 +23,7 @@ class Config:
     REDIS_DB = int(os.getenv("REDIS_DB", "0"))
     BHASHINI_USERID = os.getenv("BHASHINI_USERID", "userid")
     BHASHINI_ULCA_API_KEY = os.getenv("BHASHINI_ULCA_API_KEY", "apikey")
-    LANGUAGE_LIST = [lang.strip() for lang in os.getenv("LANGUAGE_LIST", "hi").split(",")]
+    LANGUAGE_LIST = [lang.strip() for lang in os.getenv("LANGUAGE_LIST", "").split(",")]
     IS_TEST = os.getenv("IS_TEST", "False") == "True"
 
 

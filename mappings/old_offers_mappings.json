@@ -1,0 +1,162 @@
+{
+  "mappings": {
+    "properties": {
+      "language": {"type": "keyword"},
+      "context": {
+        "properties": {
+          "domain": {"type": "keyword"},
+          "country": {"type": "keyword"},
+          "city": {"type": "keyword"},
+          "action": {"type": "keyword"},
+          "core_version": {"type": "keyword"},
+          "bap_id": {"type": "keyword"},
+          "bap_uri": {"type": "text"},
+          "bpp_id": {"type": "keyword"},
+          "bpp_uri": {"type": "text"},
+          "transaction_id": {"type": "keyword"},
+          "message_id": {"type": "keyword"},
+          "timestamp": {"type": "text"}
+        }
+      },
+      "provider_details": {
+        "properties": {
+          "id": {"type": "keyword"},
+          "time": {
+            "properties": {
+              "label": {"type": "keyword"},
+              "timestamp": {"type": "date"}
+            }
+          },
+          "descriptor": {
+            "properties": {
+              "name": {"type": "text"},
+              "symbol": {"type": "keyword"},
+              "short_desc": {"type": "text"},
+              "long_desc": {"type": "text"},
+              "images": {"type": "keyword"}
+            }
+          },
+          "ttl": {"type": "keyword"},
+          "tags": {
+            "type": "nested",
+            "properties": {
+              "code": {"type": "keyword"},
+              "list": {
+                "type": "nested",
+                "properties": {
+                  "code": {"type": "keyword"},
+                  "value": {"type": "text"}
+                }
+              }
+            }
+          }
+        }
+      },
+      "location_details": {
+        "properties": {
+          "id": {"type": "keyword"},
+          "time": {
+            "properties": {
+              "label": {"type": "keyword"},
+              "timestamp": {"type": "date"},
+              "days": {"type": "keyword"},
+              "schedule": {
+                "properties": {
+                  "holidays": {"type": "date"},
+                  "frequency": {"type": "keyword"},
+                  "times": {"type": "keyword"}
+                }
+              },
+              "range": {
+                "properties": {
+                  "start": {"type": "keyword"},
+                  "end": {"type": "keyword"}
+                }
+              }
+            }
+          },
+          "gps": {"type": "geo_point"},
+          "address": {
+            "properties": {
+              "locality": {"type": "text"},
+              "street": {"type": "text"},
+              "city": {"type": "text"},
+              "area_code": {"type": "keyword"},
+              "state": {"type": "text"}
+            }
+          },
+          "circle": {
+            "properties": {
+              "gps": {"type": "geo_point"},
+              "radius": {
+                "properties": {
+                  "unit": {"type": "keyword"},
+                  "value": {"type": "keyword"}
+                }
+              }
+            }
+          },
+          "type": {"type": "keyword"},
+          "polygons": {"type": "geo_shape"}
+        }
+      },
+      "bpp_details": {
+        "properties": {
+          "name": {"type": "text"},
+          "symbol": {"type": "keyword"},
+          "short_desc": {"type": "text"},
+          "long_desc": {"type": "text"},
+          "images": {"type": "keyword"},
+          "bpp_id": {"type": "keyword"}
+        }
+      },
+      "created_at": {"type": "date"},
+      "local_id": {"type": "keyword"},
+      "id": {"type": "keyword"},
+      "descriptor": {
+        "properties": {
+          "code": {
+            "type": "keyword"
+          },
+          "images": {
+            "type": "keyword"
+          }
+        }
+      },
+      "item_local_ids": {"type": "keyword"},
+      "time": {
+        "properties": {
+          "label": {"type": "keyword"},
+          "timestamp": {"type": "date"},
+          "days": {"type": "keyword"},
+          "schedule": {
+            "properties": {
+              "holidays": {"type": "date"},
+              "frequency": {"type": "keyword"},
+              "times": {"type": "keyword"}
+            }
+          },
+          "range": {
+            "properties": {
+              "start": {"type": "keyword"},
+              "end": {"type": "keyword"}
+            }
+          }
+        }
+      },
+      "tags": {
+        "type": "nested",
+        "properties": {
+          "code": {"type": "keyword"},
+          "list": {
+            "type": "nested",
+            "properties": {
+              "code": {"type": "keyword"},
+              "value": {"type": "text"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -30,58 +30,51 @@
       }
     ],
     "properties": {
-      "language": {"type": "keyword"},
-      "context": {
-        "properties": {
-          "domain": {"type": "keyword"},
-          "country": {"type": "keyword"},
-          "city": {"type": "keyword"},
-          "action": {"type": "keyword"},
-          "bpp_id": {"type": "keyword"},
-          "transaction_id": {"type": "keyword"},
-          "message_id": {"type": "keyword"}
-        }
-      },
       "provider_details": {
         "properties": {
-          "id": {"type": "keyword"},
-          "descriptor": {
-            "properties": {
-              "name": {"type": "text"}
-            }
-          }
+          "id": {"type": "keyword"}
         }
       },
       "location_details": {
         "properties": {
-          "id": {"type": "keyword"},
-          "gps": {"type": "geo_point"},
-          "circle": {
-            "properties": {
-              "gps": {"type": "geo_point"}
-            }
-          },
-          "type": {"type": "keyword"},
-          "polygons": {"type": "geo_shape"}
+          "id": {"type": "keyword"}
         }
       },
       "bpp_details": {
         "properties": {
-          "name": {"type": "text"},
           "bpp_id": {"type": "keyword"}
         }
       },
       "created_at": {"type": "date"},
       "local_id": {"type": "keyword"},
       "id": {"type": "keyword"},
-      "descriptor": {
+      "manual_provider_flag": {"type": "boolean"},
+      "manual_item_flag": {"type": "boolean"},
+      "manual_seller_flag": {"type": "boolean"},
+      "provider_error_tags": {
+        "type": "nested",
         "properties": {
           "code": {
             "type": "keyword"
           }
         }
       },
-      "item_local_ids": {"type": "keyword"}
+      "item_error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "seller_error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
+        }
+      }
     }
   }
 }

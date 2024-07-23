@@ -84,6 +84,7 @@
                 "label": "enable",
                 "timestamp": "2023-11-30T12:41:32.342Z"
               },
+              "parent_item_id": "",
               "descriptor": {
                 "name": "Oranges",
                 "symbol": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/4a0ea968-cabe-4623-85ec-34136d98fb66/product_image/orange_1.jpeg",
@@ -128,28 +129,7 @@
                 "brand_owner_FSSAI_license_no": "NA",
                 "other_FSSAI_license_no": "NA",
                 "importer_FSSAI_license_no": "NA"
-              },
-              "tags": [
-                {
-                  "code": "origin",
-                  "list": [{ "code": "country", "value": "IND" }]
-                },
-                {
-                  "code": "type",
-                  "list": [{ "code": "type", "value": "item" }]
-                },
-                {
-                  "code": "image",
-                  "list": [
-                    { "code": "type", "value": "back_image" },
-                    { "code": "url", "value": "" }
-                  ]
-                },
-                {
-                  "code": "veg_nonveg",
-                  "list": [{ "code": "non_veg", "value": "yes" }]
-                }
-              ]
+              }
             }
           ],
           "fulfillments": [

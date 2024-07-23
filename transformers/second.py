@@ -1,9 +1,12 @@
 import copy
 import json
 from json import JSONDecodeError
+from statistics import median, mean
 
 from funcy import get_in
 
+from business_rule_validations.item import validate_item_level
+from utils.iso_time_utils import calculate_duration_in_seconds
 from utils.math_utils import create_simple_circle_polygon
 
 
@@ -48,7 +51,8 @@ def transform_item_categories(categories):
 
 
 def enrich_categories_in_item(item, categories):
-    item.update({"categories": categories})
+    if item["type"] == "item":
+        item.update({"categories": categories})
     return item
 
 
@@ -68,12 +72,14 @@ def enrich_serviceability_in_item(item, serviceability_map):
                 val = json.loads(serviceability["val"])
                 multi_coordinates = val["features"][0]["geometry"]["coordinates"]
                 coordinates = [x for xs in multi_coordinates for x in xs]
+                coordinates = [[[c[1], c[0]] for c in coordinates]]
             elif serviceability["unit"] == "coordinates":
                 val = json.loads(serviceability["val"])
                 coordinates = [[[v['lat'], v['lng']] for v in val]]
             elif serviceability["unit"] == "km":
                 coordinates_str = item_location.get('gps', "0, 0").split(",")
                 lat_lng = [float(c) for c in coordinates_str]
+                item_location["radius"] = float(serviceability.get("val", 0))
                 coordinates = [create_simple_circle_polygon(lat_lng[0], lat_lng[1], float(serviceability["val"]))]
             else:
                 item["location_details"] = item_location
@@ -95,7 +101,7 @@ def enrich_provider_categories_and_location_categories(items):
     provider_categories, location_categories_map = set(), {}
     for i in items:
         category = i["item_details"]["category_id"]
-        location_id = i["location_details"]["id"]
+        location_id = i["location_details"].get("id")
         provider_categories.add(category)
 
         if location_id in location_categories_map:
@@ -104,7 +110,7 @@ def enrich_provider_categories_and_location_categories(items):
             location_categories_map[location_id] = {category}
 
     [i["provider_details"].update({"categories": list(provider_categories)}) for i in items]
-    [i["location_details"].update({"categories": list(location_categories_map.get(i["location_details"]["id"], []))})
+    [i["location_details"].update({"categories": list(location_categories_map.get(i["location_details"].get("id"), []))})
      for i in items]
 
 
@@ -178,9 +184,9 @@ def get_self_and_nested_customisation_group_id(item):
     tags = item["item_details"]["tags"]
     provider_id = item['provider_details']['id']
     for t in tags:
-        if t["code"] == "parent":
+        if t["code"] == "parent" and len(t.get("list", [])) > 0:
             customisation_group_id = f'{provider_id}_{t["list"][0]["value"]}'
-        if t["code"] == "child":
+        if t["code"] == "child" and len(t.get("list", [])) > 0:
             customisation_nested_group_id = f'{provider_id}_{t["list"][0]["value"]}'
 
     return customisation_group_id, customisation_nested_group_id
@@ -189,7 +195,7 @@ def get_self_and_nested_customisation_group_id(item):
 def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
     if item.get("type") == "item":
         new_cg_ids = []
-        for t in get_in(item, ["item_details", "tags"]):
+        for t in get_in(item, ["item_details", "tags"], []):
             if t["code"] == "custom_group":
                 custom_group_list = t["list"]
                 item_cg_ids = [c['value'] for c in custom_group_list]
@@ -246,23 +252,57 @@ def enrich_default_language_in_item(item):
     return item
 
 
-def enrich_items_using_tags_and_categories(items, categories, serviceabilities):
-    variant_groups, custom_menus, customisation_groups = transform_item_categories(categories)
+def get_location_time_to_ship_dict(items):
+    location_time_to_ship_dict = {}
+    for i in items:
+        item_tts_str = get_in(i, ["item_details", "@ondc/org/time_to_ship"])
+        item_tts = calculate_duration_in_seconds(item_tts_str) if item_tts_str else 0
+        location_id = get_in(i, ["location_details", "id"])
+        tts_list = location_time_to_ship_dict.get(location_id, [])
+        tts_list.append(item_tts)
+        location_time_to_ship_dict[location_id] = tts_list
 
+    return location_time_to_ship_dict
+
+
+def enrich_time_to_ship_fields_for_location(item, location_time_to_ship_dict):
+    location_id = get_in(item, ["location_details", "id"])
+    tts_list = location_time_to_ship_dict.get(location_id, [])
+    item["location_details"]["min_time_to_ship"] = min(tts_list) if len(tts_list) > 0 else 0
+    item["location_details"]["max_time_to_ship"] = max(tts_list) if len(tts_list) > 0 else 0
+    item["location_details"]["average_time_to_ship"] = mean(tts_list) if len(tts_list) > 0 else 0
+    item["location_details"]["median_time_to_ship"] = median(tts_list) if len(tts_list) > 0 else 0
+    return item
+
+
+def enrich_items_using_tags_and_categories(items, categories, serviceabilities, provider_error_tags, seller_error_tags):
+    variant_groups, custom_menus, customisation_groups = transform_item_categories(categories)
     cust_items = [i["item_details"] for i in items if i["type"] == "customization"].copy()
-    enrich_provider_categories_and_location_categories(items)
+
+    location_time_to_ship_dict = get_location_time_to_ship_dict(items)
+    [enrich_time_to_ship_fields_for_location(i, location_time_to_ship_dict) for i in items]
+
     enrich_is_first_flag_for_items(items, categories)
+
+    # TODO - This is to be removed after UI change
     [enrich_categories_in_item(i, categories) for i in items]
+
     [enrich_serviceability_in_item(i, serviceabilities) for i in items]
     [enrich_variant_group_in_item(i, variant_groups) for i in items]
     [enrich_customisation_group_in_item(i, customisation_groups, cust_items) for i in items]
     [enrich_custom_menu_in_item(i, custom_menus) for i in items]
 
-    # Filter out the elements with incorrect parent item id
-    # TODO - log rejected items
-    items = list(filter(lambda x: filter_out_items_with_incorrect_parent_item_id, items))
-
     [enrich_default_language_in_item(i) for i in items]
+
+    # Add error flags
+    for i in items:
+        item_error_tags = validate_item_level(i)
+        i["auto_item_flag"] = len(item_error_tags) > 0
+        i["item_error_tags"] = item_error_tags
+        i["auto_provider_flag"] = len(provider_error_tags) > 0
+        i["provider_error_tags"] = provider_error_tags
+        i["auto_seller_flag"] = len(seller_error_tags) > 0
+        i["seller_error_tags"] = seller_error_tags
     return items
 
 

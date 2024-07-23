@@ -86,7 +86,7 @@ def enrich_unique_id_into_offer(offer, location_id):
 
 
 def flatten_item_attributes(item):
-    tags = item["item_details"]["tags"]
+    tags = item["item_details"].get("tags", [])
     attr_list = []
     attr_dict = {}
     for t in tags:
@@ -102,7 +102,7 @@ def flatten_item_attributes(item):
 
 def enrich_item_type(item):
     item_details = item["item_details"]
-    tags = item_details["tags"]
+    tags = item_details.get("tags", [])
     item_type = "item"
     for t in tags:
         if t["code"] == "type":
@@ -163,7 +163,7 @@ def flatten_full_on_search_payload_to_provider_map(payload):
 
     bpp_id = get_in(context, ["bpp_id"])
     if bpp_id:
-        bpp_descriptor = get_in(catalog, ["bpp/descriptor"])
+        bpp_descriptor = get_in(catalog, ["bpp/descriptor"], {})
         bpp_fulfillments = get_in(catalog, ["bpp/fulfillments"])
         bpp_providers = get_in(catalog, ["bpp/providers"])
 
@@ -186,9 +186,10 @@ def flatten_full_on_search_payload_to_provider_map(payload):
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
             [enrich_unique_id_into_item(i, p['id']) for i in provider_items]
 
-            # Filter out the elements with location empty
+            # Filter out the elements with location empty (for type as item)
             # TODO - log rejected items
-            provider_items = list(filter(lambda x: len(x["location_details"]) != 0, provider_items))
+            # provider_items = list(filter(lambda x: len(x["location_details"]) != 0 or x["type"] == "customization",
+            #                              provider_items))
 
             # Enrich Offers
             provider_offers = p.get("offers", [])
@@ -210,7 +211,9 @@ def flatten_full_on_search_payload_to_provider_map(payload):
                 "items": provider_items,
                 "categories": provider_categories,
                 "serviceabilities": provider_serviceabilities,
-                "location_offers": location_offers
+                "location_offers": location_offers,
+                "provider_error_tags": [],
+                "seller_error_tags": [],
             }
             provider_map[get_in(p, ["id"])] = provider_value
 

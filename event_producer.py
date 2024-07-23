@@ -23,7 +23,7 @@ def publish_message(file_path, request_type):
 
 
 if __name__ == '__main__':
-    local_filepath = "/Users/aditya/Projects/ondc-sdk/catalog-service/resources/incr_on_search_offers_update.json"
-    req_type = "inc"
+    local_filepath = "/Users/aditya/Projects/ondc-sdk/catalog-service/resources/test.json"
+    req_type = "full"
     publish_message(local_filepath, req_type)
 

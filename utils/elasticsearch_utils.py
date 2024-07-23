@@ -4,6 +4,7 @@ import os
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk, BulkIndexError
 
+from utils.hash_utils import get_md5_hash
 from logger.custom_logging import log, log_error
 from config import get_config_by_name
 
@@ -13,7 +14,7 @@ elasticsearch_client = None
 def get_elasticsearch_client() -> Elasticsearch:
     global elasticsearch_client
     if elasticsearch_client is None:
-        elasticsearch_client = Elasticsearch(get_config_by_name("ELASTIC_SEARCH_URL"))
+        elasticsearch_client = Elasticsearch(get_config_by_name("ELASTIC_SEARCH_URL"), timeout=60)
     return elasticsearch_client
 
 
@@ -31,6 +32,7 @@ def init_elastic_search():
     client = get_elasticsearch_client()
     init_es_index(client, "items")
     init_es_index(client, "offers")
+    init_es_index(client, "manually_flagged_items")
 
 
 def init_es_index(client, index_name):
@@ -56,7 +58,7 @@ def generate_actions(index_name, documents):
     for doc in documents:
         yield {
             "_index": index_name,
-            "_id": f"{doc['id']}_{doc['language']}",  # Use the document ID + language as the Elasticsearch document ID
+            "_id": get_md5_hash(f"{doc['id']}_{doc['language']}"),  # Use the document ID + language as the Elasticsearch document ID
             "_source": doc
         }
 
@@ -65,7 +67,9 @@ def add_documents_to_index(index_name, documents):
     client = get_elasticsearch_client()
     try:
         if documents is not None and len(documents) > 0:
-            success, _ = bulk(client, generate_actions(index_name, documents))
+            log(f"Adding {len(documents)} {index_name}")
+            success, _ = bulk(client, generate_actions(index_name, documents),
+                              chunk_size=get_config_by_name("BULK_CHUNK_SIZE"))
             log(success)
             log("Documents added to index")
     except BulkIndexError as e:
@@ -159,6 +163,53 @@ def search_products_for_unique_provider(size=10):
         return unique_providers
     except Exception as e:
         log_error("Error:", e)
+
+
+def get_all_manually_flagged_items_for_provider(provider_id):
+    items = []
+    # Define the query to match provider_details.id
+    query = {
+        "query": {
+            "term": {
+                "provider_details.id": provider_id  # Replace with the actual provider ID
+            }
+        }
+    }
+    es = get_elasticsearch_client()
+    # Initialize the scroll
+    response = es.search(
+        index="manually_flagged_items",
+        body=query,
+        scroll='2m',  # Scroll context will be kept alive for 2 minutes
+        size=1000     # Adjust the batch size as needed
+    )
+
+    # Extract the scroll ID and initial batch of results
+    scroll_id = response['_scroll_id']
+    hits = response['hits']['hits']
+
+    # Collect all results
+    all_hits = []
+    while hits:
+        all_hits.extend(hits)
+
+        # Make a request to fetch the next batch of results
+        response = es.scroll(
+            scroll_id=scroll_id,
+            scroll='2m'  # Scroll context will be kept alive for 2 minutes
+        )
+
+        # Update the scroll ID and hits
+        scroll_id = response['_scroll_id']
+        hits = response['hits']['hits']
+
+    # Optionally clear the scroll context to free resources
+    es.clear_scroll(scroll_id=scroll_id)
+
+    # Process the results
+    for hit in all_hits:
+        items.append(hit["_source"])
+    return items
 
 
 if __name__ == '__main__':

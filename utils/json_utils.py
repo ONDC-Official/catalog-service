@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 def clean_nones(value):
     """
     Recursively remove all None values from dictionaries and lists, and returns
@@ -13,3 +16,9 @@ def clean_nones(value):
         }
     else:
         return value
+
+
+def datetime_serializer(obj):
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    raise TypeError("Type not serializable")

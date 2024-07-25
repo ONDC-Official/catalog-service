@@ -44,7 +44,7 @@ def declare_queue(channel, queue_name):
 
 # @retry(3, errors=StreamLostError)
 def publish_message_to_queue(channel, exchange, routing_key, body, properties=None):
-    log(f"Publishing message of {body}")
+    # log(f"Publishing message of {body}")
     channel.basic_publish(exchange=exchange, routing_key=routing_key, body=body, properties=properties)
 
 
@@ -52,13 +52,13 @@ def consume_message(connection, channel, queue_name, consume_fn):
     def callback(ch, delivery_tag, body):
         try:
             channel.basic_ack(delivery_tag)
-            log(f"Ack message {body} !")
+            log(f"Ack message for Delivery tag: {delivery_tag} !")
         except:
-            log_error(f"Something went wrong for {body} !")
+            log_error(f"Something went wrong for {delivery_tag} !")
 
     def do_work(delivery_tag, body):
         thread_id = threading.get_ident()
-        log(f'Thread id: {thread_id} Delivery tag: {delivery_tag} Message body: {body}')
+        log(f'Thread id: {thread_id} Delivery tag: {delivery_tag}')
         cb = functools.partial(callback, channel, delivery_tag, body)
 
         try:

@@ -7,15 +7,48 @@ from pika.exceptions import AMQPConnectionError
 from retry import retry
 
 from config import get_config_by_name
+from event_producer import publish_message
 from logger.custom_logging import log, log_error
-from services.mongo_service import update_on_search_dump_status, update_on_search_dump_language_status
+from services.mongo_service import update_on_search_dump_status
 from transformers.full_catalog import transform_full_on_search_payload_into_default_lang_items
 from transformers.incr_catalog import transform_incr_on_search_payload_into_final_items
-from transformers.translation import translate_items_into_target_language
-from utils.elasticsearch_utils import add_documents_to_index, init_elastic_search
-from utils.json_utils import clean_nones
+from utils.elasticsearch_utils import init_elastic_search
+from utils.json_utils import clean_nones, datetime_serializer
 from utils.mongo_utils import get_mongo_collection, collection_find_one, init_mongo_database
 from utils.rabbitmq_utils import create_channel, declare_queue, consume_message, open_connection
+
+
+def split_docs_into_batches(docs, max_size_mbs):
+    batches = []
+    current_batch = []
+    current_size = 0
+
+    for doc in docs:
+        doc_str = json.dumps(doc, default=datetime_serializer)
+        doc_size = len(doc_str.encode('utf-8'))
+        log(f"doc size: {doc_size}")
+
+        if current_size + doc_size > (max_size_mbs * 1024 * 1024):
+            batches.append(current_batch)
+            current_batch = [doc]
+            current_size = doc_size
+        else:
+            current_batch.append(doc)
+            current_size += doc_size
+
+    if current_batch:
+        batches.append(current_batch)
+
+    return batches
+
+
+def publish_documents_splitting_per_rabbitmq_limit(queue, index, docs, lang=None):
+    if len(docs) > 0:
+        batches = split_docs_into_batches(docs, 10)
+        for b in batches:
+            message = {"index": index, "data": b}
+            message.update({"lang": lang}) if lang else None
+            publish_message(queue, message)
 
 
 def consume_fn(message_string):
@@ -34,29 +67,22 @@ def consume_fn(message_string):
             if payload["request_type"] == "full":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS", None)
                 items, offers = transform_full_on_search_payload_into_default_lang_items(on_search_payload)
-                add_documents_to_index("items", items)
-                add_documents_to_index("offers", offers)
+                es_dumper_queue = get_config_by_name('ES_DUMPER_QUEUE_NAME')
+                publish_documents_splitting_per_rabbitmq_limit(es_dumper_queue, "items", items)
+                publish_documents_splitting_per_rabbitmq_limit(es_dumper_queue, "offers", offers)
                 update_on_search_dump_status(doc_id, "FINISHED")
 
-                # for lang in get_config_by_name("LANGUAGE_LIST"):
-                #     if lang:
-                #         try:
-                #             translate_items_into_target_language(items, lang)
-                #             add_documents_to_index("items", items)
-                #             update_on_search_dump_language_status(doc_id, lang, "FINISHED")
-                #         except BulkIndexError as e:
-                #             log_error(f"Got error while adding in elasticsearch for {lang}!")
-                #             update_on_search_dump_language_status(doc_id, lang, "FAILED",
-                #                                                   e.errors[0]['index']['error']['reason'])
-                #         except Exception as e:
-                #             log_error(f"Something went wrong with consume function - {e}!")
-                #             update_on_search_dump_language_status(doc_id, lang, "FAILED", str(e)) if doc_id else None
+                translator_queue = get_config_by_name('TRANSLATOR_QUEUE_NAME')
+                for lang in get_config_by_name("LANGUAGE_LIST"):
+                    if lang:
+                        publish_documents_splitting_per_rabbitmq_limit(translator_queue, "items", items, lang=lang)
 
             elif payload["request_type"] == "inc":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS")
                 items, offers = transform_incr_on_search_payload_into_final_items(on_search_payload)
-                add_documents_to_index("items", items)
-                add_documents_to_index("offers", offers)
+                es_dumper_queue = get_config_by_name('ES_DUMPER_QUEUE_NAME')
+                publish_documents_splitting_per_rabbitmq_limit(es_dumper_queue, "items", items)
+                publish_documents_splitting_per_rabbitmq_limit(es_dumper_queue, "offers", offers)
                 update_on_search_dump_status(doc_id, "FINISHED")
         else:
             log_error(f"On search payload was not found for {doc_id}!")
@@ -72,7 +98,6 @@ def consume_fn(message_string):
 @retry(AMQPConnectionError, delay=5, jitter=(1, 3))
 def run_consumer():
     init_mongo_database()
-    init_elastic_search()
     queue_name = get_config_by_name('ELASTIC_SEARCH_QUEUE_NAME')
     connection = open_connection()
     channel = create_channel(connection)

@@ -9,7 +9,7 @@ def get_translated_text(text, source_lang="en", target_lang="hi"):
     cache_translation = get_word_translation(text, target_lang)
 
     if cache_translation:
-        log("translation found in cache", cache_translation)
+        log(f"translation found in cache of {text} for {target_lang}")
         return cache_translation
     else:
         translated_text = translate({

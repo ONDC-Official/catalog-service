@@ -7,20 +7,21 @@ from utils.elasticsearch_utils import get_elasticsearch_client
 def delete_stale_data():
     # Connect to the Elasticsearch instance
     es = get_elasticsearch_client()
+    delete_stale_data_for_given_index(es, "items")
+    delete_stale_data_for_given_index(es, "offers")
 
-    # Index name
-    index_name = 'items'
 
+def delete_stale_data_for_given_index(es, index_name, ttl_in_days=7):
     # Calculate the timestamp for documents older than 7 days
-    two_days_ago = datetime.now() - timedelta(days=7)
-    two_days_ago_str = two_days_ago.isoformat()
+    days_ago = datetime.now() - timedelta(days=ttl_in_days)
+    days_ago_str = days_ago.isoformat()
 
     # Define the query to find documents older than 2 days
     query = {
         "query": {
             "range": {
                 "created_at": {
-                    "lt": two_days_ago_str
+                    "lt": days_ago_str
                 }
             }
         }

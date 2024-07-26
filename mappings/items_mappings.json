@@ -42,6 +42,17 @@
           "message_id": {"type": "keyword"}
         }
       },
+      "attribute_key_values": {
+        "type": "nested",
+        "properties": {
+          "key": {
+            "type": "keyword"
+          },
+          "value": {
+            "type": "keyword"
+          }
+        }
+      },
       "item_details": {
         "properties": {
           "id": {"type": "keyword"},

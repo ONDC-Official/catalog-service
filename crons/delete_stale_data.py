@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from elasticsearch.helpers import scan, bulk
 
+from logger.custom_logging import log
 from utils.elasticsearch_utils import get_elasticsearch_client
 
 
@@ -27,22 +28,9 @@ def delete_stale_data_for_given_index(es, index_name, ttl_in_days=7):
         }
     }
 
-    # Scan for documents matching the query
-    scan_results = scan(client=es, index=index_name, query=query)
-
-    # Delete the documents
-    # Prepare bulk delete actions
-    bulk_actions = [
-        {
-            "_op_type": "delete",
-            "_index": result["_index"],
-            "_id": result["_id"]
-        }
-        for result in scan_results
-    ]
-
-    # Perform bulk delete
-    bulk(es, bulk_actions)
+    # Perform delete by query
+    response = es.delete_by_query(index=index_name, body=query)
+    log(response)
 
 
 if __name__ == '__main__':

@@ -89,8 +89,15 @@
           "gps": {"type": "geo_point"},
           "circle": {
             "properties": {
-              "gps": {"type": "geo_point"}
+              "gps": {
+                "type": "geo_point",
+                "doc_values": true
+              }
             }
+          },
+          "median_time_to_ship": {
+            "type": "float",
+            "doc_values": true
           },
           "type": {"type": "keyword"},
           "polygons": {"type": "geo_shape"}

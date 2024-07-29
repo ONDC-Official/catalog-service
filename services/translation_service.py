@@ -9,9 +9,10 @@ def get_translated_text(text, source_lang="en", target_lang="hi"):
     cache_translation = get_word_translation(text, target_lang)
 
     if cache_translation:
-        log(f"translation found in cache {cache_translation}")
+        # log(f"translation found in cache for {text}")
         return cache_translation
     else:
+        # log(f"translation not found in cache for {text}")
         translated_text = translate({
             "text": text,
             "source_language": source_lang,
@@ -30,9 +31,9 @@ def get_word_translation(text, language):
 
 def set_word_translation(text, language, translation):
     mongo_collection = get_mongo_collection("translation")
-    resp = mongo_collection.insert_one({"_id": get_md5_hash(f"{text}_{language}"),
-                                        "text": text,
-                                        "language": language,
-                                        "translation": translation,
-                                        })
-    return resp.inserted_id
+    mongo_collection.replace_one({"_id": get_md5_hash(f"{text}_{language}")},
+                                 {
+                                     "text": text,
+                                     "language": language,
+                                     "translation": translation,
+                                 }, upsert=True)

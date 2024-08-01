@@ -64,7 +64,7 @@ def consume_message(connection, channel, queue_name, consume_fn):
         try:
             consume_fn(body)
         except Exception as e:
-            log_error(f"Error processing message {body}: {e}")
+            log_error(f"Error processing message with Thread id: {thread_id} Delivery tag: {delivery_tag}: {e}")
 
         if connection and connection.is_open:
             connection.add_callback_threadsafe(cb)

@@ -1,16 +1,22 @@
-import copy
-
 from services import translation_service as ts
+from utils.instrumentation_utils import MeasureTime
+from utils.parallel_processing_utils import io_bound_parallel_computation
 
 
+@MeasureTime
 def translate_items_into_target_language(items, target_lang):
-    for i in items:
-        i["language"] = target_lang
-        i["item_details"]["descriptor"] = translate_item_descriptor(i["item_details"]["descriptor"], target_lang)
-        i["provider_details"]["descriptor"] = translate_item_descriptor(i["provider_details"]["descriptor"],
-                                                                        target_lang)
+    io_bound_parallel_computation(lambda x: translate_an_item(x, target_lang), items)
+    # for x in items:
+    #     translate_an_item(x, target_lang)
 
-    return items
+
+def translate_an_item(i, target_lang):
+    i["language"] = target_lang
+    i["item_details"]["descriptor"] = translate_item_descriptor(i["item_details"]["descriptor"], target_lang)
+    i["provider_details"]["descriptor"] = translate_item_descriptor(i["provider_details"]["descriptor"],
+                                                                    target_lang)
+
+    return i
 
 
 def translate_item_descriptor(item_descriptor, target_lang):

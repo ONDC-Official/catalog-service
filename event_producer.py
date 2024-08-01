@@ -37,4 +37,3 @@ if __name__ == '__main__':
     local_filepath = os.path.join(current_dir, f'resources/simple_on_search.json')
     req_type = "full"
     publish_message_for_transform(local_filepath, req_type)
-

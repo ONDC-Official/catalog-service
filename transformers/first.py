@@ -88,15 +88,15 @@ def enrich_unique_id_into_offer(offer, location_id):
 def flatten_item_attributes(item):
     tags = item["item_details"].get("tags", [])
     attr_list = []
-    attr_dict = {}
+    attr_final_list = []
     for t in tags:
         if t["code"] == "attribute":
             attr_list = t["list"]
 
     for a in attr_list:
-        attr_dict[a["code"]] = a["value"]
+        attr_final_list.append({"key": a["code"], "value": a["value"]})
 
-    item["attributes"] = attr_dict
+    item["attribute_key_values"] = attr_final_list
     return item
 
 

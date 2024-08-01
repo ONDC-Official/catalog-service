@@ -1,5 +1,11 @@
 import os
 import requests
+from requests import Session
+from requests.adapters import HTTPAdapter
+
+from urllib3.util import Retry
+
+from logger.custom_logging import log
 
 bhashini_pipeline_url = 'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/getModelsPipeline'
 bhashini_translate_url = 'https://dhruva-api.bhashini.gov.in/services/inference/pipeline'
@@ -30,7 +36,17 @@ def translate(data):
         'Content-Type': 'application/json'
     }
 
-    pipeline_response = requests.post(bhashini_pipeline_url, headers=headers, json=pipeline_data)
+    retries = Retry(
+        total=3,
+        backoff_factor=1,
+        status_forcelist=[500, 502, 503, 504, 521],
+        allowed_methods=["POST"],  # need this
+    )
+    s = Session()
+    s.mount("https://", HTTPAdapter(max_retries=retries))
+    # s.post(url)  # Raise requests.exceptions.RetryError
+
+    pipeline_response = s.post(bhashini_pipeline_url, headers=headers, json=pipeline_data)
     json_res = pipeline_response.json()
 
     # Prepare object for translation

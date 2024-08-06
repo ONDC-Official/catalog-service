@@ -33,9 +33,10 @@ def consume_fn(message_string):
             on_search_payload.pop("id", None)
             if payload["request_type"] == "full":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS", None)
-                items, offers = transform_full_on_search_payload_into_default_lang_items(on_search_payload)
+                items, offers, locations = transform_full_on_search_payload_into_default_lang_items(on_search_payload)
                 add_documents_to_index("items", items)
                 add_documents_to_index("offers", offers)
+                add_documents_to_index("locations", locations)
                 update_on_search_dump_status(doc_id, "FINISHED")
 
                 for lang in get_config_by_name("LANGUAGE_LIST"):

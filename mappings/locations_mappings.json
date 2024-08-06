@@ -1,0 +1,89 @@
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_keywords": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      {
+        "booleans_as_booleans_without_index": {
+          "match_mapping_type": "boolean",
+          "mapping": {
+            "type": "boolean",
+            "index": false
+          }
+        }
+      },
+      {
+        "dates_as_keywords": {
+          "match_mapping_type": "date",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      }
+    ],
+    "properties": {
+      "id": {"type": "keyword"},
+      "context": {
+        "properties": {
+          "domain": {"type": "keyword"},
+          "country": {"type": "keyword"},
+          "city": {"type": "keyword"},
+          "action": {"type": "keyword"},
+          "bpp_id": {"type": "keyword"},
+          "transaction_id": {"type": "keyword"},
+          "message_id": {"type": "keyword"}
+        }
+      },
+      "provider_details": {
+        "properties": {
+          "id": {"type": "keyword"},
+          "descriptor": {
+            "properties": {
+              "name": {"type": "text"}
+            }
+          }
+        }
+      },
+      "location_details": {
+        "properties": {
+          "id": {"type": "keyword"},
+          "gps": {"type": "geo_point"},
+          "address": {
+            "properties": {
+              "area_code": {"type": "keyword"}
+            }
+          },
+          "circle": {
+            "properties": {
+              "gps": {
+                "type": "geo_point",
+                "doc_values": true
+              }
+            }
+          },
+          "median_time_to_ship": {
+            "type": "float",
+            "doc_values": true
+          },
+          "type": {"type": "keyword"},
+          "polygons": {"type": "geo_shape"}
+        }
+      },
+      "bpp_details": {
+        "properties": {
+          "name": {"type": "text"},
+          "bpp_id": {"type": "keyword"}
+        }
+      },
+      "created_at": {"type": "date"}
+    }
+  }
+}

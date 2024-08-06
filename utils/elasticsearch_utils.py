@@ -32,6 +32,7 @@ def init_elastic_search():
     client = get_elasticsearch_client()
     init_es_index(client, "items")
     init_es_index(client, "offers")
+    init_es_index(client, "locations")
     init_es_index(client, "manually_flagged_items")
 
 
@@ -56,9 +57,11 @@ def init_es_index(client, index_name):
 # Define a generator function to yield Elasticsearch index operations for each document
 def generate_actions(index_name, documents):
     for doc in documents:
+        # Use the ID + language as the Elasticsearch document ID
+        new_id = get_md5_hash(f"{doc['id']}_{doc['language']}") if "language" in doc else get_md5_hash(doc["id"])
         yield {
             "_index": index_name,
-            "_id": get_md5_hash(f"{doc['id']}_{doc['language']}"),  # Use the document ID + language as the Elasticsearch document ID
+            "_id": new_id,
             "_source": doc
         }
 

@@ -9,6 +9,7 @@ def delete_stale_data():
     # Connect to the Elasticsearch instance
     es = get_elasticsearch_client()
     delete_stale_data_for_given_index(es, "items")
+    delete_stale_data_for_given_index(es, "locations")
     delete_stale_data_for_given_index(es, "offers")
 
 

@@ -3,7 +3,7 @@ import json
 from json import JSONDecodeError
 from statistics import median, mean
 
-from funcy import get_in
+from funcy import get_in, project
 
 from business_rule_validations.item import validate_item_level
 from utils.iso_time_utils import calculate_duration_in_seconds
@@ -310,3 +310,17 @@ def enrich_offers_using_serviceabilities(offers, serviceabilities):
     [enrich_serviceability_in_item(i, serviceabilities) for i in offers]
     [enrich_default_language_in_item(i) for i in offers]
     return offers
+
+
+def get_unique_locations_from_items(items):
+    # Initialize a set to track seen values of "location_details.id"
+    seen = set()
+    locations = []
+    for i in items:
+        if i["location_details"].get("id") and i["location_details"]["id"] not in seen and \
+                not seen.add(i["location_details"]["id"]):
+            new_loc = project(i, ["location_details", "provider_details", "bpp_details", "context",
+                                  "created_at"])
+            new_loc["id"] = new_loc["location_details"]["id"]
+            locations.append(new_loc)
+    return locations

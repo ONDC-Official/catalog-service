@@ -320,7 +320,7 @@ def get_unique_locations_from_items(items):
         if i["location_details"].get("id") and i["location_details"]["id"] not in seen and \
                 not seen.add(i["location_details"]["id"]):
             new_loc = project(i, ["location_details", "provider_details", "bpp_details", "context",
-                                  "created_at"])
+                                  "created_at", "language"])
             new_loc["id"] = new_loc["location_details"]["id"]
             locations.append(new_loc)
     return locations

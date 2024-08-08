@@ -11,6 +11,7 @@ from logger.custom_logging import log, log_error
 from services.mongo_service import update_on_search_dump_status, update_on_search_dump_language_status
 from transformers.full_catalog import transform_full_on_search_payload_into_default_lang_items
 from transformers.incr_catalog import transform_incr_on_search_payload_into_final_items
+from transformers.second import get_unique_locations_from_items
 from transformers.translation import translate_items_into_target_language
 from utils.elasticsearch_utils import add_documents_to_index, init_elastic_search
 from utils.json_utils import clean_nones
@@ -44,7 +45,9 @@ def consume_fn(message_string):
                     if lang:
                         try:
                             translate_items_into_target_language(items, lang)
+                            locations = get_unique_locations_from_items(items)
                             add_documents_to_index("items", items)
+                            add_documents_to_index("locations", locations)
                             update_on_search_dump_language_status(doc_id, lang, "FINISHED")
                         except BulkIndexError as e:
                             log_error(f"Got error while adding in elasticsearch for {lang}!")

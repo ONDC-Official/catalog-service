@@ -30,6 +30,7 @@
       }
     ],
     "properties": {
+      "language": {"type": "keyword"},
       "id": {"type": "keyword"},
       "context": {
         "properties": {

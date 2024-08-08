@@ -58,10 +58,9 @@ def init_es_index(client, index_name):
 def generate_actions(index_name, documents):
     for doc in documents:
         # Use the ID + language as the Elasticsearch document ID
-        new_id = get_md5_hash(f"{doc['id']}_{doc['language']}") if "language" in doc else get_md5_hash(doc["id"])
         yield {
             "_index": index_name,
-            "_id": new_id,
+            "_id": get_md5_hash(f"{doc['id']}_{doc['language']}"),
             "_source": doc
         }
 

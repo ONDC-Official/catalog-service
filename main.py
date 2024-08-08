@@ -16,6 +16,7 @@ from utils.elasticsearch_utils import add_documents_to_index, init_elastic_searc
 from utils.json_utils import clean_nones
 from utils.mongo_utils import get_mongo_collection, collection_find_one, init_mongo_database
 from utils.rabbitmq_utils import create_channel, declare_queue, consume_message, open_connection
+from utils.redis_utils import init_redis_cache
 
 
 def consume_fn(message_string):
@@ -74,6 +75,7 @@ def consume_fn(message_string):
 def run_consumer():
     init_mongo_database()
     init_elastic_search()
+    init_redis_cache()
     queue_name = get_config_by_name('ELASTIC_SEARCH_QUEUE_NAME')
     connection = open_connection()
     channel = create_channel(connection)

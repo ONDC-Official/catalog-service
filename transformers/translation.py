@@ -5,9 +5,9 @@ from utils.parallel_processing_utils import io_bound_parallel_computation
 
 @MeasureTime
 def translate_items_into_target_language(items, target_lang):
-    io_bound_parallel_computation(lambda x: translate_an_item(x, target_lang), items)
-    # for x in items:
-    #     translate_an_item(x, target_lang)
+    # io_bound_parallel_computation(lambda x: translate_an_item(x, target_lang), items)
+    for x in items:
+        translate_an_item(x, target_lang)
 
 
 def translate_an_item(i, target_lang):

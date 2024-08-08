@@ -1,0 +1,48 @@
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_keywords": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      {
+        "booleans_as_booleans_without_index": {
+          "match_mapping_type": "boolean",
+          "mapping": {
+            "type": "boolean",
+            "index": false
+          }
+        }
+      },
+      {
+        "dates_as_keywords": {
+          "match_mapping_type": "date",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      }
+    ],
+    "properties": {
+      "created_at": {"type": "date"},
+      "local_id": {"type": "keyword"},
+      "id": {"type": "keyword"},
+      "type": {"type": "keyword"},
+      "flag": {"type": "boolean"},
+      "error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}

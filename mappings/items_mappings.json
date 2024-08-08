@@ -42,6 +42,17 @@
           "message_id": {"type": "keyword"}
         }
       },
+      "attribute_key_values": {
+        "type": "nested",
+        "properties": {
+          "key": {
+            "type": "keyword"
+          },
+          "value": {
+            "type": "keyword"
+          }
+        }
+      },
       "item_details": {
         "properties": {
           "id": {"type": "keyword"},
@@ -78,8 +89,15 @@
           "gps": {"type": "geo_point"},
           "circle": {
             "properties": {
-              "gps": {"type": "geo_point"}
+              "gps": {
+                "type": "geo_point",
+                "doc_values": true
+              }
             }
+          },
+          "median_time_to_ship": {
+            "type": "float",
+            "doc_values": true
           },
           "type": {"type": "keyword"},
           "polygons": {"type": "geo_shape"}

@@ -6,6 +6,7 @@ from statistics import median, mean
 from funcy import get_in, project
 
 from business_rule_validations.item import validate_item_level
+from utils.dictionary_utils import safe_get_in
 from utils.iso_time_utils import calculate_duration_in_seconds
 from utils.math_utils import create_simple_circle_polygon
 
@@ -110,8 +111,9 @@ def enrich_provider_categories_and_location_categories(items):
             location_categories_map[location_id] = {category}
 
     [i["provider_details"].update({"categories": list(provider_categories)}) for i in items]
-    [i["location_details"].update({"categories": list(location_categories_map.get(i["location_details"].get("id"), []))})
-     for i in items]
+    [i["location_details"].update(
+        {"categories": list(location_categories_map.get(i["location_details"].get("id"), []))})
+        for i in items]
 
 
 def enrich_is_first_flag_for_items(items, categories):
@@ -135,7 +137,8 @@ def enrich_is_first_flag_for_items(items, categories):
 
 def enrich_variant_group_in_item(item, variant_groups):
     try:
-        old_variant_group = next(v for v in variant_groups if v["id"] == get_in(item, ["item_details", "parent_item_id"]))
+        old_variant_group = next(
+            v for v in variant_groups if v["id"] == get_in(item, ["item_details", "parent_item_id"]))
         variant_group = copy.deepcopy(old_variant_group)
         variant_group["local_id"] = variant_group["id"]
         variant_group["id"] = f"{item['provider_details']['id']}_{variant_group['local_id']}"
@@ -200,7 +203,8 @@ def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
                 custom_group_list = t["list"]
                 item_cg_ids = [c['value'] for c in custom_group_list]
                 new_cg_ids.extend(item_cg_ids)
-                new_cg_ids.extend(update_item_customisation_group_ids_with_children(item_cg_ids, cust_items, item_cg_ids))
+                new_cg_ids.extend(
+                    update_item_customisation_group_ids_with_children(item_cg_ids, cust_items, item_cg_ids))
             if t["code"] == "parent":
                 new_cg_ids = [t["list"][0]["value"]]
 
@@ -312,6 +316,24 @@ def enrich_offers_using_serviceabilities(offers, serviceabilities):
     return offers
 
 
+def get_store_enabled_or_disabled(item):
+    is_enabled = safe_get_in(item, ["provider_details", "time", "label"], "enabled") == "enabled"
+    out_of_stock_check = int(safe_get_in(item, ["item_details", "quantity", "available", "count"], 0)) > 0
+    return out_of_stock_check and is_enabled
+
+
+def add_time_dictionary(item):
+    days_str = safe_get_in(item, ['location_details', 'time', 'days'], '')
+    days = days_str.split(',')
+    time_dict = {}
+    for day in days:
+        time_dict[day] = {
+            'start': safe_get_in(item, ['location_details', 'schedule', 'times'], ["00:00", "23:59"])[0],
+            'end': safe_get_in(item, ['location_details', 'schedule', 'times'], ["00:00", "23:59"])[1]
+        }
+    return time_dict
+
+
 def get_unique_locations_from_items(items):
     # Initialize a set to track seen values of "location_details.id"
     seen = set()
@@ -321,6 +343,8 @@ def get_unique_locations_from_items(items):
                 not seen.add(i["location_details"]["id"]):
             new_loc = project(i, ["location_details", "provider_details", "bpp_details", "context",
                                   "created_at", "language"])
+            new_loc["enabled"] = get_store_enabled_or_disabled(i)
+            new_loc["availability"] = add_time_dictionary(i)
             new_loc["id"] = new_loc["location_details"]["id"]
             locations.append(new_loc)
     return locations

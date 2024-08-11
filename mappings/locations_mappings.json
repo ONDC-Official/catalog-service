@@ -30,36 +30,64 @@
       }
     ],
     "properties": {
-      "language": {"type": "keyword"},
-      "id": {"type": "keyword"},
+      "language": {
+        "type": "keyword"
+      },
+      "id": {
+        "type": "keyword"
+      },
       "context": {
         "properties": {
-          "domain": {"type": "keyword"},
-          "country": {"type": "keyword"},
-          "city": {"type": "keyword"},
-          "action": {"type": "keyword"},
-          "bpp_id": {"type": "keyword"},
-          "transaction_id": {"type": "keyword"},
-          "message_id": {"type": "keyword"}
+          "domain": {
+            "type": "keyword"
+          },
+          "country": {
+            "type": "keyword"
+          },
+          "city": {
+            "type": "keyword"
+          },
+          "action": {
+            "type": "keyword"
+          },
+          "bpp_id": {
+            "type": "keyword"
+          },
+          "transaction_id": {
+            "type": "keyword"
+          },
+          "message_id": {
+            "type": "keyword"
+          }
         }
       },
       "provider_details": {
         "properties": {
-          "id": {"type": "keyword"},
+          "id": {
+            "type": "keyword"
+          },
           "descriptor": {
             "properties": {
-              "name": {"type": "text"}
+              "name": {
+                "type": "text"
+              }
             }
           }
         }
       },
       "location_details": {
         "properties": {
-          "id": {"type": "keyword"},
-          "gps": {"type": "geo_point"},
+          "id": {
+            "type": "keyword"
+          },
+          "gps": {
+            "type": "geo_point"
+          },
           "address": {
             "properties": {
-              "area_code": {"type": "keyword"}
+              "area_code": {
+                "type": "keyword"
+              }
             }
           },
           "circle": {
@@ -74,17 +102,42 @@
             "type": "float",
             "doc_values": true
           },
-          "type": {"type": "keyword"},
-          "polygons": {"type": "geo_shape"}
+          "type": {
+            "type": "keyword"
+          },
+          "polygons": {
+            "type": "geo_shape"
+          }
         }
       },
       "bpp_details": {
         "properties": {
-          "name": {"type": "text"},
-          "bpp_id": {"type": "keyword"}
+          "name": {
+            "type": "text"
+          },
+          "bpp_id": {
+            "type": "keyword"
+          }
         }
       },
-      "created_at": {"type": "date"}
+      "created_at": {
+        "type": "date"
+      },
+      "enabled": {
+        "type": "boolean"
+      },
+      "availability": {
+        "type": "nested",
+        "dynamic": "true",
+        "properties": {
+          "start": {
+            "type": "keyword"
+          },
+          "end": {
+            "type": "keyword"
+          }
+        }
+      }
     }
   }
 }

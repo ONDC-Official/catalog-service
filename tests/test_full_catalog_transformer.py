@@ -11,7 +11,6 @@ from transformers.full_catalog import transform_full_on_search_payload_into_defa
 
 
 class TestFullCatalog(unittest.TestCase):
-
     mock_translated_text = "translated_text"
     mock_flagged_items = []
 
@@ -75,7 +74,7 @@ class TestFullCatalog(unittest.TestCase):
             json_payload = json.load(f)
             items, offers, locations = transform_full_on_search_payload_into_default_lang_items(json_payload)
             flagged_items = list(filter(lambda x: x["item_flag"], items))
-
+        print(locations)
         # Verify that the document retrieval was successful
         self.assertEqual(12, len(items))
         self.assertEqual(1, len(locations))
@@ -96,9 +95,9 @@ class TestFullCatalog(unittest.TestCase):
             flagged_items = list(filter(lambda x: x["item_flag"], items))
 
         # Verify that the document retrieval was successful
-        lang_length = len(list(filter(lambda x: x != "", get_config_by_name("LANGUAGE_LIST"))))+1
+        lang_length = len(list(filter(lambda x: x != "", get_config_by_name("LANGUAGE_LIST")))) + 1
         self.assertEqual(1, len(locations))
-        self.assertEqual(1*lang_length, len(items))
+        self.assertEqual(1 * lang_length, len(items))
         self.assertEqual(0, len(flagged_items))
         self.assertEqual(0, len(offers))
 
@@ -245,4 +244,3 @@ class TestFullCatalog(unittest.TestCase):
         self.assertEqual(1, len(locations))
         self.assertEqual(1, len(flagged_items))
         self.assertEqual(0, len(offers))
-

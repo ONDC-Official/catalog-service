@@ -127,10 +127,8 @@
         "type": "boolean"
       },
       "availability": {
-        "type": "object",
         "properties": {
           "1": {
-            "type": "object",
             "properties": {
               "start": {
                 "type": "keyword"
@@ -141,7 +139,6 @@
             }
           },
           "2": {
-            "type": "object",
             "properties": {
               "start": {
                 "type": "keyword"
@@ -152,7 +149,6 @@
             }
           },
           "3": {
-            "type": "object",
             "properties": {
               "start": {
                 "type": "keyword"
@@ -163,7 +159,6 @@
             }
           },
           "4": {
-            "type": "object",
             "properties": {
               "start": {
                 "type": "keyword"
@@ -174,7 +169,6 @@
             }
           },
           "5": {
-            "type": "object",
             "properties": {
               "start": {
                 "type": "keyword"
@@ -185,7 +179,6 @@
             }
           },
           "6": {
-            "type": "object",
             "properties": {
               "start": {
                 "type": "keyword"
@@ -196,7 +189,6 @@
             }
           },
           "7": {
-            "type": "object",
             "properties": {
               "start": {
                 "type": "keyword"

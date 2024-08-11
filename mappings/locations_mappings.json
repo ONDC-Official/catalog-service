@@ -1,201 +1,170 @@
 {
-  "mappings": {
-    "dynamic_templates": [
-      {
-        "strings_as_keywords": {
-          "match_mapping_type": "string",
-          "mapping": {
-            "type": "keyword",
-            "index": false
-          }
+  "properties": {
+    "language": {
+      "type": "keyword"
+    },
+    "id": {
+      "type": "keyword"
+    },
+    "context": {
+      "properties": {
+        "domain": {
+          "type": "keyword"
+        },
+        "country": {
+          "type": "keyword"
+        },
+        "city": {
+          "type": "keyword"
+        },
+        "action": {
+          "type": "keyword"
+        },
+        "bpp_id": {
+          "type": "keyword"
+        },
+        "transaction_id": {
+          "type": "keyword"
+        },
+        "message_id": {
+          "type": "keyword"
         }
-      },
-      {
-        "booleans_as_booleans_without_index": {
-          "match_mapping_type": "boolean",
-          "mapping": {
-            "type": "boolean",
-            "index": false
-          }
-        }
-      },
-      {
-        "dates_as_keywords": {
-          "match_mapping_type": "date",
-          "mapping": {
-            "type": "keyword",
-            "index": false
+      }
+    },
+    "provider_details": {
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "descriptor": {
+          "properties": {
+            "name": {
+              "type": "text"
+            }
           }
         }
       }
-    ],
-    "properties": {
-      "language": {
-        "type": "keyword"
-      },
-      "id": {
-        "type": "keyword"
-      },
-      "context": {
-        "properties": {
-          "domain": {
-            "type": "keyword"
-          },
-          "country": {
-            "type": "keyword"
-          },
-          "city": {
-            "type": "keyword"
-          },
-          "action": {
-            "type": "keyword"
-          },
-          "bpp_id": {
-            "type": "keyword"
-          },
-          "transaction_id": {
-            "type": "keyword"
-          },
-          "message_id": {
-            "type": "keyword"
-          }
-        }
-      },
-      "provider_details": {
-        "properties": {
-          "id": {
-            "type": "keyword"
-          },
-          "descriptor": {
-            "properties": {
-              "name": {
-                "type": "text"
-              }
+    },
+    "location_details": {
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "gps": {
+          "type": "geo_point"
+        },
+        "address": {
+          "properties": {
+            "area_code": {
+              "type": "keyword"
             }
           }
-        }
-      },
-      "location_details": {
-        "properties": {
-          "id": {
-            "type": "keyword"
-          },
-          "gps": {
-            "type": "geo_point"
-          },
-          "address": {
-            "properties": {
-              "area_code": {
-                "type": "keyword"
-              }
+        },
+        "circle": {
+          "properties": {
+            "gps": {
+              "type": "geo_point",
+              "doc_values": true
             }
-          },
-          "circle": {
-            "properties": {
-              "gps": {
-                "type": "geo_point",
-                "doc_values": true
-              }
-            }
-          },
-          "median_time_to_ship": {
-            "type": "float",
-            "doc_values": true
-          },
-          "type": {
-            "type": "keyword"
-          },
-          "polygons": {
-            "type": "geo_shape"
           }
+        },
+        "median_time_to_ship": {
+          "type": "float",
+          "doc_values": true
+        },
+        "type": {
+          "type": "keyword"
+        },
+        "polygons": {
+          "type": "geo_shape"
         }
-      },
-      "bpp_details": {
-        "properties": {
-          "name": {
-            "type": "text"
-          },
-          "bpp_id": {
-            "type": "keyword"
+      }
+    },
+    "bpp_details": {
+      "properties": {
+        "name": {
+          "type": "text"
+        },
+        "bpp_id": {
+          "type": "keyword"
+        }
+      }
+    },
+    "created_at": {
+      "type": "date"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "availability": {
+      "properties": {
+        "1": {
+          "properties": {
+            "start": {
+              "type": "keyword"
+            },
+            "end": {
+              "type": "keyword"
+            }
           }
-        }
-      },
-      "created_at": {
-        "type": "date"
-      },
-      "enabled": {
-        "type": "boolean"
-      },
-      "availability": {
-        "properties": {
-          "1": {
-            "properties": {
-              "start": {
-                "type": "keyword"
-              },
-              "end": {
-                "type": "keyword"
-              }
+        },
+        "2": {
+          "properties": {
+            "start": {
+              "type": "keyword"
+            },
+            "end": {
+              "type": "keyword"
             }
-          },
-          "2": {
-            "properties": {
-              "start": {
-                "type": "keyword"
-              },
-              "end": {
-                "type": "keyword"
-              }
+          }
+        },
+        "3": {
+          "properties": {
+            "start": {
+              "type": "keyword"
+            },
+            "end": {
+              "type": "keyword"
             }
-          },
-          "3": {
-            "properties": {
-              "start": {
-                "type": "keyword"
-              },
-              "end": {
-                "type": "keyword"
-              }
+          }
+        },
+        "4": {
+          "properties": {
+            "start": {
+              "type": "keyword"
+            },
+            "end": {
+              "type": "keyword"
             }
-          },
-          "4": {
-            "properties": {
-              "start": {
-                "type": "keyword"
-              },
-              "end": {
-                "type": "keyword"
-              }
+          }
+        },
+        "5": {
+          "properties": {
+            "start": {
+              "type": "keyword"
+            },
+            "end": {
+              "type": "keyword"
             }
-          },
-          "5": {
-            "properties": {
-              "start": {
-                "type": "keyword"
-              },
-              "end": {
-                "type": "keyword"
-              }
+          }
+        },
+        "6": {
+          "properties": {
+            "start": {
+              "type": "keyword"
+            },
+            "end": {
+              "type": "keyword"
             }
-          },
-          "6": {
-            "properties": {
-              "start": {
-                "type": "keyword"
-              },
-              "end": {
-                "type": "keyword"
-              }
-            }
-          },
-          "7": {
-            "properties": {
-              "start": {
-                "type": "keyword"
-              },
-              "end": {
-                "type": "keyword"
-              }
+          }
+        },
+        "7": {
+          "properties": {
+            "start": {
+              "type": "keyword"
+            },
+            "end": {
+              "type": "keyword"
             }
           }
         }

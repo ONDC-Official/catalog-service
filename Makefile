@@ -20,3 +20,14 @@ run:
 # Clean up the environment
 clean:
 	rm -rf cron-venv
+
+apply-es-mapping:
+	@echo "Updating Elasticsearch mapping..."
+	@if [ -z "$(index_name)" ]; then \
+		read -p "Enter Elasticsearch index name: " index_name; \
+	fi; \
+	if [ -z "$(file_location)" ]; then \
+		read -p "Enter path to the mapping file (JSON): " file_location; \
+	fi; \
+	curl -X PUT "http://localhost:9200/$$index_name/_mapping" -H "Content-Type: application/json" -d @$$file_location; \
+	echo "Mapping update completed for index $$index_name."# take input of index name, json file location and hit localhost:9200

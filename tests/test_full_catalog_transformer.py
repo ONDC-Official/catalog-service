@@ -74,7 +74,6 @@ class TestFullCatalog(unittest.TestCase):
             json_payload = json.load(f)
             items, offers, locations = transform_full_on_search_payload_into_default_lang_items(json_payload)
             flagged_items = list(filter(lambda x: x["item_flag"], items))
-        print(locations)
         # Verify that the document retrieval was successful
         self.assertEqual(12, len(items))
         self.assertEqual(1, len(locations))

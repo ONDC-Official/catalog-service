@@ -127,14 +127,84 @@
         "type": "boolean"
       },
       "availability": {
-        "type": "nested",
-        "dynamic": "true",
+        "type": "object",
         "properties": {
-          "start": {
-            "type": "keyword"
+          "1": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "keyword"
+              },
+              "end": {
+                "type": "keyword"
+              }
+            }
           },
-          "end": {
-            "type": "keyword"
+          "2": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "keyword"
+              },
+              "end": {
+                "type": "keyword"
+              }
+            }
+          },
+          "3": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "keyword"
+              },
+              "end": {
+                "type": "keyword"
+              }
+            }
+          },
+          "4": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "keyword"
+              },
+              "end": {
+                "type": "keyword"
+              }
+            }
+          },
+          "5": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "keyword"
+              },
+              "end": {
+                "type": "keyword"
+              }
+            }
+          },
+          "6": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "keyword"
+              },
+              "end": {
+                "type": "keyword"
+              }
+            }
+          },
+          "7": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "keyword"
+              },
+              "end": {
+                "type": "keyword"
+              }
+            }
           }
         }
       }

@@ -11,11 +11,13 @@ from logger.custom_logging import log, log_error
 from services.mongo_service import update_on_search_dump_status, update_on_search_dump_language_status
 from transformers.full_catalog import transform_full_on_search_payload_into_default_lang_items
 from transformers.incr_catalog import transform_incr_on_search_payload_into_final_items
+from transformers.second import get_unique_locations_from_items
 from transformers.translation import translate_items_into_target_language
 from utils.elasticsearch_utils import add_documents_to_index, init_elastic_search
 from utils.json_utils import clean_nones
 from utils.mongo_utils import get_mongo_collection, collection_find_one, init_mongo_database
 from utils.rabbitmq_utils import create_channel, declare_queue, consume_message, open_connection
+from utils.redis_utils import init_redis_cache
 
 
 def consume_fn(message_string):
@@ -33,24 +35,27 @@ def consume_fn(message_string):
             on_search_payload.pop("id", None)
             if payload["request_type"] == "full":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS", None)
-                items, offers = transform_full_on_search_payload_into_default_lang_items(on_search_payload)
+                items, offers, locations = transform_full_on_search_payload_into_default_lang_items(on_search_payload)
                 add_documents_to_index("items", items)
                 add_documents_to_index("offers", offers)
+                add_documents_to_index("locations", locations)
                 update_on_search_dump_status(doc_id, "FINISHED")
 
-                # for lang in get_config_by_name("LANGUAGE_LIST"):
-                #     if lang:
-                #         try:
-                #             translate_items_into_target_language(items, lang)
-                #             add_documents_to_index("items", items)
-                #             update_on_search_dump_language_status(doc_id, lang, "FINISHED")
-                #         except BulkIndexError as e:
-                #             log_error(f"Got error while adding in elasticsearch for {lang}!")
-                #             update_on_search_dump_language_status(doc_id, lang, "FAILED",
-                #                                                   e.errors[0]['index']['error']['reason'])
-                #         except Exception as e:
-                #             log_error(f"Something went wrong with consume function - {e}!")
-                #             update_on_search_dump_language_status(doc_id, lang, "FAILED", str(e)) if doc_id else None
+                for lang in get_config_by_name("LANGUAGE_LIST"):
+                    if lang:
+                        try:
+                            translate_items_into_target_language(items, lang)
+                            locations = get_unique_locations_from_items(items)
+                            add_documents_to_index("items", items)
+                            add_documents_to_index("locations", locations)
+                            update_on_search_dump_language_status(doc_id, lang, "FINISHED")
+                        except BulkIndexError as e:
+                            log_error(f"Got error while adding in elasticsearch for {lang}!")
+                            update_on_search_dump_language_status(doc_id, lang, "FAILED",
+                                                                  e.errors[0]['index']['error']['reason'])
+                        except Exception as e:
+                            log_error(f"Something went wrong with consume function - {e}!")
+                            update_on_search_dump_language_status(doc_id, lang, "FAILED", str(e)) if doc_id else None
 
             elif payload["request_type"] == "inc":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS")
@@ -73,6 +78,7 @@ def consume_fn(message_string):
 def run_consumer():
     init_mongo_database()
     init_elastic_search()
+    init_redis_cache()
     queue_name = get_config_by_name('ELASTIC_SEARCH_QUEUE_NAME')
     connection = open_connection()
     channel = create_channel(connection)

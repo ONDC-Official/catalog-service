@@ -8,8 +8,11 @@ from transformers.first import flatten_full_on_search_payload_to_provider_map
 
 class TestFirst(unittest.TestCase):
 
-    def is_empty(self, val: dict):
+    def is_dict_empty(self, val: dict):
         return empty(val) or len(val.keys()) == 0
+
+    def is_list_empty(self, val: list):
+        return empty(val) or len(val) == 0
 
     def test_on_search_simple(self):
         current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,13 +29,13 @@ class TestFirst(unittest.TestCase):
         self.assertEqual(1, len(items))
         self.assertEqual(0, len(categories))
         self.assertEqual(1, len(serviceabilities))
-        self.assertFalse(self.is_empty(items[0].get("item_details")))
-        self.assertFalse(self.is_empty(items[0].get("bpp_details")))
-        self.assertFalse(self.is_empty(items[0].get("context")))
-        self.assertFalse(self.is_empty(items[0].get("provider_details")))
-        self.assertFalse(self.is_empty(items[0].get("location_details")))
-        self.assertFalse(self.is_empty(items[0].get("fulfillment_details")))
-        self.assertTrue(self.is_empty(items[0].get("attributes")))
+        self.assertFalse(self.is_dict_empty(items[0].get("item_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("bpp_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("context")))
+        self.assertFalse(self.is_dict_empty(items[0].get("provider_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("location_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("fulfillment_details")))
+        self.assertTrue(self.is_list_empty(items[0].get("attribute_key_values")))
 
     def test_on_search_with_attributes(self):
         current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,13 +52,13 @@ class TestFirst(unittest.TestCase):
         self.assertEqual(7, len(items))
         self.assertEqual(1, len(categories))
         self.assertEqual(1, len(serviceabilities))
-        self.assertFalse(self.is_empty(items[0].get("item_details")))
-        self.assertFalse(self.is_empty(items[0].get("bpp_details")))
-        self.assertFalse(self.is_empty(items[0].get("context")))
-        self.assertFalse(self.is_empty(items[0].get("provider_details")))
-        self.assertFalse(self.is_empty(items[0].get("location_details")))
-        self.assertTrue(self.is_empty(items[0].get("fulfillment_details")))
-        self.assertFalse(self.is_empty(items[0].get("attributes")))
+        self.assertFalse(self.is_dict_empty(items[0].get("item_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("bpp_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("context")))
+        self.assertFalse(self.is_dict_empty(items[0].get("provider_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("location_details")))
+        self.assertTrue(self.is_dict_empty(items[0].get("fulfillment_details")))
+        self.assertFalse(self.is_list_empty(items[0].get("attribute_key_values")))
 
     def test_on_search_with_offers(self):
         current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -74,9 +77,9 @@ class TestFirst(unittest.TestCase):
         self.assertEqual(4, len(categories))
         self.assertEqual(1, len(serviceabilities))
         self.assertEqual(4, len(location_offers))
-        self.assertFalse(self.is_empty(items[0].get("item_details")))
-        self.assertFalse(self.is_empty(items[0].get("bpp_details")))
-        self.assertFalse(self.is_empty(items[0].get("context")))
-        self.assertFalse(self.is_empty(items[0].get("provider_details")))
-        self.assertFalse(self.is_empty(items[0].get("location_details")))
-        self.assertTrue(self.is_empty(items[0].get("fulfillment_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("item_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("bpp_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("context")))
+        self.assertFalse(self.is_dict_empty(items[0].get("provider_details")))
+        self.assertFalse(self.is_dict_empty(items[0].get("location_details")))
+        self.assertTrue(self.is_dict_empty(items[0].get("fulfillment_details")))

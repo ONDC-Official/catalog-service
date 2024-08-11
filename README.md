@@ -10,7 +10,12 @@ A dedicated service for adding on_search catalog in index database
 | **Event Consumer** | Python                 |
 | **Database**       | ElasticSearch, MongoDB |
 
-
 ## Design
 
 ![img.png](resources/img.png)
+
+### Apply mapping to es
+
+```shell
+make apply-es-mapping index_name=locations file_location=mappings/locations_mappings.json
+```

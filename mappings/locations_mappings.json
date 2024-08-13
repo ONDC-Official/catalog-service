@@ -350,6 +350,90 @@
           "index": false
         }
       }
+    },
+    "availability": {
+      "properties": {
+        "1": {
+          "type": "nested",
+          "properties": {
+            "start": {
+              "type": "integer"
+            },
+            "end": {
+              "type": "integer"
+            }
+          }
+        },
+        "2": {
+          "type": "nested",
+          "properties": {
+            "start": {
+              "type": "integer"
+            },
+            "end": {
+              "type": "integer"
+            }
+          }
+        },
+        "3": {
+          "type": "nested",
+          "properties": {
+            "start": {
+              "type": "integer"
+            },
+            "end": {
+              "type": "integer"
+            }
+          }
+        },
+        "4": {
+          "type": "nested",
+          "properties": {
+            "start": {
+              "type": "integer"
+            },
+            "end": {
+              "type": "integer"
+            }
+          }
+        },
+        "5": {
+          "type": "nested",
+          "properties": {
+            "start": {
+              "type": "integer"
+            },
+            "end": {
+              "type": "integer"
+            }
+          }
+        },
+        "6": {
+          "type": "nested",
+          "properties": {
+            "start": {
+              "type": "integer"
+            },
+            "end": {
+              "type": "integer"
+            }
+          }
+        },
+        "7": {
+          "type": "nested",
+          "properties": {
+            "start": {
+              "type": "integer"
+            },
+            "end": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "enable_percentage": {
+      "type": "float"
     }
   }
 }

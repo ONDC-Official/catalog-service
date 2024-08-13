@@ -1,5 +1,6 @@
 import copy
 import json
+from collections import defaultdict
 from json import JSONDecodeError
 from statistics import median, mean
 
@@ -400,6 +401,18 @@ def enrich_locations_with_enablement(locations, enable_dictionary):
     return locations
 
 
+def convert_to_day_wise_dictionary(timing_data):
+    day_wise_dict = defaultdict(list)
+    if timing_data is not None and len(timing_data) > 0:
+        for data in timing_data:
+            for day in range(data["day_from"], data["day_to"] + 1):
+                day_wise_dict[day].append({
+                    "start": data["time_from"],
+                    "end": data["time_to"]
+                })
+        return dict(day_wise_dict)
+
+
 def get_unique_locations_from_items(items):
     # Initialize a set to track seen values of "location_details.id"
     seen = set()
@@ -413,7 +426,8 @@ def get_unique_locations_from_items(items):
                                   "created_at", "language"])
             new_loc["enabled"] = get_store_enabled_or_disabled(i)
             new_loc["id"] = new_loc["location_details"]["id"]
-            timing_dict = build_timing_dictionary(i, new_loc['location_details']['local_id'])
+            timing_dict = convert_to_day_wise_dictionary(
+                build_timing_dictionary(i, new_loc['location_details']['local_id']))
             new_loc["availability"] = timing_dict
             locations.append(new_loc)
 

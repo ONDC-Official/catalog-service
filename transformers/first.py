@@ -164,8 +164,8 @@ def flatten_full_on_search_payload_to_provider_map(payload):
     bpp_id = get_in(context, ["bpp_id"])
     if bpp_id:
         bpp_descriptor = get_in(catalog, ["bpp/descriptor"], {})
-        bpp_fulfillments = get_in(catalog, ["bpp/fulfillments"])
-        bpp_providers = get_in(catalog, ["bpp/providers"])
+        bpp_fulfillments = get_in(catalog, ["bpp/fulfillments"], [])
+        bpp_providers = get_in(catalog, ["bpp/providers"], [])
 
         for p in bpp_providers:
             p["local_id"] = p.get('id')

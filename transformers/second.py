@@ -334,10 +334,34 @@ def add_time_dictionary(item):
     return time_dict
 
 
+def get_amount_stores_available_per_location(items):
+    # prepare location_id to items mapping
+    location_items_map = {}
+    for i in items:
+        location_id = i["location_details"]["id"]
+        if location_id in location_items_map:
+            location_items_map[location_id].append(i)
+        else:
+            location_items_map[location_id] = [i]
+    enable_dictionary = {}
+    for location in location_items_map:
+        enable_dictionary[location] = sum(
+            [get_store_enabled_or_disabled(i) for i in location_items_map[location]]) / len(
+            location_items_map[location])
+    return enable_dictionary
+
+
+def enrich_locations_with_enablement(locations, enable_dictionary):
+    for loc in locations:
+        loc["enable_percentage"] = enable_dictionary.get(loc["id"], 0)
+    return locations
+
+
 def get_unique_locations_from_items(items):
     # Initialize a set to track seen values of "location_details.id"
     seen = set()
     locations = []
+    enable_dictionary = get_amount_stores_available_per_location(items)
     for i in items:
         if i["location_details"].get("id") and i["location_details"]["id"] not in seen and \
                 not seen.add(i["location_details"]["id"]):
@@ -347,4 +371,5 @@ def get_unique_locations_from_items(items):
             new_loc["availability"] = add_time_dictionary(i)
             new_loc["id"] = new_loc["location_details"]["id"]
             locations.append(new_loc)
+    enrich_locations_with_enablement(locations, enable_dictionary)
     return locations

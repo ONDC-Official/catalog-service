@@ -1,172 +1,353 @@
 {
   "properties": {
-    "language": {
-      "type": "keyword"
-    },
-    "id": {
-      "type": "keyword"
+    "bpp_details": {
+      "properties": {
+        "bpp_id": {
+          "type": "keyword"
+        },
+        "images": {
+          "type": "keyword",
+          "index": false
+        },
+        "long_desc": {
+          "type": "keyword",
+          "index": false
+        },
+        "name": {
+          "type": "text"
+        },
+        "short_desc": {
+          "type": "keyword",
+          "index": false
+        },
+        "symbol": {
+          "type": "keyword",
+          "index": false
+        },
+        "tags": {
+          "properties": {
+            "code": {
+              "type": "keyword",
+              "index": false
+            },
+            "list": {
+              "properties": {
+                "code": {
+                  "type": "keyword",
+                  "index": false
+                },
+                "value": {
+                  "type": "keyword",
+                  "index": false
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "context": {
       "properties": {
-        "domain": {
+        "action": {
           "type": "keyword"
         },
-        "country": {
+        "bap_id": {
+          "type": "keyword",
+          "index": false
+        },
+        "bap_uri": {
+          "type": "keyword",
+          "index": false
+        },
+        "bpp_id": {
           "type": "keyword"
+        },
+        "bpp_uri": {
+          "type": "keyword",
+          "index": false
         },
         "city": {
           "type": "keyword"
         },
-        "action": {
+        "core_version": {
+          "type": "keyword",
+          "index": false
+        },
+        "country": {
           "type": "keyword"
         },
-        "bpp_id": {
+        "domain": {
           "type": "keyword"
+        },
+        "key": {
+          "type": "keyword",
+          "index": false
+        },
+        "message_id": {
+          "type": "keyword"
+        },
+        "timestamp": {
+          "type": "keyword",
+          "index": false
         },
         "transaction_id": {
           "type": "keyword"
         },
-        "message_id": {
-          "type": "keyword"
-        }
-      }
-    },
-    "provider_details": {
-      "properties": {
-        "id": {
-          "type": "keyword"
-        },
-        "descriptor": {
-          "properties": {
-            "name": {
-              "type": "text"
-            }
-          }
-        }
-      }
-    },
-    "location_details": {
-      "properties": {
-        "id": {
-          "type": "keyword"
-        },
-        "gps": {
-          "type": "geo_point"
-        },
-        "address": {
-          "properties": {
-            "area_code": {
-              "type": "keyword"
-            }
-          }
-        },
-        "circle": {
-          "properties": {
-            "gps": {
-              "type": "geo_point",
-              "doc_values": true
-            }
-          }
-        },
-        "median_time_to_ship": {
-          "type": "float",
-          "doc_values": true
-        },
-        "type": {
-          "type": "keyword"
-        },
-        "polygons": {
-          "type": "geo_shape"
-        }
-      }
-    },
-    "bpp_details": {
-      "properties": {
-        "name": {
-          "type": "text"
-        },
-        "bpp_id": {
-          "type": "keyword"
+        "ttl": {
+          "type": "keyword",
+          "index": false
         }
       }
     },
     "created_at": {
       "type": "date"
     },
-    "enabled": {
-      "type": "boolean"
+    "id": {
+      "type": "keyword"
     },
-    "availability": {
+    "language": {
+      "type": "keyword"
+    },
+    "location_details": {
       "properties": {
-        "1": {
+        "address": {
           "properties": {
-            "start": {
+            "area_code": {
               "type": "keyword"
             },
-            "end": {
-              "type": "keyword"
+            "building": {
+              "type": "keyword",
+              "index": false
+            },
+            "city": {
+              "type": "keyword",
+              "index": false
+            },
+            "country": {
+              "type": "keyword",
+              "index": false
+            },
+            "door": {
+              "type": "keyword",
+              "index": false
+            },
+            "locality": {
+              "type": "keyword",
+              "index": false
+            },
+            "name": {
+              "type": "keyword",
+              "index": false
+            },
+            "state": {
+              "type": "keyword",
+              "index": false
+            },
+            "street": {
+              "type": "keyword",
+              "index": false
             }
           }
         },
-        "2": {
+        "average_time_to_ship": {
+          "type": "float"
+        },
+        "circle": {
           "properties": {
-            "start": {
-              "type": "keyword"
+            "gps": {
+              "type": "geo_point"
             },
-            "end": {
-              "type": "keyword"
+            "radius": {
+              "properties": {
+                "unit": {
+                  "type": "keyword",
+                  "index": false
+                },
+                "value": {
+                  "type": "keyword",
+                  "index": false
+                }
+              }
             }
           }
         },
-        "3": {
+        "gps": {
+          "type": "geo_point"
+        },
+        "id": {
+          "type": "keyword"
+        },
+        "local_id": {
+          "type": "keyword",
+          "index": false
+        },
+        "max_time_to_ship": {
+          "type": "float"
+        },
+        "median_time_to_ship": {
+          "type": "float"
+        },
+        "min_time_to_ship": {
+          "type": "float"
+        },
+        "polygons": {
+          "type": "geo_shape"
+        },
+        "radius": {
+          "type": "float"
+        },
+        "time": {
           "properties": {
-            "start": {
-              "type": "keyword"
+            "days": {
+              "type": "keyword",
+              "index": false
             },
-            "end": {
-              "type": "keyword"
+            "label": {
+              "type": "keyword",
+              "index": true
+            },
+            "range": {
+              "properties": {
+                "end": {
+                  "type": "keyword",
+                  "index": false
+                },
+                "start": {
+                  "type": "keyword",
+                  "index": false
+                }
+              }
+            },
+            "schedule": {
+              "properties": {
+                "frequency": {
+                  "type": "keyword",
+                  "index": false
+                },
+                "holidays": {
+                  "type": "keyword",
+                  "index": false
+                },
+                "times": {
+                  "type": "keyword",
+                  "index": false
+                }
+              }
+            },
+            "timestamp": {
+              "type": "keyword",
+              "index": false
             }
           }
         },
-        "4": {
+        "type": {
+          "type": "keyword"
+        }
+      }
+    },
+    "provider_details": {
+      "properties": {
+        "@ondc/org/fssai_license_no": {
+          "type": "keyword",
+          "index": false
+        },
+        "creds": {
           "properties": {
-            "start": {
-              "type": "keyword"
+            "descriptor": {
+              "properties": {
+                "code": {
+                  "type": "keyword",
+                  "index": false
+                },
+                "short_desc": {
+                  "type": "keyword",
+                  "index": false
+                }
+              }
             },
-            "end": {
-              "type": "keyword"
+            "id": {
+              "type": "keyword",
+              "index": false
+            },
+            "url": {
+              "type": "keyword",
+              "index": false
             }
           }
         },
-        "5": {
+        "descriptor": {
           "properties": {
-            "start": {
-              "type": "keyword"
+            "images": {
+              "type": "keyword",
+              "index": false
             },
-            "end": {
-              "type": "keyword"
+            "long_desc": {
+              "type": "keyword",
+              "index": false
+            },
+            "name": {
+              "type": "text"
+            },
+            "short_desc": {
+              "type": "keyword",
+              "index": false
+            },
+            "symbol": {
+              "type": "keyword",
+              "index": false
             }
           }
         },
-        "6": {
+        "exp": {
+          "type": "keyword",
+          "index": false
+        },
+        "id": {
+          "type": "keyword"
+        },
+        "local_id": {
+          "type": "keyword",
+          "index": false
+        },
+        "rateable": {
+          "type": "boolean",
+          "index": false
+        },
+        "tags": {
           "properties": {
-            "start": {
-              "type": "keyword"
+            "code": {
+              "type": "keyword",
+              "index": false
             },
-            "end": {
-              "type": "keyword"
+            "list": {
+              "properties": {
+                "code": {
+                  "type": "keyword",
+                  "index": false
+                },
+                "value": {
+                  "type": "keyword",
+                  "index": false
+                }
+              }
             }
           }
         },
-        "7": {
+        "time": {
           "properties": {
-            "start": {
-              "type": "keyword"
+            "label": {
+              "type": "keyword",
+              "index": true
             },
-            "end": {
-              "type": "keyword"
+            "timestamp": {
+              "type": "keyword",
+              "index": false
             }
           }
+        },
+        "ttl": {
+          "type": "keyword",
+          "index": false
         }
       }
     }

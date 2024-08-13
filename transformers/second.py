@@ -6,7 +6,7 @@ from statistics import median, mean
 from funcy import get_in, project
 
 from business_rule_validations.item import validate_item_level
-from utils.dictionary_utils import safe_get_in
+from utils.dictionary_utils import safe_get_in, safe_int_parse
 from utils.iso_time_utils import calculate_duration_in_seconds
 from utils.math_utils import create_simple_circle_polygon
 
@@ -232,6 +232,8 @@ def enrich_custom_menu_in_item(item, custom_menus):
     custom_menu_configs = get_in(item, ["item_details", "category_ids"], [])
     custom_menu_new_list = []
     for c in custom_menu_configs:
+        if ":" not in c:
+            continue
         [cm_id, item_rank] = c.split(":")
         cm = {"id": cm_id, "rank": item_rank}
         custom_menu_new_list.append(cm)
@@ -318,8 +320,8 @@ def enrich_offers_using_serviceabilities(offers, serviceabilities):
 
 def get_store_enabled_or_disabled(item):
     is_enabled = safe_get_in(item, ["provider_details", "time", "label"], "enabled") == "enabled"
-    out_of_stock_check = int(safe_get_in(item, ["item_details", "quantity", "available", "count"], 0)) > 0
-    return out_of_stock_check and is_enabled
+    in_stock_check = safe_int_parse(safe_get_in(item, ["item_details", "quantity", "available", "count"], 0), 0) > 0
+    return in_stock_check and is_enabled
 
 
 def add_time_dictionary(item):
@@ -334,11 +336,52 @@ def add_time_dictionary(item):
     return time_dict
 
 
+def get_value_for_from_list_of_dict(timing_tag, code):
+    return next((c.get("value") for c in timing_tag.get("list", []) if c.get("code") == code), None)
+
+
+def get_start_and_time_for_timing_tag(timing_tag):
+    """
+    [{'code': 'type', 'value': 'Order'}, {'code': 'location', 'value': '39020316'}, {'code': 'day_from', 'value': '6'}, {'code': 'day_to', 'value': '6'}, {'code': 'time_from', 'value': '0730'}, {'code': 'time_to', 'value': '2344'}]
+    """
+    day_from = safe_int_parse(get_value_for_from_list_of_dict(timing_tag, "day_from"), 0)
+    day_to = safe_int_parse(get_value_for_from_list_of_dict(timing_tag, "day_to"), 0)
+    time_from = safe_int_parse(get_value_for_from_list_of_dict(timing_tag, "time_from"), 0)
+    time_to = safe_int_parse(get_value_for_from_list_of_dict(timing_tag, "time_to"), 0)
+    return {
+        "day_from": day_from,
+        "day_to": day_to,
+        "time_from": time_from,
+        "time_to": time_to
+    }
+
+
+def get_start_and_end_which_contains_given_tag(timing_tag, tag):
+    # if any of list value whose type is code and value is tag
+    if any([c.get("value") == tag for c in timing_tag.get("list", [])]):
+        return get_start_and_time_for_timing_tag(timing_tag)
+
+
+def build_timing_dictionary(item, location_id):
+    tags = item.get("provider_details", {}).get("tags", [])
+    # filter tags which have code as timing and in list any one dictionary code value is location
+    filtered_tags = [t for t in tags if t.get("code") == "timing" and any(
+        [c.get("code") == "location" and c.get("value") == location_id for c in t.get("list", [])])]
+    time_data = []
+    for tag_type in ["ALL", "Order", 'Delivery', 'Self-Pickup']:
+        for tag in filtered_tags:
+            value = get_start_and_end_which_contains_given_tag(tag, tag_type)
+            if value is not None:
+                time_data.append(value)
+        if len(time_data) > 0:
+            return time_data
+
+
 def get_amount_stores_available_per_location(items):
     # prepare location_id to items mapping
     location_items_map = {}
     for i in items:
-        location_id = i["location_details"]["id"]
+        location_id = safe_get_in(i, ["location_details", "id"], None)
         if location_id in location_items_map:
             location_items_map[location_id].append(i)
         else:
@@ -362,14 +405,17 @@ def get_unique_locations_from_items(items):
     seen = set()
     locations = []
     enable_dictionary = get_amount_stores_available_per_location(items)
+
     for i in items:
         if i["location_details"].get("id") and i["location_details"]["id"] not in seen and \
                 not seen.add(i["location_details"]["id"]):
             new_loc = project(i, ["location_details", "provider_details", "bpp_details", "context",
                                   "created_at", "language"])
             new_loc["enabled"] = get_store_enabled_or_disabled(i)
-            new_loc["availability"] = add_time_dictionary(i)
             new_loc["id"] = new_loc["location_details"]["id"]
+            timing_dict = build_timing_dictionary(i, new_loc['location_details']['local_id'])
+            new_loc["availability"] = timing_dict
             locations.append(new_loc)
+
     enrich_locations_with_enablement(locations, enable_dictionary)
     return locations

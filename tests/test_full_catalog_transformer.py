@@ -82,6 +82,19 @@ class TestFullCatalog(unittest.TestCase):
 
     @patch('utils.elasticsearch_utils.get_all_manually_flagged_items_for_provider')
     @patch('services.translation_service.get_translated_text')
+    def test_on_search_simple_with_timing_on_search(self, mock_translation_service, mock_flagged_items_fn):
+        mock_translation_service.return_value = self.mock_translated_text
+        mock_flagged_items_fn.return_value = self.mock_flagged_items
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        os.environ["ENV"] = "dev"
+        filepath = os.path.join(current_path, "resources/timing_on_search.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers, locations = transform_full_on_search_payload_into_final_items(json_payload)
+            print(locations)
+
+    @patch('utils.elasticsearch_utils.get_all_manually_flagged_items_for_provider')
+    @patch('services.translation_service.get_translated_text')
     def test_on_search_simple_with_translation(self, mock_translation_service, mock_flagged_items_fn):
         mock_translation_service.return_value = self.mock_translated_text
         mock_flagged_items_fn.return_value = self.mock_flagged_items

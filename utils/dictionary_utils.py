@@ -6,3 +6,9 @@ def safe_get_in(dictionary, path, default=None):
         return get_in(dictionary, path, default)
     except Exception as e:
         return None
+
+def safe_int_parse(value, default=None):
+    try:
+        return int(value)
+    except Exception as e:
+        return default

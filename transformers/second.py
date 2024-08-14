@@ -402,6 +402,13 @@ def enrich_locations_with_enablement(locations, enable_dictionary):
     return locations
 
 
+def fill_up_day_details_if_not_present(day_wise_dict):
+    for day in range(0, 7):
+        if day not in day_wise_dict:
+            day_wise_dict[day] = [{"start": "00:00", "end": "00:00"}]
+    return day_wise_dict
+
+
 def convert_to_day_wise_dictionary(timing_data):
     day_wise_dict = defaultdict(list)
     if timing_data is not None and len(timing_data) > 0:
@@ -411,7 +418,7 @@ def convert_to_day_wise_dictionary(timing_data):
                     "start": data["time_from"],
                     "end": data["time_to"]
                 })
-        return dict(day_wise_dict)
+        return fill_up_day_details_if_not_present(dict(day_wise_dict))
 
 
 def get_unique_locations_from_items(items):

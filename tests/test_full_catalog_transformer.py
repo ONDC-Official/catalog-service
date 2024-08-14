@@ -105,7 +105,7 @@ class TestFullCatalog(unittest.TestCase):
         with open(filepath) as f:
             json_payload = json.load(f)
             items, offers, locations = transform_full_on_search_payload_into_final_items(json_payload)
-            print(locations)
+            print(items)
 
     @patch('utils.elasticsearch_utils.get_all_manually_flagged_items_for_provider')
     @patch('services.translation_service.get_translated_text')

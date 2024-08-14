@@ -11,7 +11,6 @@ def get_translated_text(text, source_lang="en", target_lang="hi"):
 
     if cache_translation:
         cache_translation = cache_translation.decode('utf-8')
-        print("translation found in cache", cache_translation)
         return cache_translation
     else:
         translated_text = translate({

@@ -79,6 +79,11 @@ def enrich_unique_id_into_item(item, provider_id):
     return item
 
 
+def enrich_fulfillment_into_item(item, fulfillment):
+    item["fulfillment"] = fulfillment
+    return item
+
+
 def enrich_unique_id_into_offer(offer, location_id):
     offer["local_id"] = offer['id']
     offer["id"] = f"{offer['provider_details']['id']}_{location_id}_{offer['id']}"
@@ -170,7 +175,7 @@ def flatten_full_on_search_payload_to_provider_map(payload):
         for p in bpp_providers:
             p["local_id"] = p.get('id')
             p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
-
+            p["fulfillments"] = p.get("fulfillments", [])
             # Enrich Items
             provider_items = p.get("items", [])
             provider_locations = p.get("locations", [])
@@ -185,6 +190,7 @@ def flatten_full_on_search_payload_to_provider_map(payload):
             [enrich_item_type(i) for i in provider_items]
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
             [enrich_unique_id_into_item(i, p['id']) for i in provider_items]
+            [enrich_fulfillment_into_item(i, p['fulfillments']) for i in provider_items]
 
             # Filter out the elements with location empty (for type as item)
             # TODO - log rejected items

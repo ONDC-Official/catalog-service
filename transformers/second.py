@@ -320,9 +320,10 @@ def enrich_offers_using_serviceabilities(offers, serviceabilities):
 
 
 def get_store_enabled_or_disabled(item):
-    is_enabled = safe_get_in(item, ["provider_details", "time", "label"], "enabled") == "enabled"
+    is_enabled = safe_get_in(item, ["provider_details", "time", "label"], "enable") == "enable"
+    is_location_enabled = safe_get_in(item, ["location_details", "time", "label"], "enable") == "enable"
     in_stock_check = safe_int_parse(safe_get_in(item, ["item_details", "quantity", "available", "count"], 0), 0) > 0
-    return in_stock_check and is_enabled
+    return in_stock_check and is_enabled and is_location_enabled
 
 
 def add_time_dictionary(item):

@@ -8,6 +8,16 @@ from transformers.third import update_provider_items_with_manual_flags
 from transformers.translation import translate_items_into_target_language
 
 
+def enrich_items_with_location_availabilities(final_items, final_locations):
+    # create location_id to availability mapping
+    location_id_to_availability = {}
+    for location in final_locations:
+        location_id_to_availability[location["location_details"]["local_id"]] = location["availability"]
+    # for each item, add location availability
+    for item in final_items:
+        item["location_availabilities"] = location_id_to_availability.get(item["location_details"]["local_id"], {})
+
+
 def transform_full_on_search_payload_into_default_lang_items(payload):
     provider_map = flatten_full_on_search_payload_to_provider_map(payload)
     final_items = []
@@ -29,7 +39,7 @@ def transform_full_on_search_payload_into_default_lang_items(payload):
         final_items.extend(items)
         final_offers.extend(offers)
         final_locations.extend(locations)
-
+    enrich_items_with_location_availabilities(final_items, final_locations)
     return final_items, final_offers, final_locations
 
 

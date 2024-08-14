@@ -405,7 +405,7 @@ def enrich_locations_with_enablement(locations, enable_dictionary):
 def fill_up_day_details_if_not_present(day_wise_dict):
     for day in range(0, 7):
         if day not in day_wise_dict:
-            day_wise_dict[day] = [{"start": "00:00", "end": "00:00"}]
+            day_wise_dict[day] = [{"start": 0, "end": 0}]
     return day_wise_dict
 
 

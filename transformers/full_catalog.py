@@ -13,7 +13,7 @@ def enrich_items_with_location_availabilities(final_items, final_locations):
     # create location_id to availability mapping
     location_id_to_availability = {}
     for location in final_locations:
-        location_id_to_availability[location["location_details"]["local_id"]] = location["availability"]
+        location_id_to_availability[location["location_details"]["local_id"]] = location.get("availability", [])
     # for each item, add location availability
     for item in final_items:
         item["location_availabilities"] = location_id_to_availability.get(

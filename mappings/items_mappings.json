@@ -624,7 +624,7 @@
           "properties": {
             "label": {
               "type": "keyword",
-              "index": true
+              "index": false
             },
             "timestamp": {
               "type": "keyword",
@@ -748,7 +748,7 @@
             },
             "label": {
               "type": "keyword",
-              "index": true
+              "index": false
             },
             "range": {
               "properties": {
@@ -793,6 +793,9 @@
       "type": "boolean"
     },
     "manual_provider_flag": {
+      "type": "boolean"
+    },
+    "in_stock": {
       "type": "boolean"
     },
     "manual_seller_flag": {
@@ -890,7 +893,7 @@
           "properties": {
             "label": {
               "type": "keyword",
-              "index": true
+              "index": false
             },
             "timestamp": {
               "type": "keyword",

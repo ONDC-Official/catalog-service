@@ -1,948 +1,979 @@
 {
-  "properties": {
-    "attribute_key_values": {
-      "type": "nested",
-      "properties": {
-        "key": {
-          "type": "keyword"
-        },
-        "value": {
-          "type": "keyword"
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_keywords": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
         }
-      }
-    },
-    "auto_item_flag": {
-      "type": "boolean"
-    },
-    "auto_provider_flag": {
-      "type": "boolean"
-    },
-    "auto_seller_flag": {
-      "type": "boolean"
-    },
-    "bpp_details": {
-      "properties": {
-        "bpp_id": {
-          "type": "keyword"
-        },
-        "images": {
-          "type": "keyword",
-          "index": false
-        },
-        "long_desc": {
-          "type": "keyword",
-          "index": false
-        },
-        "name": {
-          "type": "text"
-        },
-        "short_desc": {
-          "type": "keyword",
-          "index": false
-        },
-        "symbol": {
-          "type": "keyword",
-          "index": false
-        },
-        "tags": {
-          "properties": {
-            "code": {
-              "type": "keyword",
-              "index": false
-            },
-            "list": {
-              "properties": {
-                "code": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "value": {
-                  "type": "keyword",
-                  "index": false
-                }
-              }
-            }
+      },
+      {
+        "booleans_as_booleans_without_index": {
+          "match_mapping_type": "boolean",
+          "mapping": {
+            "type": "boolean",
+            "index": false
+          }
+        }
+      },
+      {
+        "dates_as_keywords": {
+          "match_mapping_type": "date",
+          "mapping": {
+            "type": "keyword",
+            "index": false
           }
         }
       }
-    },
-    "categories": {
-      "properties": {
-        "descriptor": {
-          "properties": {
-            "code": {
-              "type": "keyword",
-              "index": false
-            },
-            "images": {
-              "type": "keyword",
-              "index": false
-            },
-            "long_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "name": {
-              "type": "keyword",
-              "index": false
-            },
-            "short_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "symbol": {
-              "type": "keyword",
-              "index": false
-            }
-          }
-        },
-        "id": {
-          "type": "keyword",
-          "index": false
-        },
-        "parent_category_id": {
-          "type": "keyword",
-          "index": false
-        },
-        "tags": {
-          "properties": {
-            "code": {
-              "type": "keyword",
-              "index": false
-            },
-            "list": {
-              "properties": {
-                "code": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "value": {
-                  "type": "keyword",
-                  "index": false
-                }
-              }
-            }
+    ],
+    "properties": {
+      "attribute_key_values": {
+        "type": "nested",
+        "properties": {
+          "key": {
+            "type": "keyword"
+          },
+          "value": {
+            "type": "keyword"
           }
         }
-      }
-    },
-    "context": {
-      "properties": {
-        "action": {
-          "type": "keyword"
-        },
-        "bap_id": {
-          "type": "keyword",
-          "index": false
-        },
-        "bap_uri": {
-          "type": "keyword",
-          "index": false
-        },
-        "bpp_id": {
-          "type": "keyword"
-        },
-        "bpp_uri": {
-          "type": "keyword",
-          "index": false
-        },
-        "city": {
-          "type": "keyword"
-        },
-        "core_version": {
-          "type": "keyword",
-          "index": false
-        },
-        "country": {
-          "type": "keyword"
-        },
-        "domain": {
-          "type": "keyword"
-        },
-        "key": {
-          "type": "keyword",
-          "index": false
-        },
-        "message_id": {
-          "type": "keyword"
-        },
-        "timestamp": {
-          "type": "keyword",
-          "index": false
-        },
-        "transaction_id": {
-          "type": "keyword"
-        },
-        "ttl": {
-          "type": "keyword",
-          "index": false
-        }
-      }
-    },
-    "created_at": {
-      "type": "date"
-    },
-    "customisation_group_id": {
-      "type": "keyword"
-    },
-    "customisation_groups": {
-      "type": "nested",
-      "properties": {
-        "descriptor": {
-          "properties": {
-            "long_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "name": {
-              "type": "keyword",
-              "index": false
-            },
-            "short_desc": {
-              "type": "keyword",
-              "index": false
-            }
-          }
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "local_id": {
-          "type": "keyword"
-        },
-        "parent_category_id": {
-          "type": "keyword",
-          "index": false
-        },
-        "tags": {
-          "properties": {
-            "code": {
-              "type": "keyword",
-              "index": false
-            },
-            "list": {
-              "properties": {
-                "code": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "value": {
-                  "type": "keyword",
-                  "index": false
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "customisation_menus": {
-      "type": "nested",
-      "properties": {
-        "descriptor": {
-          "properties": {
-            "code": {
-              "type": "keyword",
-              "index": false
-            },
-            "images": {
-              "type": "keyword",
-              "index": false
-            },
-            "long_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "name": {
-              "type": "text"
-            },
-            "short_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "symbol": {
-              "type": "keyword",
-              "index": false
-            }
-          }
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "local_id": {
-          "type": "keyword"
-        },
-        "parent_category_id": {
-          "type": "keyword"
-        },
-        "tags": {
-          "properties": {
-            "code": {
-              "type": "keyword",
-              "index": false
-            },
-            "list": {
-              "properties": {
-                "code": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "value": {
-                  "type": "keyword",
-                  "index": false
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "customisation_nested_group_id": {
-      "type": "keyword"
-    },
-    "fulfillment_details": {
-      "properties": {
-        "id": {
-          "type": "keyword",
-          "index": false
-        },
-        "tracking": {
-          "type": "boolean",
-          "index": false
-        },
-        "type": {
-          "type": "keyword",
-          "index": false
-        }
-      }
-    },
-    "id": {
-      "type": "keyword"
-    },
-    "is_first": {
-      "type": "boolean"
-    },
-    "item_details": {
-      "properties": {
-        "@ondc/org/available_on_cod": {
-          "type": "boolean",
-          "index": false
-        },
-        "@ondc/org/cancellable": {
-          "type": "boolean",
-          "index": false
-        },
-        "@ondc/org/contact_details_consumer_care": {
-          "type": "keyword",
-          "index": false
-        },
-        "@ondc/org/return_window": {
-          "type": "keyword",
-          "index": false
-        },
-        "@ondc/org/returnable": {
-          "type": "boolean",
-          "index": false
-        },
-        "@ondc/org/seller_pickup_return": {
-          "type": "boolean",
-          "index": false
-        },
-        "@ondc/org/statutory_reqs_packaged_commodities": {
-          "properties": {
-            "common_or_generic_name_of_commodity": {
-              "type": "keyword",
-              "index": false
-            },
-            "expiry_date": {
-              "type": "keyword",
-              "index": false
-            },
-            "imported_product_country_of_origin": {
-              "type": "keyword",
-              "index": false
-            },
-            "manufacturer_or_packer_address": {
-              "type": "keyword",
-              "index": false
-            },
-            "manufacturer_or_packer_name": {
-              "type": "keyword",
-              "index": false
-            },
-            "mfg_license_no": {
-              "type": "keyword",
-              "index": false
-            },
-            "month_year_of_manufacture_packing_import": {
-              "type": "keyword",
-              "index": false
-            },
-            "multiple_products_name_number_or_qty": {
-              "type": "keyword",
-              "index": false
-            },
-            "net_quantity_or_measure_of_commodity_in_pkg": {
-              "type": "keyword",
-              "index": false
-            }
-          }
-        },
-        "@ondc/org/statutory_reqs_prepackaged_food": {
-          "properties": {
-            "additives_info": {
-              "type": "keyword",
-              "index": false
-            },
-            "brand_owner_FSSAI_license_no": {
-              "type": "keyword",
-              "index": false
-            },
-            "brand_owner_FSSAI_logo": {
-              "type": "keyword",
-              "index": false
-            },
-            "brand_owner_address": {
-              "type": "keyword",
-              "index": false
-            },
-            "brand_owner_name": {
-              "type": "keyword",
-              "index": false
-            },
-            "imported_product_country_of_origin": {
-              "type": "keyword",
-              "index": false
-            },
-            "importer_FSSAI_license_no": {
-              "type": "keyword",
-              "index": false
-            },
-            "importer_address": {
-              "type": "keyword",
-              "index": false
-            },
-            "importer_name": {
-              "type": "keyword",
-              "index": false
-            },
-            "ingredients_info": {
-              "type": "keyword",
-              "index": false
-            },
-            "manufacturer_or_packer_address": {
-              "type": "keyword",
-              "index": false
-            },
-            "manufacturer_or_packer_name": {
-              "type": "keyword",
-              "index": false
-            },
-            "net_quantity": {
-              "type": "keyword",
-              "index": false
-            },
-            "nutritional_info": {
-              "type": "keyword",
-              "index": false
-            },
-            "other_FSSAI_license_no": {
-              "type": "keyword",
-              "index": false
-            },
-            "other_importer_address": {
-              "type": "keyword",
-              "index": false
-            },
-            "other_importer_country_of_origin": {
-              "type": "keyword",
-              "index": false
-            },
-            "other_importer_name": {
-              "type": "keyword",
-              "index": false
-            },
-            "other_premises": {
-              "type": "keyword",
-              "index": false
-            }
-          }
-        },
-        "@ondc/org/time_to_ship": {
-          "type": "keyword",
-          "index": false
-        },
-        "category_id": {
-          "type": "keyword"
-        },
-        "category_ids": {
-          "type": "keyword",
-          "index": false
-        },
-        "descriptor": {
-          "properties": {
-            "Symbol": {
-              "type": "keyword",
-              "index": false
-            },
-            "code": {
-              "type": "keyword"
-            },
-            "images": {
-              "type": "keyword",
-              "index": false
-            },
-            "long_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "name": {
-              "type": "text"
-            },
-            "short_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "symbol": {
-              "type": "keyword",
-              "index": false
-            }
-          }
-        },
-        "fulfillment_id": {
-          "type": "keyword"
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "location_id": {
-          "type": "keyword"
-        },
-        "parent_item_id": {
-          "type": "keyword"
-        },
-        "price": {
-          "properties": {
-            "currency": {
-              "type": "keyword",
-              "index": false
-            },
-            "maximum_value": {
-              "type": "keyword",
-              "index": false
-            },
-            "tags": {
-              "properties": {
-                "code": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "list": {
-                  "properties": {
-                    "code": {
-                      "type": "keyword",
-                      "index": false
-                    },
-                    "value": {
-                      "type": "keyword",
-                      "index": false
-                    }
-                  }
-                }
-              }
-            },
-            "value": {
-              "type": "float"
-            }
-          }
-        },
-        "quantity": {
-          "properties": {
-            "available": {
-              "properties": {
-                "count": {
-                  "type": "keyword",
-                  "index": false
-                }
-              }
-            },
-            "maximum": {
-              "properties": {
-                "count": {
-                  "type": "keyword",
-                  "index": false
-                }
-              }
-            },
-            "unitized": {
-              "properties": {
-                "measure": {
-                  "properties": {
-                    "unit": {
-                      "type": "keyword",
-                      "index": false
-                    },
-                    "value": {
-                      "type": "keyword",
-                      "index": false
-                    }
+      },
+      "auto_item_flag": {
+        "type": "boolean"
+      },
+      "auto_provider_flag": {
+        "type": "boolean"
+      },
+      "auto_seller_flag": {
+        "type": "boolean"
+      },
+      "bpp_details": {
+        "properties": {
+          "bpp_id": {
+            "type": "keyword"
+          },
+          "images": {
+            "type": "keyword",
+            "index": false
+          },
+          "long_desc": {
+            "type": "keyword",
+            "index": false
+          },
+          "name": {
+            "type": "text"
+          },
+          "short_desc": {
+            "type": "keyword",
+            "index": false
+          },
+          "symbol": {
+            "type": "keyword",
+            "index": false
+          },
+          "tags": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "list": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
                   }
                 }
               }
             }
           }
-        },
-        "recommended": {
-          "type": "boolean",
-          "index": false
-        },
-        "related": {
-          "type": "boolean",
-          "index": false
-        },
-        "tags": {
-          "properties": {
-            "code": {
-              "type": "keyword",
-              "index": false
-            },
-            "list": {
-              "properties": {
-                "code": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "value": {
-                  "type": "keyword",
-                  "index": false
+        }
+      },
+      "categories": {
+        "properties": {
+          "descriptor": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "images": {
+                "type": "keyword",
+                "index": false
+              },
+              "long_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "name": {
+                "type": "keyword",
+                "index": false
+              },
+              "short_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "symbol": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "id": {
+            "type": "keyword",
+            "index": false
+          },
+          "parent_category_id": {
+            "type": "keyword",
+            "index": false
+          },
+          "tags": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "list": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
                 }
               }
             }
           }
-        },
-        "time": {
-          "properties": {
-            "label": {
-              "type": "keyword",
-              "index": false
-            },
-            "timestamp": {
-              "type": "keyword",
-              "index": false
-            }
+        }
+      },
+      "context": {
+        "properties": {
+          "action": {
+            "type": "keyword"
+          },
+          "bap_id": {
+            "type": "keyword",
+            "index": false
+          },
+          "bap_uri": {
+            "type": "keyword",
+            "index": false
+          },
+          "bpp_id": {
+            "type": "keyword"
+          },
+          "bpp_uri": {
+            "type": "keyword",
+            "index": false
+          },
+          "city": {
+            "type": "keyword"
+          },
+          "core_version": {
+            "type": "keyword",
+            "index": false
+          },
+          "country": {
+            "type": "keyword"
+          },
+          "domain": {
+            "type": "keyword"
+          },
+          "key": {
+            "type": "keyword",
+            "index": false
+          },
+          "message_id": {
+            "type": "keyword"
+          },
+          "timestamp": {
+            "type": "keyword",
+            "index": false
+          },
+          "transaction_id": {
+            "type": "keyword"
+          },
+          "ttl": {
+            "type": "keyword",
+            "index": false
           }
         }
-      }
-    },
-    "item_error_tags": {
-      "type": "nested",
-      "properties": {
-        "code": {
-          "type": "keyword"
-        }
-      }
-    },
-    "item_flag": {
-      "type": "boolean"
-    },
-    "language": {
-      "type": "keyword"
-    },
-    "local_id": {
-      "type": "keyword"
-    },
-    "location_details": {
-      "properties": {
-        "address": {
-          "properties": {
-            "area_code": {
-              "type": "keyword",
-              "index": false
-            },
-            "building": {
-              "type": "keyword",
-              "index": false
-            },
-            "city": {
-              "type": "keyword",
-              "index": false
-            },
-            "country": {
-              "type": "keyword",
-              "index": false
-            },
-            "door": {
-              "type": "keyword",
-              "index": false
-            },
-            "locality": {
-              "type": "keyword",
-              "index": false
-            },
-            "name": {
-              "type": "keyword",
-              "index": false
-            },
-            "state": {
-              "type": "keyword",
-              "index": false
-            },
-            "street": {
-              "type": "keyword",
-              "index": false
+      },
+      "created_at": {
+        "type": "date"
+      },
+      "customisation_group_id": {
+        "type": "keyword"
+      },
+      "customisation_groups": {
+        "type": "nested",
+        "properties": {
+          "descriptor": {
+            "properties": {
+              "long_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "name": {
+                "type": "keyword",
+                "index": false
+              },
+              "short_desc": {
+                "type": "keyword",
+                "index": false
+              }
             }
-          }
-        },
-        "average_time_to_ship": {
-          "type": "float"
-        },
-        "circle": {
-          "properties": {
-            "gps": {
-              "type": "geo_point"
-            },
-            "radius": {
-              "properties": {
-                "unit": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "value": {
-                  "type": "keyword",
-                  "index": false
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword"
+          },
+          "parent_category_id": {
+            "type": "keyword",
+            "index": false
+          },
+          "tags": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "list": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
                 }
               }
             }
           }
-        },
-        "gps": {
-          "type": "geo_point"
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "local_id": {
-          "type": "keyword",
-          "index": false
-        },
-        "max_time_to_ship": {
-          "type": "float"
-        },
-        "median_time_to_ship": {
-          "type": "float"
-        },
-        "min_time_to_ship": {
-          "type": "float"
-        },
-        "polygons": {
-          "type": "geo_shape"
-        },
-        "radius": {
-          "type": "float"
-        },
-        "time": {
-          "properties": {
-            "days": {
-              "type": "keyword",
-              "index": false
-            },
-            "label": {
-              "type": "keyword",
-              "index": false
-            },
-            "range": {
-              "properties": {
-                "end": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "start": {
-                  "type": "keyword",
-                  "index": false
-                }
-              }
-            },
-            "schedule": {
-              "properties": {
-                "frequency": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "holidays": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "times": {
-                  "type": "keyword",
-                  "index": false
-                }
-              }
-            },
-            "timestamp": {
-              "type": "keyword",
-              "index": false
-            }
-          }
-        },
-        "type": {
-          "type": "keyword"
         }
-      }
-    },
-    "manual_item_flag": {
-      "type": "boolean"
-    },
-    "manual_provider_flag": {
-      "type": "boolean"
-    },
-    "in_stock": {
-      "type": "boolean"
-    },
-    "manual_seller_flag": {
-      "type": "boolean"
-    },
-    "provider_details": {
-      "properties": {
-        "@ondc/org/fssai_license_no": {
-          "type": "keyword",
-          "index": false
-        },
-        "creds": {
-          "properties": {
-            "descriptor": {
-              "properties": {
-                "code": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "short_desc": {
-                  "type": "keyword",
-                  "index": false
-                }
+      },
+      "customisation_menus": {
+        "type": "nested",
+        "properties": {
+          "descriptor": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "images": {
+                "type": "keyword",
+                "index": false
+              },
+              "long_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "name": {
+                "type": "text"
+              },
+              "short_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "symbol": {
+                "type": "keyword",
+                "index": false
               }
-            },
-            "id": {
-              "type": "keyword",
-              "index": false
-            },
-            "url": {
-              "type": "keyword",
-              "index": false
             }
-          }
-        },
-        "descriptor": {
-          "properties": {
-            "images": {
-              "type": "keyword",
-              "index": false
-            },
-            "long_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "name": {
-              "type": "text"
-            },
-            "short_desc": {
-              "type": "keyword",
-              "index": false
-            },
-            "symbol": {
-              "type": "keyword",
-              "index": false
-            }
-          }
-        },
-        "exp": {
-          "type": "keyword",
-          "index": false
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "local_id": {
-          "type": "keyword",
-          "index": false
-        },
-        "rateable": {
-          "type": "boolean",
-          "index": false
-        },
-        "tags": {
-          "properties": {
-            "code": {
-              "type": "keyword",
-              "index": false
-            },
-            "list": {
-              "properties": {
-                "code": {
-                  "type": "keyword",
-                  "index": false
-                },
-                "value": {
-                  "type": "keyword",
-                  "index": false
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword"
+          },
+          "parent_category_id": {
+            "type": "keyword"
+          },
+          "tags": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "list": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
                 }
               }
             }
           }
-        },
-        "time": {
-          "properties": {
-            "label": {
-              "type": "keyword",
-              "index": false
-            },
-            "timestamp": {
-              "type": "keyword",
-              "index": false
+        }
+      },
+      "customisation_nested_group_id": {
+        "type": "keyword"
+      },
+      "fulfillment_details": {
+        "properties": {
+          "id": {
+            "type": "keyword",
+            "index": false
+          },
+          "tracking": {
+            "type": "boolean",
+            "index": false
+          },
+          "type": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "is_first": {
+        "type": "boolean"
+      },
+      "item_details": {
+        "properties": {
+          "@ondc/org/available_on_cod": {
+            "type": "boolean",
+            "index": false
+          },
+          "@ondc/org/cancellable": {
+            "type": "boolean",
+            "index": false
+          },
+          "@ondc/org/contact_details_consumer_care": {
+            "type": "keyword",
+            "index": false
+          },
+          "@ondc/org/return_window": {
+            "type": "keyword",
+            "index": false
+          },
+          "@ondc/org/returnable": {
+            "type": "boolean",
+            "index": false
+          },
+          "@ondc/org/seller_pickup_return": {
+            "type": "boolean",
+            "index": false
+          },
+          "@ondc/org/statutory_reqs_packaged_commodities": {
+            "properties": {
+              "common_or_generic_name_of_commodity": {
+                "type": "keyword",
+                "index": false
+              },
+              "expiry_date": {
+                "type": "keyword",
+                "index": false
+              },
+              "imported_product_country_of_origin": {
+                "type": "keyword",
+                "index": false
+              },
+              "manufacturer_or_packer_address": {
+                "type": "keyword",
+                "index": false
+              },
+              "manufacturer_or_packer_name": {
+                "type": "keyword",
+                "index": false
+              },
+              "mfg_license_no": {
+                "type": "keyword",
+                "index": false
+              },
+              "month_year_of_manufacture_packing_import": {
+                "type": "keyword",
+                "index": false
+              },
+              "multiple_products_name_number_or_qty": {
+                "type": "keyword",
+                "index": false
+              },
+              "net_quantity_or_measure_of_commodity_in_pkg": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "@ondc/org/statutory_reqs_prepackaged_food": {
+            "properties": {
+              "additives_info": {
+                "type": "keyword",
+                "index": false
+              },
+              "brand_owner_FSSAI_license_no": {
+                "type": "keyword",
+                "index": false
+              },
+              "brand_owner_FSSAI_logo": {
+                "type": "keyword",
+                "index": false
+              },
+              "brand_owner_address": {
+                "type": "keyword",
+                "index": false
+              },
+              "brand_owner_name": {
+                "type": "keyword",
+                "index": false
+              },
+              "imported_product_country_of_origin": {
+                "type": "keyword",
+                "index": false
+              },
+              "importer_FSSAI_license_no": {
+                "type": "keyword",
+                "index": false
+              },
+              "importer_address": {
+                "type": "keyword",
+                "index": false
+              },
+              "importer_name": {
+                "type": "keyword",
+                "index": false
+              },
+              "ingredients_info": {
+                "type": "keyword",
+                "index": false
+              },
+              "manufacturer_or_packer_address": {
+                "type": "keyword",
+                "index": false
+              },
+              "manufacturer_or_packer_name": {
+                "type": "keyword",
+                "index": false
+              },
+              "net_quantity": {
+                "type": "keyword",
+                "index": false
+              },
+              "nutritional_info": {
+                "type": "keyword",
+                "index": false
+              },
+              "other_FSSAI_license_no": {
+                "type": "keyword",
+                "index": false
+              },
+              "other_importer_address": {
+                "type": "keyword",
+                "index": false
+              },
+              "other_importer_country_of_origin": {
+                "type": "keyword",
+                "index": false
+              },
+              "other_importer_name": {
+                "type": "keyword",
+                "index": false
+              },
+              "other_premises": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "@ondc/org/time_to_ship": {
+            "type": "keyword",
+            "index": false
+          },
+          "category_id": {
+            "type": "keyword"
+          },
+          "category_ids": {
+            "type": "keyword",
+            "index": false
+          },
+          "descriptor": {
+            "properties": {
+              "Symbol": {
+                "type": "keyword",
+                "index": false
+              },
+              "code": {
+                "type": "keyword"
+              },
+              "images": {
+                "type": "keyword",
+                "index": false
+              },
+              "long_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "name": {
+                "type": "text"
+              },
+              "short_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "symbol": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "fulfillment_id": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "location_id": {
+            "type": "keyword"
+          },
+          "parent_item_id": {
+            "type": "keyword"
+          },
+          "price": {
+            "properties": {
+              "currency": {
+                "type": "keyword",
+                "index": false
+              },
+              "maximum_value": {
+                "type": "keyword",
+                "index": false
+              },
+              "tags": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "list": {
+                    "properties": {
+                      "code": {
+                        "type": "keyword",
+                        "index": false
+                      },
+                      "value": {
+                        "type": "keyword",
+                        "index": false
+                      }
+                    }
+                  }
+                }
+              },
+              "value": {
+                "type": "float"
+              }
+            }
+          },
+          "quantity": {
+            "properties": {
+              "available": {
+                "properties": {
+                  "count": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              },
+              "maximum": {
+                "properties": {
+                  "count": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              },
+              "unitized": {
+                "properties": {
+                  "measure": {
+                    "properties": {
+                      "unit": {
+                        "type": "keyword",
+                        "index": false
+                      },
+                      "value": {
+                        "type": "keyword",
+                        "index": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "recommended": {
+            "type": "boolean",
+            "index": false
+          },
+          "related": {
+            "type": "boolean",
+            "index": false
+          },
+          "tags": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "list": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "time": {
+            "properties": {
+              "label": {
+                "type": "keyword",
+                "index": false
+              },
+              "timestamp": {
+                "type": "keyword",
+                "index": false
+              }
             }
           }
-        },
-        "ttl": {
-          "type": "keyword",
-          "index": false
         }
-      }
-    },
-    "provider_error_tags": {
-      "type": "nested",
-      "properties": {
-        "code": {
-          "type": "keyword"
+      },
+      "item_error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
         }
-      }
-    },
-    "provider_flag": {
-      "type": "boolean"
-    },
-    "seller_error_tags": {
-      "type": "nested",
-      "properties": {
-        "code": {
-          "type": "keyword"
+      },
+      "item_flag": {
+        "type": "boolean"
+      },
+      "language": {
+        "type": "keyword"
+      },
+      "local_id": {
+        "type": "keyword"
+      },
+      "location_details": {
+        "properties": {
+          "address": {
+            "properties": {
+              "area_code": {
+                "type": "keyword",
+                "index": false
+              },
+              "building": {
+                "type": "keyword",
+                "index": false
+              },
+              "city": {
+                "type": "keyword",
+                "index": false
+              },
+              "country": {
+                "type": "keyword",
+                "index": false
+              },
+              "door": {
+                "type": "keyword",
+                "index": false
+              },
+              "locality": {
+                "type": "keyword",
+                "index": false
+              },
+              "name": {
+                "type": "keyword",
+                "index": false
+              },
+              "state": {
+                "type": "keyword",
+                "index": false
+              },
+              "street": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "average_time_to_ship": {
+            "type": "float"
+          },
+          "circle": {
+            "properties": {
+              "gps": {
+                "type": "geo_point"
+              },
+              "radius": {
+                "properties": {
+                  "unit": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "gps": {
+            "type": "geo_point"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword",
+            "index": false
+          },
+          "max_time_to_ship": {
+            "type": "float"
+          },
+          "median_time_to_ship": {
+            "type": "float"
+          },
+          "min_time_to_ship": {
+            "type": "float"
+          },
+          "polygons": {
+            "type": "geo_shape"
+          },
+          "radius": {
+            "type": "float"
+          },
+          "time": {
+            "properties": {
+              "days": {
+                "type": "keyword",
+                "index": false
+              },
+              "label": {
+                "type": "keyword",
+                "index": false
+              },
+              "range": {
+                "properties": {
+                  "end": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "start": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              },
+              "schedule": {
+                "properties": {
+                  "frequency": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "holidays": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "times": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              },
+              "timestamp": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "type": {
+            "type": "keyword"
+          }
         }
-      }
-    },
-    "seller_flag": {
-      "type": "boolean"
-    },
-    "type": {
-      "type": "keyword"
-    },
-    "variant_group": {
-      "properties": {
-        "attribute_codes": {
-          "type": "keyword"
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "local_id": {
-          "type": "keyword",
-          "index": false
+      },
+      "manual_item_flag": {
+        "type": "boolean"
+      },
+      "manual_provider_flag": {
+        "type": "boolean"
+      },
+      "in_stock": {
+        "type": "boolean"
+      },
+      "manual_seller_flag": {
+        "type": "boolean"
+      },
+      "provider_details": {
+        "properties": {
+          "@ondc/org/fssai_license_no": {
+            "type": "keyword",
+            "index": false
+          },
+          "creds": {
+            "properties": {
+              "descriptor": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "short_desc": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              },
+              "id": {
+                "type": "keyword",
+                "index": false
+              },
+              "url": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "descriptor": {
+            "properties": {
+              "images": {
+                "type": "keyword",
+                "index": false
+              },
+              "long_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "name": {
+                "type": "text"
+              },
+              "short_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "symbol": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "exp": {
+            "type": "keyword",
+            "index": false
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword",
+            "index": false
+          },
+          "rateable": {
+            "type": "boolean",
+            "index": false
+          },
+          "tags": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "list": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "time": {
+            "properties": {
+              "label": {
+                "type": "keyword",
+                "index": false
+              },
+              "timestamp": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "ttl": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      "provider_error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "provider_flag": {
+        "type": "boolean"
+      },
+      "seller_error_tags": {
+        "type": "nested",
+        "properties": {
+          "code": {
+            "type": "keyword"
+          }
+        }
+      },
+      "seller_flag": {
+        "type": "boolean"
+      },
+      "type": {
+        "type": "keyword"
+      },
+      "variant_group": {
+        "properties": {
+          "attribute_codes": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword",
+            "index": false
+          }
         }
       }
     }

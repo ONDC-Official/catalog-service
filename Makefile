@@ -31,3 +31,12 @@ apply-es-mapping:
 	fi; \
 	curl -X PUT "http://localhost:9200/$$index_name/_mapping" -H "Content-Type: application/json" -d @$$file_location; \
 	echo "Mapping update completed for index $$index_name."# take input of index name, json file location and hit localhost:9200
+
+
+delete-es-index:
+	@echo "Deleting Elasticsearch index..."
+	@if [ -z "$(index_name)" ]; then \
+		read -p "Enter Elasticsearch index name: " index_name; \
+	fi; \
+	curl -X DELETE "http://localhost:9200/$$index_name"; \
+	echo "Index $$index_name deleted successfully."# take input of index name and hit localhost:9200

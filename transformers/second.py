@@ -436,7 +436,8 @@ def get_unique_locations_from_items(items):
             new_loc["id"] = new_loc["location_details"]["id"]
             timing_dict = convert_to_day_wise_dictionary(
                 build_timing_dictionary(i, new_loc['location_details']['local_id']))
-            new_loc["availability"] = timing_dict
+            if timing_dict is not None:
+                new_loc["availability"] = timing_dict
             locations.append(new_loc)
 
     enrich_locations_with_enablement(locations, enable_dictionary)

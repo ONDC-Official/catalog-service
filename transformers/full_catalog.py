@@ -6,6 +6,7 @@ from transformers.second import enrich_items_using_tags_and_categories, enrich_o
     get_unique_locations_from_items
 from transformers.third import update_provider_items_with_manual_flags
 from transformers.translation import translate_items_into_target_language
+from utils.dictionary_utils import safe_get_in
 
 
 def enrich_items_with_location_availabilities(final_items, final_locations):
@@ -15,7 +16,8 @@ def enrich_items_with_location_availabilities(final_items, final_locations):
         location_id_to_availability[location["location_details"]["local_id"]] = location["availability"]
     # for each item, add location availability
     for item in final_items:
-        item["location_availabilities"] = location_id_to_availability.get(item["location_details"]["local_id"], {})
+        item["location_availabilities"] = location_id_to_availability.get(
+            safe_get_in(item, ["location_details", "local_id"], None), [])
 
 
 def transform_full_on_search_payload_into_default_lang_items(payload):

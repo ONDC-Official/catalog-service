@@ -11,7 +11,6 @@ from transformers.full_catalog import transform_full_on_search_payload_into_defa
 
 
 class TestFullCatalog(unittest.TestCase):
-
     mock_translated_text = "translated_text"
     mock_flagged_items = []
 
@@ -75,12 +74,52 @@ class TestFullCatalog(unittest.TestCase):
             json_payload = json.load(f)
             items, offers, locations = transform_full_on_search_payload_into_default_lang_items(json_payload)
             flagged_items = list(filter(lambda x: x["item_flag"], items))
-
         # Verify that the document retrieval was successful
         self.assertEqual(12, len(items))
         self.assertEqual(1, len(locations))
         self.assertEqual(0, len(flagged_items))
         self.assertEqual(0, len(offers))
+
+    @patch('utils.elasticsearch_utils.get_all_manually_flagged_items_for_provider')
+    @patch('services.translation_service.get_translated_text')
+    def test_on_search_simple_with_timing_on_search(self, mock_translation_service, mock_flagged_items_fn):
+        mock_translation_service.return_value = self.mock_translated_text
+        mock_flagged_items_fn.return_value = self.mock_flagged_items
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        os.environ["ENV"] = "dev"
+        filepath = os.path.join(current_path, "resources/timing_on_search.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers, locations = transform_full_on_search_payload_into_final_items(json_payload)
+            print(locations)
+
+    @patch('utils.elasticsearch_utils.get_all_manually_flagged_items_for_provider')
+    @patch('services.translation_service.get_translated_text')
+    def test_on_search_simple_with_timing_on_search_with_multiple_per_day(self, mock_translation_service,
+                                                                          mock_flagged_items_fn):
+        mock_translation_service.return_value = self.mock_translated_text
+        mock_flagged_items_fn.return_value = self.mock_flagged_items
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        os.environ["ENV"] = "dev"
+        filepath = os.path.join(current_path, "resources/timing_on_search_with_multiple_timing_per_day.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers, locations = transform_full_on_search_payload_into_final_items(json_payload)
+            print(items)
+
+    @patch('utils.elasticsearch_utils.get_all_manually_flagged_items_for_provider')
+    @patch('services.translation_service.get_translated_text')
+    def test_on_search_simple_with_timing_on_search_with_range_for_day(self, mock_translation_service,
+                                                                       mock_flagged_items_fn):
+        mock_translation_service.return_value = self.mock_translated_text
+        mock_flagged_items_fn.return_value = self.mock_flagged_items
+        current_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        os.environ["ENV"] = "dev"
+        filepath = os.path.join(current_path, "resources/timing_on_search_with_multiple_timing_for_range.json")
+        with open(filepath) as f:
+            json_payload = json.load(f)
+            items, offers, locations = transform_full_on_search_payload_into_final_items(json_payload)
+            print(items)
 
     @patch('utils.elasticsearch_utils.get_all_manually_flagged_items_for_provider')
     @patch('services.translation_service.get_translated_text')
@@ -96,9 +135,9 @@ class TestFullCatalog(unittest.TestCase):
             flagged_items = list(filter(lambda x: x["item_flag"], items))
 
         # Verify that the document retrieval was successful
-        lang_length = len(list(filter(lambda x: x != "", get_config_by_name("LANGUAGE_LIST"))))+1
+        lang_length = len(list(filter(lambda x: x != "", get_config_by_name("LANGUAGE_LIST")))) + 1
         self.assertEqual(1, len(locations))
-        self.assertEqual(1*lang_length, len(items))
+        self.assertEqual(1 * lang_length, len(items))
         self.assertEqual(0, len(flagged_items))
         self.assertEqual(0, len(offers))
 
@@ -245,4 +284,3 @@ class TestFullCatalog(unittest.TestCase):
         self.assertEqual(1, len(locations))
         self.assertEqual(1, len(flagged_items))
         self.assertEqual(0, len(offers))
-

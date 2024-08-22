@@ -29,8 +29,8 @@ def enrich_location_details_into_offer(locations, offer, location_id):
         new_loc["local_id"] = new_loc["id"]
         new_loc["id"] = f"{offer['provider_details']['id']}_{new_loc['local_id']}"
     except:
-        location = {}
-    offer["location_details"] = location
+        new_loc = {}
+    offer["location_details"] = new_loc
     return offer
 
 

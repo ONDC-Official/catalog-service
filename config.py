@@ -11,6 +11,7 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious_secret_key')
     ELASTIC_SEARCH_QUEUE_NAME = os.getenv("ELASTIC_SEARCH_QUEUE_NAME", "catalog_indexing")
     RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
+    RABBITMQ_CREDS = os.getenv("RABBITMQ_CREDS", "False") == "True"
     RABBITMQ_USERNAME = os.getenv("RABBITMQ_USERNAME", "username")
     RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "password")
     QUEUE_ENABLE = os.getenv("QUEUE_ENABLE", "False") == "True"

@@ -1,16 +1,16 @@
+import os
 from datetime import datetime, timedelta
-from elasticsearch.helpers import scan, bulk
 
 from logger.custom_logging import log
 from utils.elasticsearch_utils import get_elasticsearch_client
 
 
-def delete_stale_data():
+def delete_stale_data(ttl_in_days):
     # Connect to the Elasticsearch instance
     es = get_elasticsearch_client()
-    delete_stale_data_for_given_index(es, "items")
-    delete_stale_data_for_given_index(es, "locations")
-    delete_stale_data_for_given_index(es, "offers")
+    delete_stale_data_for_given_index(es, "items", ttl_in_days)
+    delete_stale_data_for_given_index(es, "locations", ttl_in_days)
+    delete_stale_data_for_given_index(es, "offers", ttl_in_days)
 
 
 def delete_stale_data_for_given_index(es, index_name, ttl_in_days=7):
@@ -35,4 +35,4 @@ def delete_stale_data_for_given_index(es, index_name, ttl_in_days=7):
 
 
 if __name__ == '__main__':
-    delete_stale_data()
+    delete_stale_data(int(os.getenv("TTL_IN_DAYS", "7")))

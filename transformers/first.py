@@ -210,6 +210,7 @@ def flatten_full_on_search_payload_to_provider_map(payload):
                     enrich_unique_id_into_offer(new_offer, loc_id)
                     new_offer.pop("location_ids")
                     new_offer["item_local_ids"] = new_offer.pop("item_ids")
+                    enrich_created_at_timestamp_in_item(new_offer)
                     location_offers.append(new_offer)
 
             provider_serviceabilities = get_provider_serviceabilities(p)

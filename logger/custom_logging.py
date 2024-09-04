@@ -12,6 +12,10 @@ formatter = logging.Formatter('%(process)d %(thread)d %(asctime)s [%(name)s][%(l
 handler.setFormatter(formatter)
 root.addHandler(handler)
 
+# Set the logging level for pika to WARNING to suppress info and debug logs
+pika_logger = logging.getLogger('pika')
+pika_logger.setLevel(logging.WARNING)
+
 
 def log(*args,**kwargs):
     logging.info(*args)

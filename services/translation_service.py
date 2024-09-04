@@ -11,7 +11,7 @@ def get_translated_text(text, source_lang="en", target_lang="hi"):
     cache_translation = get_redis_cache(cache_key)
 
     if cache_translation:
-        log(f"translation found in cache of {text} for {target_lang}")
+        # log(f"translation found in cache of {text} for {target_lang}")
         cache_translation = cache_translation.decode('utf-8')
         return cache_translation
     else:

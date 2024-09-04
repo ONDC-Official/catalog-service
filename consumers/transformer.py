@@ -14,8 +14,13 @@ from transformers.full_catalog import transform_full_on_search_payload_into_defa
 from transformers.incr_catalog import transform_incr_on_search_payload_into_final_items
 from utils.elasticsearch_utils import init_elastic_search
 from utils.json_utils import clean_nones, datetime_serializer
+from transformers.second import get_unique_locations_from_items
+from transformers.translation import translate_items_into_target_language
+from utils.elasticsearch_utils import add_documents_to_index, init_elastic_search
+from utils.json_utils import clean_nones
 from utils.mongo_utils import get_mongo_collection, collection_find_one, init_mongo_database
 from utils.rabbitmq_utils import create_channel, declare_queue, consume_message, open_connection
+from utils.redis_utils import init_redis_cache
 
 
 def split_docs_into_batches(docs, max_size_mbs):
@@ -89,10 +94,11 @@ def consume_fn(message_string):
             on_search_payload.pop("id", None)
             if payload["request_type"] == "full":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS", None)
-                items, offers = transform_full_on_search_payload_into_default_lang_items(on_search_payload)
+                items, offers, locations = transform_full_on_search_payload_into_default_lang_items(on_search_payload)
                 es_dumper_queue = get_config_by_name('ES_DUMPER_QUEUE_NAME')
                 publish_documents_splitting_per_rabbitmq_limit(es_dumper_queue, "items", items)
                 publish_documents_splitting_per_rabbitmq_limit(es_dumper_queue, "offers", offers)
+                publish_documents_splitting_per_rabbitmq_limit(es_dumper_queue, "locations", locations)
                 update_on_search_dump_status(doc_id, "FINISHED")
 
                 translator_queue = get_config_by_name('TRANSLATOR_QUEUE_NAME')
@@ -121,6 +127,8 @@ def consume_fn(message_string):
 @retry(AMQPConnectionError, delay=5, jitter=(1, 3))
 def run_consumer():
     init_mongo_database()
+    init_elastic_search()
+    init_redis_cache()
     queue_name = get_config_by_name('ELASTIC_SEARCH_QUEUE_NAME')
     connection = open_connection()
     channel = create_channel(connection)

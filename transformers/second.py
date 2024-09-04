@@ -1,11 +1,13 @@
 import copy
 import json
+from collections import defaultdict
 from json import JSONDecodeError
 from statistics import median, mean
 
-from funcy import get_in
+from funcy import get_in, project
 
 from business_rule_validations.item import validate_item_level
+from utils.dictionary_utils import safe_get_in, safe_int_parse
 from utils.iso_time_utils import calculate_duration_in_seconds
 from utils.math_utils import create_simple_circle_polygon
 
@@ -110,8 +112,9 @@ def enrich_provider_categories_and_location_categories(items):
             location_categories_map[location_id] = {category}
 
     [i["provider_details"].update({"categories": list(provider_categories)}) for i in items]
-    [i["location_details"].update({"categories": list(location_categories_map.get(i["location_details"].get("id"), []))})
-     for i in items]
+    [i["location_details"].update(
+        {"categories": list(location_categories_map.get(i["location_details"].get("id"), []))})
+        for i in items]
 
 
 def enrich_is_first_flag_for_items(items, categories):
@@ -135,7 +138,8 @@ def enrich_is_first_flag_for_items(items, categories):
 
 def enrich_variant_group_in_item(item, variant_groups):
     try:
-        old_variant_group = next(v for v in variant_groups if v["id"] == get_in(item, ["item_details", "parent_item_id"]))
+        old_variant_group = next(
+            v for v in variant_groups if v["id"] == get_in(item, ["item_details", "parent_item_id"]))
         variant_group = copy.deepcopy(old_variant_group)
         variant_group["local_id"] = variant_group["id"]
         variant_group["id"] = f"{item['provider_details']['id']}_{variant_group['local_id']}"
@@ -200,7 +204,8 @@ def enrich_customisation_group_in_item(item, customisation_groups, cust_items):
                 custom_group_list = t["list"]
                 item_cg_ids = [c['value'] for c in custom_group_list]
                 new_cg_ids.extend(item_cg_ids)
-                new_cg_ids.extend(update_item_customisation_group_ids_with_children(item_cg_ids, cust_items, item_cg_ids))
+                new_cg_ids.extend(
+                    update_item_customisation_group_ids_with_children(item_cg_ids, cust_items, item_cg_ids))
             if t["code"] == "parent":
                 new_cg_ids = [t["list"][0]["value"]]
 
@@ -228,6 +233,8 @@ def enrich_custom_menu_in_item(item, custom_menus):
     custom_menu_configs = get_in(item, ["item_details", "category_ids"], [])
     custom_menu_new_list = []
     for c in custom_menu_configs:
+        if ":" not in c:
+            continue
         [cm_id, item_rank] = c.split(":")
         cm = {"id": cm_id, "rank": item_rank}
         custom_menu_new_list.append(cm)
@@ -310,3 +317,128 @@ def enrich_offers_using_serviceabilities(offers, serviceabilities):
     [enrich_serviceability_in_item(i, serviceabilities) for i in offers]
     [enrich_default_language_in_item(i) for i in offers]
     return offers
+
+
+def get_store_enabled_or_disabled(item):
+    is_enabled = safe_get_in(item, ["provider_details", "time", "label"], "enable") == "enable"
+    is_location_enabled = safe_get_in(item, ["location_details", "time", "label"], "enable") == "enable"
+    in_stock_check = safe_int_parse(safe_get_in(item, ["item_details", "quantity", "available", "count"], 0), 0) > 0
+    return in_stock_check and is_enabled and is_location_enabled
+
+
+def add_time_dictionary(item):
+    days_str = safe_get_in(item, ['location_details', 'time', 'days'], '')
+    days = days_str.split(',')
+    time_dict = {}
+    for day in days:
+        time_dict[day] = {
+            'start': safe_get_in(item, ['location_details', 'schedule', 'times'], ["00:00", "23:59"])[0],
+            'end': safe_get_in(item, ['location_details', 'schedule', 'times'], ["00:00", "23:59"])[1]
+        }
+    return time_dict
+
+
+def get_value_for_from_list_of_dict(timing_tag, code):
+    return next((c.get("value") for c in timing_tag.get("list", []) if c.get("code") == code), None)
+
+
+def get_start_and_time_for_timing_tag(timing_tag):
+    """
+    [{'code': 'type', 'value': 'Order'}, {'code': 'location', 'value': '39020316'}, {'code': 'day_from', 'value': '6'}, {'code': 'day_to', 'value': '6'}, {'code': 'time_from', 'value': '0730'}, {'code': 'time_to', 'value': '2344'}]
+    """
+    day_from = safe_int_parse(get_value_for_from_list_of_dict(timing_tag, "day_from"), 0)
+    day_to = safe_int_parse(get_value_for_from_list_of_dict(timing_tag, "day_to"), 0)
+    time_from = safe_int_parse(get_value_for_from_list_of_dict(timing_tag, "time_from"), 0)
+    time_to = safe_int_parse(get_value_for_from_list_of_dict(timing_tag, "time_to"), 0)
+    return {
+        "day_from": day_from,
+        "day_to": day_to,
+        "time_from": time_from,
+        "time_to": time_to
+    }
+
+
+def get_start_and_end_which_contains_given_tag(timing_tag, tag):
+    # if any of list value whose type is code and value is tag
+    if any([c.get("value") == tag for c in timing_tag.get("list", [])]):
+        return get_start_and_time_for_timing_tag(timing_tag)
+
+
+def build_timing_dictionary(item, location_id):
+    tags = item.get("provider_details", {}).get("tags", [])
+    # filter tags which have code as timing and in list any one dictionary code value is location
+    filtered_tags = [t for t in tags if t.get("code") == "timing" and any(
+        [c.get("code") == "location" and c.get("value") == location_id for c in t.get("list", [])])]
+    time_data = []
+    for tag_type in ["ALL", "Order", 'Delivery', 'Self-Pickup']:
+        for tag in filtered_tags:
+            value = get_start_and_end_which_contains_given_tag(tag, tag_type)
+            if value is not None:
+                time_data.append(value)
+        if len(time_data) > 0:
+            return time_data
+
+
+def get_amount_stores_available_per_location(items):
+    # prepare location_id to items mapping
+    location_items_map = {}
+    for i in items:
+        location_id = safe_get_in(i, ["location_details", "id"], None)
+        if location_id in location_items_map:
+            location_items_map[location_id].append(i)
+        else:
+            location_items_map[location_id] = [i]
+    enable_dictionary = {}
+    for location in location_items_map:
+        enable_dictionary[location] = sum(
+            [get_store_enabled_or_disabled(i) for i in location_items_map[location]]) / len(
+            location_items_map[location])
+    return enable_dictionary
+
+
+def enrich_locations_with_enablement(locations, enable_dictionary):
+    for loc in locations:
+        loc["enable_percentage"] = enable_dictionary.get(loc["id"], 0)
+    return locations
+
+
+def fill_up_day_details_if_not_present(day_wise_dict):
+    for day in range(0, 7):
+        if day not in day_wise_dict:
+            day_wise_dict[day] = [{"start": 0, "end": 0}]
+    return day_wise_dict
+
+
+def convert_to_day_wise_dictionary(timing_data):
+    day_wise_dict = defaultdict(list)
+    if timing_data is not None and len(timing_data) > 0:
+        for data in timing_data:
+            for day in range(data["day_from"], data["day_to"] + 1):
+                day_wise_dict[day].append({
+                    "start": data["time_from"],
+                    "end": data["time_to"]
+                })
+        return fill_up_day_details_if_not_present(dict(day_wise_dict))
+
+
+def get_unique_locations_from_items(items):
+    # Initialize a set to track seen values of "location_details.id"
+    seen = set()
+    locations = []
+    enable_dictionary = get_amount_stores_available_per_location(items)
+
+    for i in items:
+        if i["location_details"].get("id") and i["location_details"]["id"] not in seen and \
+                not seen.add(i["location_details"]["id"]):
+            new_loc = project(i, ["location_details", "provider_details", "bpp_details", "context",
+                                  "created_at", "language"])
+            new_loc["enabled"] = get_store_enabled_or_disabled(i)
+            new_loc["id"] = new_loc["location_details"]["id"]
+            timing_dict = convert_to_day_wise_dictionary(
+                build_timing_dictionary(i, new_loc['location_details']['local_id']))
+            if timing_dict is not None:
+                new_loc["availability"] = timing_dict
+            locations.append(new_loc)
+
+    enrich_locations_with_enablement(locations, enable_dictionary)
+    return locations

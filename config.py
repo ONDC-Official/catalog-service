@@ -13,6 +13,9 @@ class Config:
     ES_DUMPER_QUEUE_NAME = os.getenv("ES_DUMPER_QUEUE_NAME", "elasticsearch_dumper")
     TRANSLATOR_QUEUE_NAME = os.getenv("TRANSLATOR_QUEUE_NAME", "translator")
     RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
+    RABBITMQ_CREDS = os.getenv("RABBITMQ_CREDS", "False") == "True"
+    RABBITMQ_USERNAME = os.getenv("RABBITMQ_USERNAME", "username")
+    RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "password")
     QUEUE_ENABLE = os.getenv("QUEUE_ENABLE", "False") == "True"
     API_TOKEN = os.getenv("API_TOKEN", "testing_random_123")
     MAX_CONSUME_MESSAGE_TIME = int(os.getenv("MAX_CONSUME_MESSAGE_TIME", "30"))

@@ -29,8 +29,8 @@ def enrich_location_details_into_offer(locations, offer, location_id):
         new_loc["local_id"] = new_loc["id"]
         new_loc["id"] = f"{offer['provider_details']['id']}_{new_loc['local_id']}"
     except:
-        location = {}
-    offer["location_details"] = location
+        new_loc = {}
+    offer["location_details"] = new_loc
     return offer
 
 
@@ -76,6 +76,11 @@ def enrich_created_at_timestamp_in_item(item):
 def enrich_unique_id_into_item(item, provider_id):
     item["local_id"] = item['item_details']['id']
     item["id"] = f"{provider_id}_{item['item_details']['id']}"
+    return item
+
+
+def enrich_fulfillment_into_item(item, fulfillment):
+    item["fulfillment"] = fulfillment
     return item
 
 
@@ -164,13 +169,13 @@ def flatten_full_on_search_payload_to_provider_map(payload):
     bpp_id = get_in(context, ["bpp_id"])
     if bpp_id:
         bpp_descriptor = get_in(catalog, ["bpp/descriptor"], {})
-        bpp_fulfillments = get_in(catalog, ["bpp/fulfillments"])
-        bpp_providers = get_in(catalog, ["bpp/providers"])
+        bpp_fulfillments = get_in(catalog, ["bpp/fulfillments"], [])
+        bpp_providers = get_in(catalog, ["bpp/providers"], [])
 
         for p in bpp_providers:
             p["local_id"] = p.get('id')
             p["id"] = f"{bpp_id}_{get_in(context, ['domain'])}_{p['local_id']}"
-
+            p["fulfillments"] = p.get("fulfillments", [])
             # Enrich Items
             provider_items = p.get("items", [])
             provider_locations = p.get("locations", [])
@@ -185,6 +190,7 @@ def flatten_full_on_search_payload_to_provider_map(payload):
             [enrich_item_type(i) for i in provider_items]
             [enrich_created_at_timestamp_in_item(i) for i in provider_items]
             [enrich_unique_id_into_item(i, p['id']) for i in provider_items]
+            [enrich_fulfillment_into_item(i, p['fulfillments']) for i in provider_items]
 
             # Filter out the elements with location empty (for type as item)
             # TODO - log rejected items
@@ -204,6 +210,7 @@ def flatten_full_on_search_payload_to_provider_map(payload):
                     enrich_unique_id_into_offer(new_offer, loc_id)
                     new_offer.pop("location_ids")
                     new_offer["item_local_ids"] = new_offer.pop("item_ids")
+                    enrich_created_at_timestamp_in_item(new_offer)
                     location_offers.append(new_offer)
 
             provider_serviceabilities = get_provider_serviceabilities(p)

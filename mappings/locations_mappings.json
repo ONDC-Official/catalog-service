@@ -1,0 +1,470 @@
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_keywords": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      {
+        "booleans_as_booleans_without_index": {
+          "match_mapping_type": "boolean",
+          "mapping": {
+            "type": "boolean",
+            "index": false
+          }
+        }
+      },
+      {
+        "dates_as_keywords": {
+          "match_mapping_type": "date",
+          "mapping": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      }
+    ],
+    "properties": {
+      "bpp_details": {
+        "properties": {
+          "bpp_id": {
+            "type": "keyword"
+          },
+          "images": {
+            "type": "keyword",
+            "index": false
+          },
+          "long_desc": {
+            "type": "keyword",
+            "index": false
+          },
+          "name": {
+            "type": "text"
+          },
+          "short_desc": {
+            "type": "keyword",
+            "index": false
+          },
+          "symbol": {
+            "type": "keyword",
+            "index": false
+          },
+          "tags": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "list": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "context": {
+        "properties": {
+          "action": {
+            "type": "keyword"
+          },
+          "bap_id": {
+            "type": "keyword",
+            "index": false
+          },
+          "bap_uri": {
+            "type": "keyword",
+            "index": false
+          },
+          "bpp_id": {
+            "type": "keyword"
+          },
+          "bpp_uri": {
+            "type": "keyword",
+            "index": false
+          },
+          "city": {
+            "type": "keyword"
+          },
+          "core_version": {
+            "type": "keyword",
+            "index": false
+          },
+          "country": {
+            "type": "keyword"
+          },
+          "domain": {
+            "type": "keyword"
+          },
+          "key": {
+            "type": "keyword",
+            "index": false
+          },
+          "message_id": {
+            "type": "keyword"
+          },
+          "timestamp": {
+            "type": "keyword",
+            "index": false
+          },
+          "transaction_id": {
+            "type": "keyword"
+          },
+          "ttl": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      "created_at": {
+        "type": "date"
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "language": {
+        "type": "keyword"
+      },
+      "location_details": {
+        "properties": {
+          "address": {
+            "properties": {
+              "area_code": {
+                "type": "keyword"
+              },
+              "building": {
+                "type": "keyword",
+                "index": false
+              },
+              "city": {
+                "type": "keyword",
+                "index": false
+              },
+              "country": {
+                "type": "keyword",
+                "index": false
+              },
+              "door": {
+                "type": "keyword",
+                "index": false
+              },
+              "locality": {
+                "type": "keyword",
+                "index": false
+              },
+              "name": {
+                "type": "keyword",
+                "index": false
+              },
+              "state": {
+                "type": "keyword",
+                "index": false
+              },
+              "street": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "average_time_to_ship": {
+            "type": "float"
+          },
+          "circle": {
+            "properties": {
+              "gps": {
+                "type": "geo_point"
+              },
+              "radius": {
+                "properties": {
+                  "unit": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "gps": {
+            "type": "geo_point"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword",
+            "index": false
+          },
+          "max_time_to_ship": {
+            "type": "float"
+          },
+          "median_time_to_ship": {
+            "type": "float"
+          },
+          "min_time_to_ship": {
+            "type": "float"
+          },
+          "polygons": {
+            "type": "geo_shape"
+          },
+          "radius": {
+            "type": "float"
+          },
+          "time": {
+            "properties": {
+              "days": {
+                "type": "keyword",
+                "index": false
+              },
+              "label": {
+                "type": "keyword",
+                "index": true
+              },
+              "range": {
+                "properties": {
+                  "end": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "start": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              },
+              "schedule": {
+                "properties": {
+                  "frequency": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "holidays": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "times": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              },
+              "timestamp": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "type": {
+            "type": "keyword"
+          }
+        }
+      },
+      "provider_details": {
+        "properties": {
+          "@ondc/org/fssai_license_no": {
+            "type": "keyword",
+            "index": false
+          },
+          "creds": {
+            "properties": {
+              "descriptor": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "short_desc": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              },
+              "id": {
+                "type": "keyword",
+                "index": false
+              },
+              "url": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "descriptor": {
+            "properties": {
+              "images": {
+                "type": "keyword",
+                "index": false
+              },
+              "long_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "name": {
+                "type": "text"
+              },
+              "short_desc": {
+                "type": "keyword",
+                "index": false
+              },
+              "symbol": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "exp": {
+            "type": "keyword",
+            "index": false
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "local_id": {
+            "type": "keyword",
+            "index": false
+          },
+          "rateable": {
+            "type": "boolean",
+            "index": false
+          },
+          "tags": {
+            "properties": {
+              "code": {
+                "type": "keyword",
+                "index": false
+              },
+              "list": {
+                "properties": {
+                  "code": {
+                    "type": "keyword",
+                    "index": false
+                  },
+                  "value": {
+                    "type": "keyword",
+                    "index": false
+                  }
+                }
+              }
+            }
+          },
+          "time": {
+            "properties": {
+              "label": {
+                "type": "keyword",
+                "index": true
+              },
+              "timestamp": {
+                "type": "keyword",
+                "index": false
+              }
+            }
+          },
+          "ttl": {
+            "type": "keyword",
+            "index": false
+          }
+        }
+      },
+      "availability": {
+        "properties": {
+          "1": {
+            "type": "nested",
+            "properties": {
+              "start": {
+                "type": "integer"
+              },
+              "end": {
+                "type": "integer"
+              }
+            }
+          },
+          "2": {
+            "type": "nested",
+            "properties": {
+              "start": {
+                "type": "integer"
+              },
+              "end": {
+                "type": "integer"
+              }
+            }
+          },
+          "3": {
+            "type": "nested",
+            "properties": {
+              "start": {
+                "type": "integer"
+              },
+              "end": {
+                "type": "integer"
+              }
+            }
+          },
+          "4": {
+            "type": "nested",
+            "properties": {
+              "start": {
+                "type": "integer"
+              },
+              "end": {
+                "type": "integer"
+              }
+            }
+          },
+          "5": {
+            "type": "nested",
+            "properties": {
+              "start": {
+                "type": "integer"
+              },
+              "end": {
+                "type": "integer"
+              }
+            }
+          },
+          "6": {
+            "type": "nested",
+            "properties": {
+              "start": {
+                "type": "integer"
+              },
+              "end": {
+                "type": "integer"
+              }
+            }
+          },
+          "7": {
+            "type": "nested",
+            "properties": {
+              "start": {
+                "type": "integer"
+              },
+              "end": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "enable_percentage": {
+        "type": "float"
+      }
+    }
+  }
+}

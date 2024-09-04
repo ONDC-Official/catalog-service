@@ -11,7 +11,7 @@ def get_redis_client() -> Redis:
     if redis_client is None:
         redis_client = redis.StrictRedis(host=get_config_by_name("REDIS_HOST"),
                                          port=get_config_by_name("REDIS_PORT"),
-                                         db=get_config_by_name("REDIS_DATABASE"))
+                                         db=get_config_by_name("REDIS_DB"))
     return redis_client
 
 

@@ -12,8 +12,10 @@ def consume_fn(message_string):
     message = json.loads(message_string)
     if message["index"] == "items":
         add_documents_to_index("items", message["data"])
-    else:
+    elif message["index"] == "offers":
         add_documents_to_index("offers", message["data"])
+    elif message["index"] == "locations":
+        add_documents_to_index("locations", message["data"])
 
 
 @retry(AMQPConnectionError, delay=5, jitter=(1, 3))

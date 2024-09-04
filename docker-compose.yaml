@@ -40,10 +40,10 @@ services:
     restart: always
     depends_on:
       - rabbitmq
+      - cache
     environment:
       ENV: dev
       RABBITMQ_HOST: "rabbitmq"
-      MONGO_DATABASE_URL: "mongodb://mongo:27017"
       BHASHINI_USERID: ${BHASHINI_USERID}
       BHASHINI_ULCA_API_KEY: ${BHASHINI_ULCA_API_KEY}
       REDIS_HOST: "cache"

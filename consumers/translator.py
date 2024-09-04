@@ -6,8 +6,7 @@ from retry import retry
 from config import get_config_by_name
 from event_producer import publish_message
 from transformers.translation import translate_items_into_target_language
-from utils.elasticsearch_utils import init_elastic_search
-from utils.mongo_utils import init_mongo_database
+from utils.redis_utils import init_redis_cache
 from utils.rabbitmq_utils import create_channel, declare_queue, open_connection, consume_message
 
 
@@ -21,7 +20,7 @@ def consume_fn(message_string):
 
 @retry(AMQPConnectionError, delay=5, jitter=(1, 3))
 def run_consumer():
-    init_mongo_database()
+    init_redis_cache()
     queue_name = get_config_by_name('TRANSLATOR_QUEUE_NAME')
     connection = open_connection()
     channel = create_channel(connection)

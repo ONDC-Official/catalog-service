@@ -106,6 +106,6 @@ if __name__ == '__main__':
     data = {
         "text": "apple",
         "source_language": "en",
-        "target_language": "hi"
+        "target_language": "bn"
     }
     print(translate(data))

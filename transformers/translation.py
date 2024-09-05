@@ -8,6 +8,7 @@ def translate_items_into_target_language(items, target_lang):
     # io_bound_parallel_computation(lambda x: translate_an_item(x, target_lang), items)
     for x in items:
         translate_an_item(x, target_lang)
+    return items
 
 
 @MeasureTime
@@ -15,6 +16,7 @@ def translate_locations_into_target_language(locations, target_lang):
     # io_bound_parallel_computation(lambda x: translate_an_item(x, target_lang), items)
     for loc in locations:
         translate_a_location(loc, target_lang)
+    return locations
 
 
 def translate_an_item(i, target_lang):

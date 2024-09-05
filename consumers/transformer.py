@@ -48,11 +48,10 @@ def publish_documents_splitting_per_rabbitmq_limit(queue, index, docs, lang=None
     if len(docs) > 0:
         current_batch = []
         current_size = 0
+        doc_str = json.dumps(docs[0], default=datetime_serializer)
+        doc_size = len(doc_str.encode('utf-8'))
 
         for doc in docs:
-            doc_str = json.dumps(doc, default=datetime_serializer)
-            doc_size = len(doc_str.encode('utf-8'))
-
             if current_size + doc_size > (20 * 1024 * 1024):
                 message = {"index": index, "data": current_batch}
                 message.update({"lang": lang}) if lang else None
@@ -68,12 +67,6 @@ def publish_documents_splitting_per_rabbitmq_limit(queue, index, docs, lang=None
             message = {"index": index, "data": current_batch}
             message.update({"lang": lang}) if lang else None
             publish_message(queue, message)
-
-        # batches = split_docs_into_batches(docs, 10)
-        # for b in batches:
-        #     message = {"index": index, "data": b}
-        #     message.update({"lang": lang}) if lang else None
-        #     publish_message(queue, message)
 
 
 def consume_fn(message_string):

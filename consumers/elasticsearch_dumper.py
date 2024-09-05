@@ -5,7 +5,7 @@ from retry import retry
 
 from config import get_config_by_name
 from utils.elasticsearch_utils import init_elastic_search, add_documents_to_index
-from utils.rabbitmq_utils import create_channel, declare_queue, open_connection, consume_message
+from utils.rabbitmq_utils import declare_queue, consume_message, open_connection_and_channel_if_not_already_open
 
 
 def consume_fn(message_string):
@@ -22,8 +22,7 @@ def consume_fn(message_string):
 def run_consumer():
     init_elastic_search()
     queue_name = get_config_by_name('ES_DUMPER_QUEUE_NAME')
-    connection = open_connection()
-    channel = create_channel(connection)
+    connection, channel = open_connection_and_channel_if_not_already_open()
     declare_queue(channel, queue_name)
     consume_message(connection, channel, queue_name=queue_name, consume_fn=consume_fn)
 

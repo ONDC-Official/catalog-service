@@ -17,7 +17,7 @@ def publish_message_for_transform(file_path, request_type):
             "doc_id": str(doc_id),
             "request_type": request_type,
         }
-        rabbitmq_connection, rabbitmq_channel = open_connection_and_channel_if_not_already_open(None, None)
+        rabbitmq_connection, rabbitmq_channel = open_connection_and_channel_if_not_already_open()
         queue_name = get_config_by_name('ELASTIC_SEARCH_QUEUE_NAME')
         declare_queue(rabbitmq_channel, queue_name)
         log(f"Sending message with payload : {json_payload} to {queue_name}")
@@ -25,7 +25,7 @@ def publish_message_for_transform(file_path, request_type):
 
 
 def publish_message(queue_name, message):
-    rabbitmq_connection, rabbitmq_channel = open_connection_and_channel_if_not_already_open(None, None)
+    rabbitmq_connection, rabbitmq_channel = open_connection_and_channel_if_not_already_open()
     declare_queue(rabbitmq_channel, queue_name)
     log(f"Sending message for {message['index']} to {queue_name}")
     publish_message_to_queue(rabbitmq_channel, exchange='', routing_key=queue_name,

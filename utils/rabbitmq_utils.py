@@ -1,6 +1,5 @@
 import functools
 import threading
-import time
 
 import pika
 
@@ -8,31 +7,20 @@ import pika
 from config import get_config_by_name
 from logger.custom_logging import log, log_error
 
+global_connection, global_channel = None, None
 
-def open_connection_and_channel_if_not_already_open(old_connection, old_channel):
-    if old_connection and old_connection.is_open:
+
+def open_connection_and_channel_if_not_already_open():
+    global global_connection, global_channel
+    if global_connection and global_connection.is_open:
         log("Getting old connection and channel")
-        return old_connection, old_channel
+        return global_connection, global_channel
     else:
         log("Getting new connection and channel")
-        rabbitmq_host = get_config_by_name('RABBITMQ_HOST')
-        max_retries = 3
-        retry_delay = 2
-        retries = 0
-        while retries < max_retries:
-            try:
-                connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host,
-                                                                               heartbeat=600))
-                channel = connection.channel()
-                log(f"Successfully connected to RabbitMQ after {retries} retries")
-                return connection, channel
-            except pika.exceptions.AMQPConnectionError as e:
-                retries += 1
-                log_error(f"Failed to connect to RabbitMQ (attempt {retries}/{max_retries}). Retrying in {retry_delay} seconds...")
-                time.sleep(retry_delay)
+        global_connection = open_connection()
+        global_channel = create_channel(global_connection)
+        return global_connection, global_channel
 
-        log_error(f"Exceeded maximum retries ({max_retries}). Could not connect to RabbitMQ.")
-        raise Exception("Failed to establish RabbitMQ connection after retries.")
 
 def open_connection():
     rabbitmq_host = get_config_by_name('RABBITMQ_HOST')
@@ -58,12 +46,10 @@ def create_channel(connection):
 def declare_queue(channel, queue_name):
     # channel.exchange_declare("test-x", exchange_type="x-delayed-message", arguments={"x-delayed-type": "direct"})
     channel.queue_declare(queue=queue_name)
-    # channel.queue_bind(queue=queue_name, exchange="test-x", routing_key=queue_name)
 
 
 # @retry(3, errors=StreamLostError)
 def publish_message_to_queue(channel, exchange, routing_key, body, properties=None):
-    # log(f"Publishing message of {body}")
     channel.basic_publish(exchange=exchange, routing_key=routing_key, body=body, properties=properties)
 
 

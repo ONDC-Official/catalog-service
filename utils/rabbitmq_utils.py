@@ -33,7 +33,8 @@ def open_connection():
         return pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host))
 
 
-def close_connection(connection):
+def close_channel_and_connection(channel, connection):
+    channel.close()
     connection.close()
 
 

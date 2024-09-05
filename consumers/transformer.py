@@ -105,6 +105,8 @@ def consume_fn(message_string):
                 for lang in get_config_by_name("LANGUAGE_LIST"):
                     if lang:
                         publish_documents_splitting_per_rabbitmq_limit(translator_queue, "items", items, lang=lang)
+                        publish_documents_splitting_per_rabbitmq_limit(translator_queue, "locations", locations,
+                                                                       lang=lang)
 
             elif payload["request_type"] == "inc":
                 update_on_search_dump_status(doc_id, "IN-PROGRESS")

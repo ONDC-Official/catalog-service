@@ -5,7 +5,7 @@ from retry import retry
 
 from config import get_config_by_name
 from event_producer import publish_message
-from transformers.translation import translate_items_into_target_language
+from transformers.translation import translate_items_into_target_language, translate_locations_into_target_language
 from utils.redis_utils import init_redis_cache
 from utils.rabbitmq_utils import create_channel, declare_queue, open_connection, consume_message
 
@@ -16,6 +16,9 @@ def consume_fn(message_string):
     if message["index"] == "items":
         translated_items = translate_items_into_target_language(message["data"], message["lang"])
         publish_message(es_dumper_queue, {"index": "items", "data": translated_items})
+    elif message["index"] == "locations":
+        translated_locations = translate_locations_into_target_language(message["data"], message["lang"])
+        publish_message(es_dumper_queue, {"index": "locations", "data": translated_locations})
 
 
 @retry(AMQPConnectionError, delay=5, jitter=(1, 3))

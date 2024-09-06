@@ -26,14 +26,10 @@ def publish_message_for_transform(file_path, request_type):
         close_channel_and_connection(rabbitmq_channel, rabbitmq_connection)
 
 
-def publish_message(queue_name, message):
-    rabbitmq_connection = open_connection()
-    rabbitmq_channel = create_channel(rabbitmq_connection)
-    declare_queue(rabbitmq_channel, queue_name)
+def publish_message(rabbitmq_channel, queue_name, message):
     log(f"Sending message for {message['index']} to {queue_name}")
     publish_message_to_queue(rabbitmq_channel, exchange='', routing_key=queue_name,
                              body=json.dumps(message, default=datetime_serializer))
-    close_channel_and_connection(rabbitmq_channel, rabbitmq_connection)
 
 
 if __name__ == '__main__':

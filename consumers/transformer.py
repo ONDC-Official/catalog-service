@@ -16,7 +16,8 @@ from utils.json_utils import datetime_serializer
 from utils.elasticsearch_utils import init_elastic_search
 from utils.json_utils import clean_nones
 from utils.mongo_utils import get_mongo_collection, collection_find_one, init_mongo_database
-from utils.rabbitmq_utils import declare_queue, consume_message, open_connection_and_channel_if_not_already_open
+from utils.rabbitmq_utils import declare_queue, consume_message, open_connection_and_channel_if_not_already_open, \
+    open_connection, close_channel_and_connection, create_channel
 from utils.redis_utils import init_redis_cache
 
 
@@ -46,6 +47,9 @@ def split_docs_into_batches(docs, max_size_mbs):
 
 def publish_documents_splitting_per_rabbitmq_limit(queue, index, docs, lang=None):
     if len(docs) > 0:
+        rabbitmq_connection = open_connection()
+        rabbitmq_channel = create_channel(rabbitmq_connection)
+        declare_queue(rabbitmq_channel, queue)
         current_batch = []
         current_size = 0
         doc_str = json.dumps(docs[0], default=datetime_serializer)
@@ -55,7 +59,7 @@ def publish_documents_splitting_per_rabbitmq_limit(queue, index, docs, lang=None
             if current_size + doc_size > (20 * 1024 * 1024):
                 message = {"index": index, "data": current_batch}
                 message.update({"lang": lang}) if lang else None
-                publish_message(queue, message)
+                publish_message(rabbitmq_channel, queue, message)
                 # batches.append(current_batch)
                 current_batch = [doc]
                 current_size = doc_size
@@ -66,7 +70,11 @@ def publish_documents_splitting_per_rabbitmq_limit(queue, index, docs, lang=None
         if current_batch:
             message = {"index": index, "data": current_batch}
             message.update({"lang": lang}) if lang else None
-            publish_message(queue, message)
+            publish_message(rabbitmq_channel, queue, message)
+
+        close_channel_and_connection(rabbitmq_channel, rabbitmq_connection)
+
+
 
 
 def consume_fn(message_string):

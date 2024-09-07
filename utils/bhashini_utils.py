@@ -6,11 +6,13 @@ from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
 from logger.custom_logging import log
+from utils.instrumentation_utils import MeasureTime
 
 bhashini_pipeline_url = 'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/getModelsPipeline'
 bhashini_translate_url = 'https://dhruva-api.bhashini.gov.in/services/inference/pipeline'
 
 
+@MeasureTime
 def translate(data):
     # Create a pipeline
     pipeline_data = {

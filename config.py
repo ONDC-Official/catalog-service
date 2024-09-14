@@ -10,6 +10,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious_secret_key')
     ELASTIC_SEARCH_QUEUE_NAME = os.getenv("ELASTIC_SEARCH_QUEUE_NAME", "catalog_indexing")
+    ES_DUMPER_QUEUE_NAME = os.getenv("ES_DUMPER_QUEUE_NAME", "elasticsearch_dumper")
+    TRANSLATOR_QUEUE_NAME = os.getenv("TRANSLATOR_QUEUE_NAME", "translator")
     RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
     RABBITMQ_CREDS = os.getenv("RABBITMQ_CREDS", "False") == "True"
     RABBITMQ_USERNAME = os.getenv("RABBITMQ_USERNAME", "username")

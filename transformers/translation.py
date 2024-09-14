@@ -8,11 +8,29 @@ def translate_items_into_target_language(items, target_lang):
     # io_bound_parallel_computation(lambda x: translate_an_item(x, target_lang), items)
     for x in items:
         translate_an_item(x, target_lang)
+    return items
+
+
+@MeasureTime
+def translate_locations_into_target_language(locations, target_lang):
+    # io_bound_parallel_computation(lambda x: translate_an_item(x, target_lang), items)
+    for loc in locations:
+        translate_a_location(loc, target_lang)
+    return locations
 
 
 def translate_an_item(i, target_lang):
     i["language"] = target_lang
     i["item_details"]["descriptor"] = translate_item_descriptor(i["item_details"]["descriptor"], target_lang)
+    i["provider_details"]["descriptor"] = translate_item_descriptor(i["provider_details"]["descriptor"],
+                                                                    target_lang)
+    i["location_details"]["address"] = translate_location_address(i["location_details"].get("address", {}),
+                                                                  target_lang)
+    return i
+
+
+def translate_a_location(i, target_lang):
+    i["language"] = target_lang
     i["provider_details"]["descriptor"] = translate_item_descriptor(i["provider_details"]["descriptor"],
                                                                     target_lang)
     i["location_details"]["address"] = translate_location_address(i["location_details"].get("address", {}),

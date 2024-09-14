@@ -1,16 +1,18 @@
 import os
 import requests
-from requests import Session
+from requests import Session, JSONDecodeError
 from requests.adapters import HTTPAdapter
 
 from urllib3.util import Retry
 
-from logger.custom_logging import log
+from logger.custom_logging import log, log_error
+from utils.instrumentation_utils import MeasureTime
 
 bhashini_pipeline_url = 'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/getModelsPipeline'
 bhashini_translate_url = 'https://dhruva-api.bhashini.gov.in/services/inference/pipeline'
 
 
+# @MeasureTime
 def translate(data):
     # Create a pipeline
     pipeline_data = {
@@ -92,10 +94,14 @@ def translate(data):
     })
 
     translate_response = requests.post(bhashini_translate_url, headers=headers, json=translation_data)
-    translation = translate_response.json()
+    translation = None
+    try:
+        translation = translate_response.json()
+    except JSONDecodeError:
+        log_error(f"Got response text as: {translate_response.text}")
 
     translated_text = None
-    if translation.get('pipelineResponse') and len(translation['pipelineResponse']) > 0:
+    if translation and translation.get('pipelineResponse') and len(translation['pipelineResponse']) > 0:
         if len(translation['pipelineResponse'][0]['output']) > 0:
             translated_text = translation['pipelineResponse'][0]['output'][0]['target'][0]
 
@@ -106,6 +112,6 @@ if __name__ == '__main__':
     data = {
         "text": "apple",
         "source_language": "en",
-        "target_language": "hi"
+        "target_language": "bn"
     }
     print(translate(data))

@@ -35,7 +35,7 @@ def transform_full_on_search_payload_into_default_lang_items(payload):
             v["seller_error_tags"],
         )
         locations = get_unique_locations_from_items(items)
-        items = update_provider_items_with_manual_flags(pid, items)
+        # items = update_provider_items_with_manual_flags(pid, items)
         offers = enrich_offers_using_serviceabilities(v["location_offers"], v["serviceabilities"])
 
         final_items.extend(items)

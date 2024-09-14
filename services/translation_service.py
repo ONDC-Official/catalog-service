@@ -1,3 +1,4 @@
+from logger.custom_logging import log
 from utils.hash_utils import get_md5_hash
 from utils.mongo_utils import get_mongo_collection
 from utils.bhashini_utils import translate
@@ -10,6 +11,7 @@ def get_translated_text(text, source_lang="en", target_lang="hi"):
     cache_translation = get_redis_cache(cache_key)
 
     if cache_translation:
+        # log(f"translation found in cache of {text} for {target_lang}")
         cache_translation = cache_translation.decode('utf-8')
         return cache_translation
     else:

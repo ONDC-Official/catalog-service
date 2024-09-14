@@ -7,17 +7,19 @@ import pika
 from config import get_config_by_name
 from logger.custom_logging import log, log_error
 
+global_connection, global_channel = None, None
 
-def open_connection_and_channel_if_not_already_open(old_connection, old_channel):
-    if old_connection and old_connection.is_open:
+
+def open_connection_and_channel_if_not_already_open():
+    global global_connection, global_channel
+    if global_connection and global_connection.is_open:
         log("Getting old connection and channel")
-        return old_connection, old_channel
+        return global_connection, global_channel
     else:
         log("Getting new connection and channel")
-        rabbitmq_host = get_config_by_name('RABBITMQ_HOST')
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host))
-        channel = connection.channel()
-        return connection, channel
+        global_connection = open_connection()
+        global_channel = create_channel(global_connection)
+        return global_connection, global_channel
 
 
 def open_connection():
@@ -31,7 +33,8 @@ def open_connection():
         return pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host))
 
 
-def close_connection(connection):
+def close_channel_and_connection(channel, connection):
+    channel.close()
     connection.close()
 
 
@@ -44,12 +47,10 @@ def create_channel(connection):
 def declare_queue(channel, queue_name):
     # channel.exchange_declare("test-x", exchange_type="x-delayed-message", arguments={"x-delayed-type": "direct"})
     channel.queue_declare(queue=queue_name)
-    # channel.queue_bind(queue=queue_name, exchange="test-x", routing_key=queue_name)
 
 
 # @retry(3, errors=StreamLostError)
 def publish_message_to_queue(channel, exchange, routing_key, body, properties=None):
-    log(f"Publishing message of {body}")
     channel.basic_publish(exchange=exchange, routing_key=routing_key, body=body, properties=properties)
 
 
@@ -57,19 +58,19 @@ def consume_message(connection, channel, queue_name, consume_fn):
     def callback(ch, delivery_tag, body):
         try:
             channel.basic_ack(delivery_tag)
-            log(f"Ack message {body} !")
+            log(f"Ack message for Delivery tag: {delivery_tag} !")
         except:
-            log_error(f"Something went wrong for {body} !")
+            log_error(f"Something went wrong for {delivery_tag} !")
 
     def do_work(delivery_tag, body):
         thread_id = threading.get_ident()
-        log(f'Thread id: {thread_id} Delivery tag: {delivery_tag} Message body: {body}')
+        log(f'Thread id: {thread_id} Delivery tag: {delivery_tag}')
         cb = functools.partial(callback, channel, delivery_tag, body)
 
         try:
             consume_fn(body)
         except Exception as e:
-            log_error(f"Error processing message {body}: {e}")
+            log_error(f"Error processing message with Thread id: {thread_id} Delivery tag: {delivery_tag}: {e}")
 
         if connection and connection.is_open:
             connection.add_callback_threadsafe(cb)

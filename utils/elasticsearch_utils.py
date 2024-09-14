@@ -72,8 +72,7 @@ def add_documents_to_index(index_name, documents):
             log(f"Adding {len(documents)} {index_name}")
             success, _ = bulk(client, generate_actions(index_name, documents),
                               chunk_size=get_config_by_name("BULK_CHUNK_SIZE"))
-            log(success)
-            log("Documents added to index")
+            log(f"{success} Documents added to index {index_name}")
     except BulkIndexError as e:
         # Handle document write errors
         for error in e.errors:

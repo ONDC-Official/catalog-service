@@ -2,20 +2,51 @@ version: "3.8"
 
 services:
 
-  consumer:
+  catalog-service-transformer:
     build:
-      dockerfile: Dockerfile
-    container_name: catalog-service
+      context: .
+      dockerfile: dockerfiles/transformerDockerfile
+    container_name: catalog-service-transformer
     restart: always
     depends_on:
-      - elasticsearch
       - rabbitmq
       - mongo
     environment:
       ENV: dev
       MONGO_DATABASE_URL: "mongodb://mongo:27017"
+      ELASTIC_SEARCH_URL: "http://elasticsearch:9200"
+      RABBITMQ_HOST: "rabbitmq"
+      LANGUAGE_LIST: ${LANGUAGE_LIST}
+
+  catalog-service-es-dumper:
+    build:
+      context: .
+      dockerfile: dockerfiles/esDumperDockerfile
+    container_name: catalog-service-es-dumper
+    restart: always
+    depends_on:
+      - elasticsearch
+      - rabbitmq
+    environment:
+      ENV: dev
       RABBITMQ_HOST: "rabbitmq"
       ELASTIC_SEARCH_URL: "http://elasticsearch:9200"
+
+  catalog-service-translator:
+    build:
+      context: .
+      dockerfile: dockerfiles/translatorDockerfile
+    container_name: catalog-service-translator
+    restart: always
+    depends_on:
+      - rabbitmq
+      - cache
+    environment:
+      ENV: dev
+      RABBITMQ_HOST: "rabbitmq"
+      BHASHINI_USERID: ${BHASHINI_USERID}
+      BHASHINI_ULCA_API_KEY: ${BHASHINI_ULCA_API_KEY}
+      REDIS_HOST: "cache"
 
   rabbitmq:
     image: rabbitmq:3.10-management

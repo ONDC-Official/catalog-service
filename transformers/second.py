@@ -67,18 +67,18 @@ def enrich_serviceability_in_item(item, serviceability_map):
             location_type = "pan" if serviceability["type"] in ["11", "12"] else "polygon"
             item_location["type"] = location_type
 
-            if serviceability["unit"] == "polygon":
+            if serviceability["unit"].lower() == "polygon":
                 val = json.loads(serviceability["val"])
                 coordinates = val["features"][0]["geometry"]["coordinates"]
-            elif serviceability["unit"] == "geojson":
+            elif serviceability["unit"].lower() == "geojson":
                 val = json.loads(serviceability["val"])
                 multi_coordinates = val["features"][0]["geometry"]["coordinates"]
                 coordinates = [x for xs in multi_coordinates for x in xs]
                 coordinates = [[[c[1], c[0]] for c in coordinates]]
-            elif serviceability["unit"] == "coordinates":
+            elif serviceability["unit"].lower() == "coordinates":
                 val = json.loads(serviceability["val"])
                 coordinates = [[[v['lat'], v['lng']] for v in val]]
-            elif serviceability["unit"] == "km":
+            elif serviceability["unit"].lower() == "km":
                 coordinates_str = item_location.get('gps', "0, 0").split(",")
                 lat_lng = [float(c) for c in coordinates_str]
                 item_location["radius"] = float(serviceability.get("val", 0))

@@ -464,6 +464,12 @@
       },
       "enable_percentage": {
         "type": "float"
+      },
+      "provider_search_tags": {
+        "type": "nested",
+        "properties": {
+          "type": "keyword"
+        }
       }
     }
   }

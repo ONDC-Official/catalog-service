@@ -90,6 +90,17 @@ def enrich_unique_id_into_offer(offer, location_id):
     return offer
 
 
+def transform_key(key):
+    updated_key = key.lower()
+    key_mappings = {
+        "gender_name": "gender",
+        "brand_name": "brand",
+    }
+    if updated_key in key_mappings.keys():
+        return key_mappings[updated_key]
+    return updated_key
+
+
 def flatten_item_attributes(item):
     tags = item["item_details"].get("tags", [])
     attr_list = []
@@ -99,7 +110,7 @@ def flatten_item_attributes(item):
             attr_list = t["list"]
 
     for a in attr_list:
-        attr_final_list.append({"key": a["code"], "value": a["value"]})
+        attr_final_list.append({"key": transform_key(a["code"]), "value": a["value"]})
 
     item["attribute_key_values"] = attr_final_list
     return item

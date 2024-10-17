@@ -2,6 +2,7 @@ from funcy import project
 
 from utils import elasticsearch_utils as es_utils
 from utils.dictionary_utils import safe_get_in, safe_int_parse
+from utils.oms_utils import get_provider_search_tags
 
 
 def populate_in_stock(item):
@@ -28,3 +29,13 @@ def update_provider_items_with_manual_flags(provider_id, provider_items):
             else item.get("auto_provider_flag", False)
         item['in_stock'] = populate_in_stock(item)
     return provider_items
+
+
+def update_provider_items_and_locations_with_search_tags(provider_id, items, locations):
+    provider_search_tags = get_provider_search_tags(provider_id)
+
+    for item in items:
+        item["provider_search_tags"] = provider_search_tags
+    for loc in locations:
+        loc["provider_search_tags"] = provider_search_tags
+    return items, locations

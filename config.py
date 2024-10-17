@@ -29,6 +29,7 @@ class Config:
     LANGUAGE_LIST = [lang.strip() for lang in os.getenv("LANGUAGE_LIST", "").split(",")]
     IS_TEST = os.getenv("IS_TEST", "False") == "True"
     PARALLEL_PROCESSES = int(os.getenv("PARALLEL_PROCESSES", "10"))
+    OMS_ENDPOINT = os.getenv("OMS_ENDPOINT", "http://oms:4000")
 
 
 class LocalConfig(Config):
